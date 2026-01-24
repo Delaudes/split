@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from '../home/home.component';
+import { HomeComponent } from '../home/page/home.component';
 
 export enum AppPath {
     Home = '',
+    Rooms = 'rooms',
 }
 
 export const routes: Routes = [
