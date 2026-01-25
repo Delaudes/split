@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from '../home/page/home.component';
-import { RoomComponent } from '../room/room.component';
+import { RoomComponent } from '../room/page/room.component';
 
 export enum AppPath {
     Home = '',
