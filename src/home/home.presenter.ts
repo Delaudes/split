@@ -16,7 +16,6 @@ export class HomePresenter {
     }
 
     presentRoom(roomId: string): void {
-        this.homeView.update({ isCreateRoomError: false });
         this.homeView.navigateToRoom(roomId);
     }
 }
