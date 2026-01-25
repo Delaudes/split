@@ -3,8 +3,14 @@ import { PayerDomainModel, RoomDomainModel } from "../models/room.domain.model";
 
 export class InMemoryRoomAdapter implements RoomPort {
     async fetchRoom(roomId: string): Promise<RoomDomainModel> {
-        if (roomId === 'empty') {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        if (roomId === 'no-payer') {
             return new RoomDomainModel(roomId, roomId, [])
+        }
+        if (roomId === 'no-expense') {
+            return new RoomDomainModel(roomId, roomId, [
+                new PayerDomainModel('1', 'Alice', []),
+            ]);
         }
         if (roomId === 'error') {
             throw new Error()
