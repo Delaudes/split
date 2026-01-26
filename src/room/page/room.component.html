@@ -58,9 +58,66 @@
                   </div>
                   <p class="text-amber-400 text-sm font-medium">{{ expense.amount }}</p>
                 </div>
+              } @empty {
+                <!-- No Expenses Message -->
+                <div class="p-4 rounded-lg bg-amber-400/5 text-center">
+                  <span class="material-symbols-outlined text-amber-400/40 text-3xl"
+                    >receipt_long</span
+                  >
+                  <p class="text-amber-200/60 text-xs font-light mt-2">
+                    Aucune dépense pour le moment
+                  </p>
+                </div>
               }
             </div>
           </details>
+        } @empty {
+          <!-- No Payers Message -->
+          <div class="p-6 rounded-xl bg-amber-400/5 border border-amber-400/10">
+            <div class="flex flex-col items-center gap-3">
+              <span class="material-symbols-outlined text-amber-400/40 text-5xl">group</span>
+              <p class="text-amber-200/60 text-sm font-light">Aucun participant dans cette salle</p>
+              <p class="text-amber-200/40 text-xs font-light">
+                Ajoutez votre premier participant ci-dessous
+              </p>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Add Payer Form -->
+      <div class="space-y-4 pt-4">
+        <!-- Error Message -->
+        @if (viewModel.isErrorAddPayer) {
+          <div class="p-4 bg-amber-400/10 border border-amber-400/30 rounded-xl">
+            <p class="text-amber-200 text-sm font-light">
+              Impossible d'ajouter un participant'. Veuillez réessayer.
+            </p>
+          </div>
+        }
+
+        @if (viewModel.isLoadingAddPayer) {
+          <!-- Loading Spinner -->
+          <div class="flex justify-center py-2">
+            <div
+              class="animate-spin rounded-full h-8 w-8 border-2 border-amber-400/20 border-t-amber-400"
+            ></div>
+          </div>
+        } @else {
+          <div class="flex gap-2 sm:gap-3">
+            <input
+              #input
+              type="text"
+              placeholder="Nom du participant"
+              class="flex-1 px-4 py-3 sm:px-6 sm:py-4 bg-amber-50 border-2 border-amber-400/40 rounded-xl focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 text-blue-950 placeholder-blue-950/40 text-sm sm:text-base outline-none transition-all"
+            />
+            <button
+              (click)="roomController.addPayer(input.value)"
+              class="px-5 py-3 sm:px-8 sm:py-4 bg-amber-500 text-blue-950 text-sm sm:text-base font-medium rounded-xl hover:bg-amber-400 active:scale-95 whitespace-nowrap transition-all"
+            >
+              Ajouter
+            </button>
+          </div>
         }
       </div>
     }

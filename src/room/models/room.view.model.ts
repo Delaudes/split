@@ -4,6 +4,9 @@ export type RoomViewModel = {
     roomId: string;
     roomName: string;
     payers: PayerViewModel[]
+
+    isLoadingAddPayer: boolean;
+    isErrorAddPayer: boolean;
 }
 
 export type PayerViewModel = {

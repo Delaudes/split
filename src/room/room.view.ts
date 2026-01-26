@@ -8,7 +8,10 @@ export class RoomView {
             isErrorFetchRoom: false,
             roomId: '',
             roomName: '',
-            payers: []
+            payers: [],
+
+            isLoadingAddPayer: false,
+            isErrorAddPayer: false,
         });
     }
 

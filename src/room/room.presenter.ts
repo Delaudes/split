@@ -1,4 +1,4 @@
-import { RoomDomainModel } from "./models/room.domain.model";
+import { PayerDomainModel, RoomDomainModel } from "./models/room.domain.model";
 import { RoomView } from "./room.view";
 
 export class RoomPresenter {
@@ -33,5 +33,34 @@ export class RoomPresenter {
 
     presentErrorFetchRoom(): void {
         this.roomView.update({ isErrorFetchRoom: true });
+    }
+
+    startLoadingAddPayer(): void {
+        this.roomView.update({ isLoadingAddPayer: true });
+    }
+
+    stopLoadingAddPayer(): void {
+        this.roomView.update({ isLoadingAddPayer: false });
+    }
+
+    presentPayer(payer: PayerDomainModel): void {
+        this.roomView.update({
+            isErrorAddPayer: false,
+            payers: [...this.roomView.roomViewModel.get().payers, {
+                id: payer.id,
+                name: payer.name,
+                expensesCount: payer.expensesCount,
+                expensesTotal: payer.expensesTotal,
+                expenses: payer.expenses.map(expense => ({
+                    id: expense.id,
+                    description: expense.description,
+                    amount: expense.amount
+                }))
+            }]
+        });
+    }
+
+    presentErrorAddPayer(): void {
+        this.roomView.update({ isErrorAddPayer: true });
     }
 }

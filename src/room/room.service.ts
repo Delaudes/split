@@ -1,4 +1,5 @@
-import { RoomPort } from "./home.port";
+import { PayerDomainModel } from "./models/room.domain.model";
+import { RoomPort } from "./room.port";
 import { RoomPresenter } from "./room.presenter";
 
 export class RoomService {
@@ -13,6 +14,18 @@ export class RoomService {
             this.roomPresenter.presentErrorFetchRoom();
         } finally {
             this.roomPresenter.stopLoadingFetchRoom();
+        }
+    }
+
+    async addPayer(roomId: string, payerName: string): Promise<void> {
+        this.roomPresenter.startLoadingAddPayer();
+        try {
+            const payerId = await this.roomPort.addPayer(roomId, payerName);
+            this.roomPresenter.presentPayer(new PayerDomainModel(payerId, payerName, []));
+        } catch {
+            this.roomPresenter.presentErrorAddPayer();
+        } finally {
+            this.roomPresenter.stopLoadingAddPayer();
         }
     }
 }

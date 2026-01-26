@@ -10,7 +10,7 @@ export class AngularNavigationAdapter implements NavigationPort {
         this.router.navigate(commands);
     }
 
-    getParam(name: string): string | null {
-        return this.activatedRoute.snapshot.paramMap.get(name)
+    getParam(name: string): string {
+        return this.activatedRoute.snapshot.paramMap.get(name) ?? '';
     }
 }

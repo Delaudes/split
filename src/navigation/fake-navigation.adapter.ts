@@ -8,7 +8,7 @@ export class FakeNavigationAdapter implements NavigationPort {
         this.commands = commands;
     }
 
-    getParam(name: string): string | null {
-        return this.params[name] ?? null;
+    getParam(name: string): string {
+        return this.params[name] ?? '';
     }
 }
