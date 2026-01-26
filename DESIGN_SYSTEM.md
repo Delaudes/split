@@ -128,6 +128,57 @@ Ce document définit les standards de design HTML/CSS pour maintenir la cohéren
 </div>
 ```
 
+### Élément Pliable (Details/Summary)
+
+```html
+<details class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10 text-left">
+  <summary class="cursor-pointer space-y-2 list-none">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-amber-400 text-xl">person</span>
+        <h3 class="text-amber-200 font-medium text-sm">Titre</h3>
+      </div>
+      <span class="material-symbols-outlined text-amber-400 text-xl">expand_more</span>
+    </div>
+
+    <!-- Stats (optional) -->
+    <div class="flex gap-3 text-xs">
+      <div class="flex items-center gap-1.5 text-amber-200/60 font-light">
+        <span class="material-symbols-outlined text-amber-400/60 text-base">tag</span>
+        <span class="text-amber-200 font-medium">12</span>
+      </div>
+    </div>
+  </summary>
+
+  <!-- Contenu pliable -->
+  <div class="mt-4 pt-4 border-t border-amber-400/10 space-y-3">
+    <!-- Items -->
+  </div>
+</details>
+```
+
+### Item de Liste
+
+```html
+<div class="flex items-center justify-between p-3 rounded-lg bg-amber-400/5">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-amber-400/60 text-base">receipt</span>
+    <p class="text-amber-200 text-sm font-light">Description</p>
+  </div>
+  <p class="text-amber-400 text-sm font-medium">Valeur</p>
+</div>
+```
+
+### Stat avec Icône
+
+```html
+<div class="flex items-center gap-1.5 text-amber-200/60 font-light">
+  <span class="material-symbols-outlined text-amber-400/60 text-base">icon_name</span>
+  <span class="text-amber-200 font-medium">42</span>
+</div>
+```
+
 ### Séparateur Décoratif
 
 ```html
@@ -182,7 +233,31 @@ class="grid md:grid-cols-3 gap-4"
 
 ## 📋 Template Patterns
 
-### Structure avec États
+### Structure Racine avec États
+
+```html
+<div class="min-h-screen bg-blue-950 flex items-center justify-center px-6 py-12">
+  <div class="max-w-xl w-full space-y-8 text-center">
+    @if (viewModel.isLoading) {
+    <!-- Loading state -->
+    <div class="flex justify-center py-2">
+      <div
+        class="animate-spin rounded-full h-8 w-8 border-2 border-amber-400/20 border-t-amber-400"
+      ></div>
+    </div>
+    } @else if (viewModel.isError) {
+    <!-- Error state -->
+    <div class="p-4 bg-amber-400/10 border border-amber-400/30 rounded-xl">
+      <p class="text-amber-200 text-sm font-light">Message d'erreur</p>
+    </div>
+    } @else {
+    <!-- Content -->
+    }
+  </div>
+</div>
+```
+
+### Structure avec États Locaux
 
 ```html
 <!-- Section avec loading et contenu -->
