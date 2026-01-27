@@ -8,7 +8,7 @@
 
     <!-- Features -->
     <div class="space-y-6 mt-12">
-      <p class="text-xl text-amber-100 font-light">Le partage de dépenses, réinventé</p>
+      <p class="text-xl text-amber-100 font-light">Le partage de dépenses simplifié</p>
 
       <div class="grid md:grid-cols-3 gap-4 text-left max-w-2xl mx-auto">
         @for (feature of features; track feature.icon) {
@@ -49,11 +49,11 @@
             #input
             type="text"
             placeholder="Nom de votre salle"
-            class="flex-1 px-4 py-3 sm:px-6 sm:py-4 bg-amber-50 border-2 border-amber-400/40 rounded-xl focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 text-blue-950 placeholder-blue-950/40 text-sm sm:text-base outline-none transition-all"
+            class="min-w-0 flex-1 px-4 py-3 sm:px-6 sm:py-4 bg-amber-50 border-2 border-amber-400/40 rounded-xl focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 text-blue-950 placeholder-blue-950/40 text-sm sm:text-base outline-none transition-all"
           />
           <button
             (click)="homeController.createRoom(input.value)"
-            class="px-5 py-3 sm:px-8 sm:py-4 bg-amber-500 text-blue-950 text-sm sm:text-base font-medium rounded-xl hover:bg-amber-400 active:scale-95 whitespace-nowrap transition-all"
+            class="shrink-0 px-5 py-3 sm:px-8 sm:py-4 bg-amber-500 text-blue-950 text-sm sm:text-base font-medium rounded-xl hover:bg-amber-400 active:scale-95 whitespace-nowrap transition-all"
           >
             Créer
           </button>
