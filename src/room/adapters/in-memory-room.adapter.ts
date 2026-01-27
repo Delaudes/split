@@ -58,4 +58,8 @@ export class InMemoryRoomAdapter implements RoomPort {
 
         return crypto.randomUUID();
     }
+
+    async deleteExpense(expenseId: string): Promise<void> {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+    }
 }

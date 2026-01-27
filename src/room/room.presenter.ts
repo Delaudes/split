@@ -99,4 +99,34 @@ export class RoomPresenter {
     presentErrorAddExpense(): void {
         this.roomView.update({ isErrorAddExpense: true });
     }
+
+    startLoadingDeleteExpense(): void {
+        this.roomView.update({ isLoadingDeleteExpense: true });
+    }
+
+    stopLoadingDeleteExpense(): void {
+        this.roomView.update({ isLoadingDeleteExpense: false });
+    }
+
+    presentDeletingExpense(expenseId: string): void {
+        this.roomView.update({
+            isErrorDeleteExpense: false,
+            payers: this.roomView.roomViewModel.get().payers.map(payer => {
+                const expenseToDelete = payer.expenses.find(expense => expense.id === expenseId);
+                if (expenseToDelete) {
+                    return {
+                        ...payer,
+                        expensesCount: payer.expensesCount - 1,
+                        expensesTotal: payer.expensesTotal - Number(expenseToDelete.amount),
+                        expenses: payer.expenses.filter(expense => expense.id !== expenseId)
+                    };
+                }
+                return payer;
+            })
+        });
+    }
+
+    presentErrorDeleteExpense(): void {
+        this.roomView.update({ isErrorDeleteExpense: true });
+    }
 }

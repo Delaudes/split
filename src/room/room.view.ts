@@ -15,6 +15,9 @@ export class RoomView {
 
             isLoadingAddExpense: false,
             isErrorAddExpense: false,
+
+            isLoadingDeleteExpense: false,
+            isErrorDeleteExpense: false,
         });
     }
 

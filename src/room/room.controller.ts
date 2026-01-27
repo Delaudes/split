@@ -22,4 +22,8 @@ export class RoomController {
         const newExpense = new NewExpenseDomainModel(expenseDescription, Number(Number(amount).toFixed(2)), payerId);
         await this.roomService.addExpense(newExpense);
     }
+
+    async deleteExpense(expenseId: string): Promise<void> {
+        await this.roomService.deleteExpense(expenseId);
+    }
 }
