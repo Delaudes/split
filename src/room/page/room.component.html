@@ -56,7 +56,10 @@
                     >
                     <p class="text-amber-200 text-sm font-light">{{ expense.description }}</p>
                   </div>
-                  <p class="text-amber-400 text-sm font-medium">{{ expense.amount }}</p>
+                  <div class="flex items-center gap-2">
+                    <p class="text-amber-400 text-sm font-medium">{{ expense.amount }}</p>
+                    <app-delete-expense [expense]="expense" />
+                  </div>
                 </div>
               } @empty {
                 <!-- No Expenses Message -->

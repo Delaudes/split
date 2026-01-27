@@ -1,4 +1,5 @@
 import { AppParam } from "../app/app.routes";
+import { DialogInterface } from "../dialog/dialog.interface";
 import { NavigationPort } from "../navigation/navigation.port";
 import { NewExpenseDomainModel } from "./models/room.domain.model";
 import { RoomService } from "./room.service";
@@ -23,7 +24,18 @@ export class RoomController {
         await this.roomService.addExpense(newExpense);
     }
 
-    async deleteExpense(expenseId: string): Promise<void> {
-        await this.roomService.deleteExpense(expenseId);
+    async validateDeleteExpense(expenseId: string, dialog: DialogInterface): Promise<void> {
+        const isDeleteSuccess = await this.roomService.deleteExpense(expenseId);
+        if (isDeleteSuccess) {
+            dialog.close();
+        }
+    }
+
+    deleteExpense(dialog: DialogInterface): void {
+        dialog.showModal();
+    }
+
+    cancelDeleteExpense(dialog: DialogInterface): void {
+        dialog.close();
     }
 }

@@ -25,7 +25,9 @@ export class RoomPresenter {
                 expenses: payer.expenses.map(expense => ({
                     id: expense.id,
                     description: expense.description,
-                    amount: expense.amount.toFixed(2)
+                    amount: expense.amount.toFixed(2),
+                    isLoadingDeleteExpense: false,
+                    isErrorDeleteExpense: false
                 }))
             }))
         });
@@ -54,7 +56,9 @@ export class RoomPresenter {
                 expenses: payer.expenses.map(expense => ({
                     id: expense.id,
                     description: expense.description,
-                    amount: expense.amount.toFixed(2)
+                    amount: expense.amount.toFixed(2),
+                    isLoadingDeleteExpense: false,
+                    isErrorDeleteExpense: false
                 }))
             }]
         });
@@ -86,7 +90,9 @@ export class RoomPresenter {
                             {
                                 id: expense.id,
                                 description: expense.description,
-                                amount: expense.amount.toFixed(2)
+                                amount: expense.amount.toFixed(2),
+                                isLoadingDeleteExpense: false,
+                                isErrorDeleteExpense: false
                             }
                         ]
                     };
@@ -100,17 +106,32 @@ export class RoomPresenter {
         this.roomView.update({ isErrorAddExpense: true });
     }
 
-    startLoadingDeleteExpense(): void {
-        this.roomView.update({ isLoadingDeleteExpense: true });
+    startLoadingDeleteExpense(expenseId: string): void {
+        this.roomView.update({
+            payers: this.roomView.roomViewModel.get().payers.map(payer => ({
+                ...payer,
+                expenses: payer.expenses.map(expense => ({
+                    ...expense,
+                    isLoadingDeleteExpense: expense.id === expenseId ? true : expense.isLoadingDeleteExpense
+                }))
+            }))
+        })
     }
 
-    stopLoadingDeleteExpense(): void {
-        this.roomView.update({ isLoadingDeleteExpense: false });
+    stopLoadingDeleteExpense(expenseId: string): void {
+        this.roomView.update({
+            payers: this.roomView.roomViewModel.get().payers.map(payer => ({
+                ...payer,
+                expenses: payer.expenses.map(expense => ({
+                    ...expense,
+                    isLoadingDeleteExpense: expense.id === expenseId ? false : expense.isLoadingDeleteExpense
+                }))
+            }))
+        });
     }
 
     presentDeletingExpense(expenseId: string): void {
         this.roomView.update({
-            isErrorDeleteExpense: false,
             payers: this.roomView.roomViewModel.get().payers.map(payer => {
                 const expenseToDelete = payer.expenses.find(expense => expense.id === expenseId);
                 if (expenseToDelete) {
@@ -126,7 +147,15 @@ export class RoomPresenter {
         });
     }
 
-    presentErrorDeleteExpense(): void {
-        this.roomView.update({ isErrorDeleteExpense: true });
+    presentErrorDeleteExpense(expenseId: string): void {
+        this.roomView.update({
+            payers: this.roomView.roomViewModel.get().payers.map(payer => ({
+                ...payer,
+                expenses: payer.expenses.map(expense => ({
+                    ...expense,
+                    isErrorDeleteExpense: expense.id === expenseId ? true : expense.isErrorDeleteExpense
+                }))
+            }))
+        });
     }
 }

@@ -61,5 +61,8 @@ export class InMemoryRoomAdapter implements RoomPort {
 
     async deleteExpense(expenseId: string): Promise<void> {
         await new Promise(resolve => setTimeout(resolve, 2000));
+        if (expenseId === 'a') {
+            throw new Error()
+        }
     }
 }

@@ -46,15 +46,17 @@ export class RoomService {
         }
     }
 
-    async deleteExpense(expenseId: string): Promise<void> {
-        this.roomPresenter.startLoadingDeleteExpense();
+    async deleteExpense(expenseId: string): Promise<boolean> {
+        this.roomPresenter.startLoadingDeleteExpense(expenseId);
         try {
             await this.roomPort.deleteExpense(expenseId);
             this.roomPresenter.presentDeletingExpense(expenseId);
+            return true
         } catch {
-            this.roomPresenter.presentErrorDeleteExpense();
+            this.roomPresenter.presentErrorDeleteExpense(expenseId);
+            return false
         } finally {
-            this.roomPresenter.stopLoadingDeleteExpense();
+            this.roomPresenter.stopLoadingDeleteExpense(expenseId);
         }
     }
 }
