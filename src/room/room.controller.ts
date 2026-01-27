@@ -30,12 +30,4 @@ export class RoomController {
             dialog.close();
         }
     }
-
-    deleteExpense(dialog: DialogInterface): void {
-        dialog.showModal();
-    }
-
-    cancelDeleteExpense(dialog: DialogInterface): void {
-        dialog.close();
-    }
 }

@@ -161,7 +161,7 @@ Ce document définit les standards de design HTML/CSS pour maintenir la cohéren
 ### Item de Liste
 
 ```html
-<div class="flex items-center justify-between p-3 rounded-lg bg-amber-400/5">
+<div class="flex items-center justify-between p-3 rounded-xl bg-amber-400/5">
   <div class="flex items-center gap-2">
     <span class="material-symbols-outlined text-amber-400/60 text-base">receipt</span>
     <p class="text-amber-200 text-sm font-light">Description</p>
@@ -184,6 +184,90 @@ Ce document définit les standards de design HTML/CSS pour maintenir la cohéren
 ```html
 <div class="h-0.5 w-20 bg-amber-400 opacity-50 mx-auto"></div>
 ```
+
+### Message Empty (État Vide)
+
+```html
+<div class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10 text-center">
+  <span class="material-symbols-outlined text-amber-400/40 text-3xl">icon_name</span>
+  <p class="text-amber-200/60 text-xs font-light mt-2">Message d'état vide</p>
+</div>
+```
+
+### Bouton d'Action Icône
+
+```html
+<button
+  (click)="action()"
+  class="p-1.5 rounded-lg hover:bg-amber-400/10 active:scale-95 transition-all flex items-center justify-center"
+  aria-label="Description de l'action"
+>
+  <span class="material-symbols-outlined text-amber-400/60 text-base">icon_name</span>
+</button>
+```
+
+### Dialog Modal (Confirmation/Alerte)
+
+```html
+<!-- Bouton d'ouverture -->
+<button (click)="dialog.showModal()">Ouvrir</button>
+
+<!-- Dialog -->
+<dialog
+  #dialog
+  class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 bg-blue-950 border border-amber-400/20 rounded-xl p-6 max-w-md w-[calc(100%-2rem)] space-y-6 backdrop:bg-blue-950/95"
+>
+  <!-- Header -->
+  <div class="space-y-3 text-center">
+    <div class="w-16 h-16 rounded-full bg-amber-400/10 flex items-center justify-center mx-auto">
+      <span class="material-symbols-outlined text-amber-400 text-3xl">warning</span>
+    </div>
+    <p class="text-amber-200/60 text-sm font-light">Message de confirmation</p>
+  </div>
+
+  <!-- Error Message (optional) -->
+  @if (viewModel.isError) {
+  <div class="p-4 bg-amber-400/10 border border-amber-400/30 rounded-xl">
+    <p class="text-amber-200 text-sm font-light">Message d'erreur</p>
+  </div>
+  }
+
+  <!-- Actions -->
+  @if (viewModel.isLoading) {
+  <!-- Loading Spinner -->
+  <div class="flex justify-center py-2">
+    <div
+      class="animate-spin rounded-full h-8 w-8 border-2 border-amber-400/20 border-t-amber-400"
+    ></div>
+  </div>
+  } @else {
+  <div class="flex gap-3">
+    <button
+      (click)="dialog.close()"
+      class="flex-1 px-5 py-3 bg-amber-400/10 text-amber-200 text-sm font-medium rounded-xl hover:bg-amber-400/20 active:scale-95 transition-all"
+    >
+      Annuler
+    </button>
+    <button
+      (click)="confirmAction(dialog)"
+      class="flex-1 px-5 py-3 bg-amber-500 text-blue-950 text-sm font-medium rounded-xl hover:bg-amber-400 active:scale-95 transition-all"
+    >
+      Confirmer
+    </button>
+  </div>
+  }
+</dialog>
+```
+
+**Notes Dialog:**
+
+- Utiliser `fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0` pour centrage parfait
+- `dialog.showModal()` pour ouvrir, `dialog.close()` pour fermer
+- `backdrop:bg-blue-950/95` pour l'overlay semi-transparent
+- Border simple (non `border-2`)
+- Icône d'avertissement dans un cercle de 16x16
+- Bouton secondaire (Annuler) avec `bg-amber-400/10`
+- Bouton primaire (Confirmer) avec `bg-amber-500`
 
 ## 📱 Responsive Design
 
@@ -210,8 +294,9 @@ class="grid md:grid-cols-3 gap-4"
 ### Bordures
 
 - Toujours `rounded-xl` pour la cohérence
+- Exception: `rounded-lg` pour boutons d'icône uniquement
 - `border-2` pour les inputs
-- `border` simple pour les cartes
+- `border` simple pour les cartes et dialogs
 
 ### Transitions
 
