@@ -1,15 +1,17 @@
-import { ExpenseDomainModel, NewExpenseDomainModel, PayerDomainModel } from "./models/room.domain.model";
+import { ExpenseDomainModel, NewExpenseDomainModel, PayerDomainModel, RoomDomainModel } from "./models/room.domain.model";
 import { RoomPort } from "./room.port";
 import { RoomPresenter } from "./room.presenter";
 
 export class RoomService {
+    private room: RoomDomainModel = new RoomDomainModel('', '', []);
+
     constructor(private readonly roomPresenter: RoomPresenter, private readonly roomPort: RoomPort) { }
 
     async fetchRoom(roomId: string): Promise<void> {
         this.roomPresenter.startLoadingFetchRoom();
         try {
-            const room = await this.roomPort.fetchRoom(roomId);
-            this.roomPresenter.presentRoom(room);
+            this.room = await this.roomPort.fetchRoom(roomId);
+            this.roomPresenter.presentRoom(this.room);
         } catch {
             this.roomPresenter.presentErrorFetchRoom();
         } finally {
@@ -21,7 +23,8 @@ export class RoomService {
         this.roomPresenter.startLoadingAddPayer();
         try {
             const payerId = await this.roomPort.addPayer(roomId, payerName);
-            this.roomPresenter.presentPayer(new PayerDomainModel(payerId, payerName, []));
+            this.room.addPayer(new PayerDomainModel(payerId, payerName, []));
+            this.roomPresenter.presentRoom(this.room);
         } catch {
             this.roomPresenter.presentErrorAddPayer();
         } finally {
@@ -33,12 +36,12 @@ export class RoomService {
         this.roomPresenter.startLoadingAddExpense();
         try {
             const expenseId = await this.roomPort.addExpense(newExpense);
-            this.roomPresenter.presentExpense(new ExpenseDomainModel(
+            this.room.addExpense(new ExpenseDomainModel(
                 expenseId,
                 newExpense.description,
                 newExpense.amount,
-            ), newExpense.payerId
-            );
+            ), newExpense.payerId);
+            this.roomPresenter.presentRoom(this.room);
         } catch {
             this.roomPresenter.presentErrorAddExpense();
         } finally {
@@ -50,7 +53,8 @@ export class RoomService {
         this.roomPresenter.startLoadingDeleteExpense(expenseId);
         try {
             await this.roomPort.deleteExpense(expenseId);
-            this.roomPresenter.presentDeletingExpense(expenseId);
+            this.room.deleteExpense(expenseId);
+            this.roomPresenter.presentRoom(this.room);
             return true
         } catch {
             this.roomPresenter.presentErrorDeleteExpense(expenseId);

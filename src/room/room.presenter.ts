@@ -1,4 +1,4 @@
-import { ExpenseDomainModel, PayerDomainModel, RoomDomainModel } from "./models/room.domain.model";
+import { RoomDomainModel } from "./models/room.domain.model";
 import { RoomView } from "./room.view";
 
 export class RoomPresenter {
@@ -21,7 +21,7 @@ export class RoomPresenter {
                 id: payer.id,
                 name: payer.name,
                 expensesCount: payer.expensesCount,
-                expensesTotal: payer.expensesTotal,
+                expensesTotal: payer.expensesTotal.toFixed(2),
                 expenses: payer.expenses.map(expense => ({
                     id: expense.id,
                     description: expense.description,
@@ -45,25 +45,6 @@ export class RoomPresenter {
         this.roomView.update({ isLoadingAddPayer: false });
     }
 
-    presentPayer(payer: PayerDomainModel): void {
-        this.roomView.update({
-            isErrorAddPayer: false,
-            payers: [...this.roomView.roomViewModel.get().payers, {
-                id: payer.id,
-                name: payer.name,
-                expensesCount: payer.expensesCount,
-                expensesTotal: payer.expensesTotal,
-                expenses: payer.expenses.map(expense => ({
-                    id: expense.id,
-                    description: expense.description,
-                    amount: expense.amount.toFixed(2),
-                    isLoadingDeleteExpense: false,
-                    isErrorDeleteExpense: false
-                }))
-            }]
-        });
-    }
-
     presentErrorAddPayer(): void {
         this.roomView.update({ isErrorAddPayer: true });
     }
@@ -74,32 +55,6 @@ export class RoomPresenter {
 
     stopLoadingAddExpense(): void {
         this.roomView.update({ isLoadingAddExpense: false });
-    }
-
-    presentExpense(expense: ExpenseDomainModel, payerId: string): void {
-        this.roomView.update({
-            isErrorAddExpense: false,
-            payers: this.roomView.roomViewModel.get().payers.map(payer => {
-                if (payer.id === payerId) {
-                    return {
-                        ...payer,
-                        expensesCount: payer.expensesCount + 1,
-                        expensesTotal: payer.expensesTotal + expense.amount,
-                        expenses: [
-                            ...payer.expenses,
-                            {
-                                id: expense.id,
-                                description: expense.description,
-                                amount: expense.amount.toFixed(2),
-                                isLoadingDeleteExpense: false,
-                                isErrorDeleteExpense: false
-                            }
-                        ]
-                    };
-                }
-                return payer;
-            })
-        });
     }
 
     presentErrorAddExpense(): void {
@@ -127,23 +82,6 @@ export class RoomPresenter {
                     isLoadingDeleteExpense: expense.id === expenseId ? false : expense.isLoadingDeleteExpense
                 }))
             }))
-        });
-    }
-
-    presentDeletingExpense(expenseId: string): void {
-        this.roomView.update({
-            payers: this.roomView.roomViewModel.get().payers.map(payer => {
-                const expenseToDelete = payer.expenses.find(expense => expense.id === expenseId);
-                if (expenseToDelete) {
-                    return {
-                        ...payer,
-                        expensesCount: payer.expensesCount - 1,
-                        expensesTotal: payer.expensesTotal - Number(expenseToDelete.amount),
-                        expenses: payer.expenses.filter(expense => expense.id !== expenseId)
-                    };
-                }
-                return payer;
-            })
         });
     }
 

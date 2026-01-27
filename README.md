@@ -64,21 +64,21 @@ For more information on using the Angular CLI, including detailed command refere
 - fetch room ok
 - add payer ok
 - add expense ok
-- delete expense
+- delete expense ok
 - calculate balance
+- reset room
+- share link
 
 ## V1
 
-- share link
 - edit room name
 - edit payer name
-- edit expense name/amount
 - delete payer
-- delete room
 
 ## V2
 
 - store room
 - fetch stored rooms
-- reset room
 - fetch history
+- edit expense name/amount
+- delete room

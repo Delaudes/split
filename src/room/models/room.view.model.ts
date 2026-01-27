@@ -16,7 +16,7 @@ export type PayerViewModel = {
     id: string;
     name: string;
     expensesCount: number;
-    expensesTotal: number;
+    expensesTotal: string;
     expenses: ExpenseViewModel[];
 }
 
