@@ -1,7 +1,8 @@
-import { PayerDomainModel, RoomDomainModel } from "../models/room.domain.model";
+import { NewExpenseDomainModel, PayerDomainModel, RoomDomainModel } from "../models/room.domain.model";
 import { RoomPort } from "../room.port";
 
 export class InMemoryRoomAdapter implements RoomPort {
+
     async fetchRoom(roomId: string): Promise<RoomDomainModel> {
         await new Promise(resolve => setTimeout(resolve, 2000));
 
@@ -42,6 +43,16 @@ export class InMemoryRoomAdapter implements RoomPort {
         await new Promise(resolve => setTimeout(resolve, 2000));
 
         if (payerName === 'error') {
+            throw new Error()
+        }
+
+        return crypto.randomUUID();
+    }
+
+    async addExpense(newExpense: NewExpenseDomainModel): Promise<string> {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        if (newExpense.description === 'error') {
             throw new Error()
         }
 

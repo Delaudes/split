@@ -4,8 +4,8 @@ export class InMemoryHomeAdapter implements HomePort {
     async createRoom(roomName: string): Promise<string> {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        if (roomName.toLowerCase().includes("error")) {
-            throw new Error("Simulated error during room creation");
+        if (roomName === "error") {
+            throw new Error();
         }
 
         return crypto.randomUUID();

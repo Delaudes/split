@@ -7,6 +7,9 @@ export type RoomViewModel = {
 
     isLoadingAddPayer: boolean;
     isErrorAddPayer: boolean;
+
+    isLoadingAddExpense: boolean;
+    isErrorAddExpense: boolean;
 }
 
 export type PayerViewModel = {
@@ -20,5 +23,5 @@ export type PayerViewModel = {
 export type ExpenseViewModel = {
     id: string;
     description: string;
-    amount: number;
+    amount: string;
 }

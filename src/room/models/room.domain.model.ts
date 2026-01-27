@@ -29,3 +29,11 @@ export class ExpenseDomainModel {
         readonly amount: number
     ) { }
 }
+
+export class NewExpenseDomainModel {
+    constructor(
+        readonly description: string,
+        readonly amount: number,
+        readonly payerId: string
+    ) { }
+}

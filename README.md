@@ -62,8 +62,8 @@ For more information on using the Angular CLI, including detailed command refere
 
 - create room ok
 - fetch room ok
-- add payer
-- add expense
+- add payer ok
+- add expense ok
 - delete expense
 - calculate balance
 

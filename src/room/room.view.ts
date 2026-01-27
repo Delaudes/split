@@ -12,6 +12,9 @@ export class RoomView {
 
             isLoadingAddPayer: false,
             isErrorAddPayer: false,
+
+            isLoadingAddExpense: false,
+            isErrorAddExpense: false,
         });
     }
 

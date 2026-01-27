@@ -1,4 +1,4 @@
-import { PayerDomainModel, RoomDomainModel } from "./models/room.domain.model";
+import { ExpenseDomainModel, PayerDomainModel, RoomDomainModel } from "./models/room.domain.model";
 import { RoomView } from "./room.view";
 
 export class RoomPresenter {
@@ -25,7 +25,7 @@ export class RoomPresenter {
                 expenses: payer.expenses.map(expense => ({
                     id: expense.id,
                     description: expense.description,
-                    amount: expense.amount
+                    amount: expense.amount.toFixed(2)
                 }))
             }))
         });
@@ -54,7 +54,7 @@ export class RoomPresenter {
                 expenses: payer.expenses.map(expense => ({
                     id: expense.id,
                     description: expense.description,
-                    amount: expense.amount
+                    amount: expense.amount.toFixed(2)
                 }))
             }]
         });
@@ -62,5 +62,41 @@ export class RoomPresenter {
 
     presentErrorAddPayer(): void {
         this.roomView.update({ isErrorAddPayer: true });
+    }
+
+    startLoadingAddExpense(): void {
+        this.roomView.update({ isLoadingAddExpense: true });
+    }
+
+    stopLoadingAddExpense(): void {
+        this.roomView.update({ isLoadingAddExpense: false });
+    }
+
+    presentExpense(expense: ExpenseDomainModel, payerId: string): void {
+        this.roomView.update({
+            isErrorAddExpense: false,
+            payers: this.roomView.roomViewModel.get().payers.map(payer => {
+                if (payer.id === payerId) {
+                    return {
+                        ...payer,
+                        expensesCount: payer.expensesCount + 1,
+                        expensesTotal: payer.expensesTotal + expense.amount,
+                        expenses: [
+                            ...payer.expenses,
+                            {
+                                id: expense.id,
+                                description: expense.description,
+                                amount: expense.amount.toFixed(2)
+                            }
+                        ]
+                    };
+                }
+                return payer;
+            })
+        });
+    }
+
+    presentErrorAddExpense(): void {
+        this.roomView.update({ isErrorAddExpense: true });
     }
 }

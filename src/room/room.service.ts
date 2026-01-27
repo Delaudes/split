@@ -1,4 +1,4 @@
-import { PayerDomainModel } from "./models/room.domain.model";
+import { ExpenseDomainModel, NewExpenseDomainModel, PayerDomainModel } from "./models/room.domain.model";
 import { RoomPort } from "./room.port";
 import { RoomPresenter } from "./room.presenter";
 
@@ -26,6 +26,23 @@ export class RoomService {
             this.roomPresenter.presentErrorAddPayer();
         } finally {
             this.roomPresenter.stopLoadingAddPayer();
+        }
+    }
+
+    async addExpense(newExpense: NewExpenseDomainModel): Promise<void> {
+        this.roomPresenter.startLoadingAddExpense();
+        try {
+            const expenseId = await this.roomPort.addExpense(newExpense);
+            this.roomPresenter.presentExpense(new ExpenseDomainModel(
+                expenseId,
+                newExpense.description,
+                newExpense.amount,
+            ), newExpense.payerId
+            );
+        } catch {
+            this.roomPresenter.presentErrorAddExpense();
+        } finally {
+            this.roomPresenter.stopLoadingAddExpense();
         }
     }
 }
