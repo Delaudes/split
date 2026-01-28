@@ -65,8 +65,8 @@ For more information on using the Angular CLI, including detailed command refere
 - add payer ok
 - add expense ok
 - delete expense ok
-- calculate balance
-- delete all expenses
+- calculate balance ok
+- delete all expenses ok
 - share link
 
 ## V1

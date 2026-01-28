@@ -14,6 +14,9 @@ export type RoomViewModel = {
     expensesTotal: string;
     espensesAverage: string;
     payments: PaymentViewModel[];
+
+    isLoadingDeleteAllExpenses: boolean;
+    isErrorDeleteAllExpenses: boolean;
 }
 
 export type PayerViewModel = {

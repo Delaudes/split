@@ -1,4 +1,4 @@
-import { NewExpenseDomainModel, PayerDomainModel, RoomDomainModel } from "../models/room.domain.model";
+import { ExpenseDomainModel, NewExpenseDomainModel, PayerDomainModel, RoomDomainModel } from "../models/room.domain.model";
 import { RoomPort } from "../room.port";
 
 export class InMemoryRoomAdapter implements RoomPort {
@@ -22,19 +22,19 @@ export class InMemoryRoomAdapter implements RoomPort {
 
         return new RoomDomainModel(roomId, 'Vacances', [
             new PayerDomainModel('1', 'Alice', [
-                { id: 'a', amount: 50, description: 'Hotel' },
-                { id: 'b', amount: 30, description: 'Restaurant' },
-                { id: 'c', amount: 20, description: 'Museum' },
+                new ExpenseDomainModel('a', 'Hotel', 50),
+                new ExpenseDomainModel('b', 'Restaurant', 30),
+                new ExpenseDomainModel('c', 'Museum', 20),
             ]),
             new PayerDomainModel('2', 'Bob', [
-                { id: 'd', amount: 80, description: 'Flight' },
-                { id: 'e', amount: 40, description: 'Car Rental' },
-                { id: 'f', amount: 10, description: 'Snacks' },
+                new ExpenseDomainModel('d', 'Flight', 80),
+                new ExpenseDomainModel('e', 'Car Rental', 40),
+                new ExpenseDomainModel('f', 'Snacks', 10),
             ]),
             new PayerDomainModel('3', 'Charlie', [
-                { id: 'g', amount: 60, description: 'Accommodation' },
-                { id: 'h', amount: 20, description: 'Activities' },
-                { id: 'i', amount: 15, description: 'Souvenirs' }
+                new ExpenseDomainModel('g', 'Accommodation', 60),
+                new ExpenseDomainModel('h', 'Activities', 20),
+                new ExpenseDomainModel('i', 'Souvenirs', 15),
             ]),
         ]);
     }
@@ -61,7 +61,16 @@ export class InMemoryRoomAdapter implements RoomPort {
 
     async deleteExpense(expenseId: string): Promise<void> {
         await new Promise(resolve => setTimeout(resolve, 2000));
+
         if (expenseId === 'a') {
+            throw new Error()
+        }
+    }
+
+    async deleteAllExpenses(roomId: string): Promise<void> {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        if (roomId === 'error-delete-all') {
             throw new Error()
         }
     }

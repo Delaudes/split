@@ -63,4 +63,19 @@ export class RoomService {
             this.roomPresenter.stopLoadingDeleteExpense(expenseId);
         }
     }
+
+    async deleteAllExpenses(roomId: string): Promise<boolean> {
+        this.roomPresenter.startLoadingDeleteAllExpenses();
+        try {
+            await this.roomPort.deleteAllExpenses(roomId);
+            this.room.deleteAllExpenses();
+            this.roomPresenter.presentRoom(this.room);
+            return true
+        } catch {
+            this.roomPresenter.presentErrorDeleteAllExpenses();
+            return false
+        } finally {
+            this.roomPresenter.stopLoadingDeleteAllExpenses();
+        }
+    }
 }

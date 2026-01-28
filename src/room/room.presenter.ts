@@ -30,6 +30,9 @@ export class RoomPresenter {
                     isErrorDeleteExpense: false
                 }))
             })),
+            isErrorAddPayer: false,
+            isErrorAddExpense: false,
+            isErrorDeleteAllExpenses: false,
             expensesTotal: room.expensesTotal.toFixed(2),
             espensesAverage: room.expensesAverage.toFixed(2),
             payments: room.payments.map(payment => ({
@@ -102,5 +105,17 @@ export class RoomPresenter {
                 }))
             }))
         });
+    }
+
+    startLoadingDeleteAllExpenses(): void {
+        this.roomView.update({ isLoadingDeleteAllExpenses: true });
+    }
+
+    stopLoadingDeleteAllExpenses(): void {
+        this.roomView.update({ isLoadingDeleteAllExpenses: false });
+    }
+
+    presentErrorDeleteAllExpenses(): void {
+        this.roomView.update({ isErrorDeleteAllExpenses: true });
     }
 }

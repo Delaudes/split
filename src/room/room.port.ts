@@ -5,4 +5,5 @@ export interface RoomPort {
     addPayer(roomId: string, payerName: string): Promise<string>;
     addExpense(newExpense: NewExpenseDomainModel): Promise<string>;
     deleteExpense(expenseId: string): Promise<void>;
+    deleteAllExpenses(roomId: string): Promise<void>;
 }

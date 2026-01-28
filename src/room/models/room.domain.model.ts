@@ -19,7 +19,7 @@ export class RoomDomainModel {
     }
 
     addExpense(expense: ExpenseDomainModel, payerId: string): void {
-        const payer = this.payers.find(p => p.id === payerId);
+        const payer = this.payers.find(payer => payer.is(payerId));
         payer?.addExpense(expense);
     }
 
@@ -29,13 +29,19 @@ export class RoomDomainModel {
         });
     }
 
+    deleteAllExpenses(): void {
+        this.payers.forEach(payer => {
+            payer.deleteExpenses();
+        });
+    }
+
     get payments(): PaymentViewModel[] {
         const balances = this.payers.map(payer => ({
             name: payer.name,
             balance: payer.getBalance(this.expensesAverage)
         }));
-        const creditors = balances.filter(b => b.balance > 0);
-        const debtors = balances.filter(b => b.balance < 0).map(b => ({ name: b.name, balance: -b.balance }));
+        const creditors = balances.filter(balance => balance.balance > 0);
+        const debtors = balances.filter(balance => balance.balance < 0).map(b => ({ name: b.name, balance: -b.balance }));
 
         const payments = [];
         let i = 0, j = 0;
@@ -82,10 +88,18 @@ export class PayerDomainModel {
     }
 
     deleteExpense(expenseId: string): void {
-        const expenseIndex = this.expenses.findIndex(expense => expense.id === expenseId);
+        const expenseIndex = this.expenses.findIndex(expense => expense.is(expenseId));
         if (expenseIndex !== -1) {
             this.expenses.splice(expenseIndex, 1);
         }
+    }
+
+    deleteExpenses(): void {
+        this.expenses.splice(0, this.expenses.length);
+    }
+
+    is(payerId: string): boolean {
+        return this.id === payerId;
     }
 }
 
@@ -95,6 +109,10 @@ export class ExpenseDomainModel {
         readonly description: string,
         readonly amount: number
     ) { }
+
+    is(expenseId: string): boolean {
+        return this.id === expenseId;
+    }
 }
 
 export class NewExpenseDomainModel {

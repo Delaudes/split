@@ -18,7 +18,10 @@ export class RoomView {
 
             expensesTotal: '0.00',
             espensesAverage: '0.00',
-            payments: []
+            payments: [],
+
+            isLoadingDeleteAllExpenses: false,
+            isErrorDeleteAllExpenses: false,
         });
     }
 

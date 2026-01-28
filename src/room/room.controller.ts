@@ -30,4 +30,12 @@ export class RoomController {
             dialog.close();
         }
     }
+
+    async validateDeleteAllExpenses(dialog: DialogInterface): Promise<void> {
+        const roomId = this.navigationPort.getParam(AppParam.RoomId)
+        const isDeleteSuccess = await this.roomService.deleteAllExpenses(roomId);
+        if (isDeleteSuccess) {
+            dialog.close();
+        }
+    }
 }
