@@ -20,6 +20,52 @@
         <h1 class="text-5xl md:text-6xl font-light text-amber-400">{{ viewModel.roomName }}</h1>
         <div class="h-0.5 w-20 bg-amber-400 opacity-50 mx-auto"></div>
       </div>
+
+      <!-- Balancing Section -->
+      <details class="p-4 rounded-xl bg-amber-400/10 border border-amber-400/20 text-left">
+        <summary class="cursor-pointer space-y-2 list-none">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-amber-400 text-xl">balance</span>
+              <h3 class="text-amber-200 font-medium text-sm">Équilibrage</h3>
+            </div>
+            <span class="material-symbols-outlined text-amber-400 text-xl">expand_more</span>
+          </div>
+          <div class="flex gap-3 text-xs">
+            <div class="flex items-center gap-1.5 text-amber-200/60 font-light">
+              <span class="material-symbols-outlined text-amber-400/60 text-base">functions</span>
+              <span class="text-amber-200 font-medium">{{ viewModel.espensesAverage }}</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-amber-200/60 font-light">
+              <span class="material-symbols-outlined text-amber-400/60 text-base">savings</span>
+              <span class="text-amber-200 font-medium">{{ viewModel.expensesTotal }}</span>
+            </div>
+          </div>
+        </summary>
+
+        <!-- Payments List -->
+        <div class="mt-4 pt-4 border-t border-amber-400/10 space-y-3">
+          @for (payment of viewModel.payments; track $index) {
+            <div class="flex items-center justify-between p-3 rounded-xl bg-amber-400/5">
+              <div class="flex items-center gap-2">
+                <p class="text-amber-200 text-sm font-light">
+                  {{ payment.fromPayerName }}
+                  <span class="text-amber-200/60">→</span>
+                  {{ payment.toPayerName }}
+                </p>
+              </div>
+              <p class="text-amber-400 text-sm font-medium">{{ payment.amount }}</p>
+            </div>
+          } @empty {
+            <!-- No Payments Message -->
+            <div class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10 text-center">
+              <span class="material-symbols-outlined text-amber-400/40 text-3xl">check_circle</span>
+              <p class="text-amber-200/60 text-xs font-light mt-2">Équilibre parfait !</p>
+            </div>
+          }
+        </div>
+      </details>
+
       <!-- Payers List -->
       <div class="space-y-4 pt-4">
         @for (payer of viewModel.payers; track payer.id) {

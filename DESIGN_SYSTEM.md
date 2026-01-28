@@ -158,6 +158,47 @@ Ce document définit les standards de design HTML/CSS pour maintenir la cohéren
 </details>
 ```
 
+### Élément Pliable Distinctif (Collapse Accentué)
+
+Pour mettre en évidence un élément pliable important (ex: équilibrage, récapitulatif), utiliser des opacités plus élevées :
+
+```html
+<details class="p-4 rounded-xl bg-amber-400/10 border border-amber-400/20 text-left">
+  <summary class="cursor-pointer space-y-2 list-none">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-amber-400 text-xl">balance</span>
+        <h3 class="text-amber-200 font-medium text-sm">Équilibrage</h3>
+      </div>
+      <span class="material-symbols-outlined text-amber-400 text-xl">expand_more</span>
+    </div>
+
+    <!-- Stats avec labels (optional) -->
+    <div class="flex gap-3 text-xs">
+      <div class="flex items-center gap-1.5 text-amber-200/60 font-light">
+        <span class="material-symbols-outlined text-amber-400/60 text-base">functions</span>
+        <span class="text-amber-200 font-medium">42€</span>
+      </div>
+      <div class="flex items-center gap-1.5 text-amber-200/60 font-light">
+        <span class="material-symbols-outlined text-amber-400/60 text-base">savings</span>
+        <span class="text-amber-200 font-medium">126€</span>
+      </div>
+    </div>
+  </summary>
+
+  <!-- Contenu pliable -->
+  <div class="mt-4 pt-4 border-t border-amber-400/10 space-y-3">
+    <!-- Items -->
+  </div>
+</details>
+```
+
+**Différences du Collapse Distinctif :**
+
+- `bg-amber-400/10` au lieu de `/5` (plus visible)
+- `border-amber-400/20` au lieu de `/10` (bordure plus marquée)
+
 ### Item de Liste
 
 ```html
