@@ -14,7 +14,11 @@ export class RoomView {
             isErrorAddPayer: false,
 
             isLoadingAddExpense: false,
-            isErrorAddExpense: false
+            isErrorAddExpense: false,
+
+            expensesTotal: '0.00',
+            espensesAverage: '0.00',
+            payments: []
         });
     }
 

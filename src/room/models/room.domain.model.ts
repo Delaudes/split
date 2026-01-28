@@ -5,6 +5,15 @@ export class RoomDomainModel {
         readonly payers: PayerDomainModel[]
     ) { }
 
+    get expensesTotal(): number {
+        return this.payers.reduce((sum, payer) => sum + payer.expensesTotal, 0);
+    }
+
+    get expensesAverage(): number {
+        const numberOfPayers = this.payers.length;
+        return numberOfPayers === 0 ? 0 : this.expensesTotal / numberOfPayers;
+    }
+
     addPayer(payer: PayerDomainModel): void {
         this.payers.push(payer);
     }
@@ -18,6 +27,34 @@ export class RoomDomainModel {
         this.payers.forEach(payer => {
             payer.deleteExpense(expenseId);
         });
+    }
+
+    get payments(): PaymentViewModel[] {
+        const balances = this.payers.map(payer => ({
+            name: payer.name,
+            balance: payer.getBalance(this.expensesAverage)
+        }));
+        const creditors = balances.filter(b => b.balance > 0);
+        const debtors = balances.filter(b => b.balance < 0).map(b => ({ name: b.name, balance: -b.balance }));
+
+        const payments = [];
+        let i = 0, j = 0;
+        while (i < creditors.length && j < debtors.length) {
+            const amount = Math.min(creditors[i].balance, debtors[j].balance);
+
+            payments.push(new PaymentViewModel(
+                debtors[j].name,
+                creditors[i].name,
+                amount
+            ));
+
+            creditors[i].balance -= amount;
+            debtors[j].balance -= amount;
+
+            if (creditors[i].balance <= 0) i++;
+            if (debtors[j].balance <= 0) j++;
+        }
+        return payments;
     }
 }
 
@@ -34,6 +71,10 @@ export class PayerDomainModel {
 
     get expensesTotal(): number {
         return this.expenses.reduce((sum, expense) => sum + expense.amount, 0);
+    }
+
+    getBalance(expensesAverage: number): number {
+        return this.expensesTotal - expensesAverage;
     }
 
     addExpense(expense: ExpenseDomainModel): void {
@@ -61,5 +102,13 @@ export class NewExpenseDomainModel {
         readonly description: string,
         readonly amount: number,
         readonly payerId: string
+    ) { }
+}
+
+export class PaymentViewModel {
+    constructor(
+        readonly fromPayerName: string,
+        readonly toPayerName: string,
+        readonly amount: number
     ) { }
 }

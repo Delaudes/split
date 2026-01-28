@@ -29,6 +29,13 @@ export class RoomPresenter {
                     isLoadingDeleteExpense: false,
                     isErrorDeleteExpense: false
                 }))
+            })),
+            expensesTotal: room.expensesTotal.toFixed(2),
+            espensesAverage: room.expensesAverage.toFixed(2),
+            payments: room.payments.map(payment => ({
+                fromPayerName: payment.fromPayerName,
+                toPayerName: payment.toPayerName,
+                amount: payment.amount.toFixed(2)
             }))
         });
     }

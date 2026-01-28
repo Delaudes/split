@@ -66,7 +66,7 @@ For more information on using the Angular CLI, including detailed command refere
 - add expense ok
 - delete expense ok
 - calculate balance
-- reset room
+- delete all expenses
 - share link
 
 ## V1
