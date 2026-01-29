@@ -40,6 +40,20 @@ describe('Home', () => {
             expect(homeView.homeViewModel.get().isCreateRoomLoading).toEqual(false);
         });
 
+        it('should display loading on error', async () => {
+            expect(homeView.homeViewModel.get().isCreateRoomLoading).toEqual(false);
+
+            fakeHomeAdapter.error = new Error();
+
+            const createRoomPromise = homeController.createRoom(roomName);
+
+            expect(homeView.homeViewModel.get().isCreateRoomLoading).toEqual(true);
+
+            await createRoomPromise;
+
+            expect(homeView.homeViewModel.get().isCreateRoomLoading).toEqual(false);
+        });
+
         it('should use the given name', async () => {
             expect(fakeHomeAdapter.roomName).toBeUndefined();
 

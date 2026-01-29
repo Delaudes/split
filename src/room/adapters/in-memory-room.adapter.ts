@@ -29,7 +29,7 @@ export class InMemoryRoomAdapter implements RoomPort {
             new PayerDomainModel('2', 'Bob', [
                 new ExpenseDomainModel('d', 'Flight', 80),
                 new ExpenseDomainModel('e', 'Car Rental', 40),
-                new ExpenseDomainModel('f', 'Snacks', 10),
+                new ExpenseDomainModel('f', 'Snacks', 15),
             ]),
             new PayerDomainModel('3', 'Charlie', [
                 new ExpenseDomainModel('g', 'Accommodation', 60),

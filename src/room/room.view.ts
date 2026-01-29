@@ -16,8 +16,8 @@ export class RoomView {
             isLoadingAddExpense: false,
             isErrorAddExpense: false,
 
-            expensesTotal: '0.00',
-            espensesAverage: '0.00',
+            expensesTotal: '',
+            expensesAverage: '',
             payments: [],
 
             isLoadingDeleteAllExpenses: false,

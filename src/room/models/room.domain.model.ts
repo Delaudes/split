@@ -35,7 +35,7 @@ export class RoomDomainModel {
         });
     }
 
-    get payments(): PaymentViewModel[] {
+    get payments(): PaymentDomainModel[] {
         const balances = this.payers.map(payer => ({
             name: payer.name,
             balance: payer.getBalance(this.expensesAverage)
@@ -48,7 +48,7 @@ export class RoomDomainModel {
         while (i < creditors.length && j < debtors.length) {
             const amount = Math.min(creditors[i].balance, debtors[j].balance);
 
-            payments.push(new PaymentViewModel(
+            payments.push(new PaymentDomainModel(
                 debtors[j].name,
                 creditors[i].name,
                 amount
@@ -123,7 +123,7 @@ export class NewExpenseDomainModel {
     ) { }
 }
 
-export class PaymentViewModel {
+export class PaymentDomainModel {
     constructor(
         readonly fromPayerName: string,
         readonly toPayerName: string,

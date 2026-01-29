@@ -12,7 +12,7 @@ export type RoomViewModel = {
     isErrorAddExpense: boolean;
 
     expensesTotal: string;
-    espensesAverage: string;
+    expensesAverage: string;
     payments: PaymentViewModel[];
 
     isLoadingDeleteAllExpenses: boolean;

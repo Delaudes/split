@@ -14,7 +14,6 @@ export class RoomPresenter {
 
     presentRoom(room: RoomDomainModel): void {
         this.roomView.update({
-            isErrorFetchRoom: false,
             roomId: room.id,
             roomName: room.name,
             payers: room.payers.map(payer => ({
@@ -34,7 +33,7 @@ export class RoomPresenter {
             isErrorAddExpense: false,
             isErrorDeleteAllExpenses: false,
             expensesTotal: room.expensesTotal.toFixed(2),
-            espensesAverage: room.expensesAverage.toFixed(2),
+            expensesAverage: room.expensesAverage.toFixed(2),
             payments: room.payments.map(payment => ({
                 fromPayerName: payment.fromPayerName,
                 toPayerName: payment.toPayerName,

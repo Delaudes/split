@@ -1,10 +1,10 @@
 import { HomePort } from "../home.port";
 
 export class FakeHomeAdapter implements HomePort {
-    roomName?: string;
-    roomId = 'fake-room-id';
-    error?: unknown
 
+    roomId = 'fake-room-id';
+    roomName?: string;
+    error?: unknown
     async createRoom(roomName: string): Promise<string> {
         if (this.error) {
             throw this.error;
