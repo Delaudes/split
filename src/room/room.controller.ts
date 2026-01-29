@@ -1,5 +1,5 @@
 import { AppParam } from "../app/app.routes";
-import { DialogInterface } from "../dialog/dialog.interface";
+import { DialogPort } from "../dialog/dialog.port";
 import { NavigationPort } from "../navigation/navigation.port";
 import { NewExpenseDomainModel } from "./models/room.domain.model";
 import { RoomService } from "./room.service";
@@ -24,14 +24,14 @@ export class RoomController {
         await this.roomService.addExpense(newExpense);
     }
 
-    async validateDeleteExpense(expenseId: string, dialog: DialogInterface): Promise<void> {
+    async validateDeleteExpense(expenseId: string, dialog: DialogPort): Promise<void> {
         const isDeleteSuccess = await this.roomService.deleteExpense(expenseId);
         if (isDeleteSuccess) {
             dialog.close();
         }
     }
 
-    async validateDeleteAllExpenses(dialog: DialogInterface): Promise<void> {
+    async validateDeleteAllExpenses(dialog: DialogPort): Promise<void> {
         const roomId = this.navigationPort.getParam(AppParam.RoomId)
         const isDeleteSuccess = await this.roomService.deleteAllExpenses(roomId);
         if (isDeleteSuccess) {
@@ -40,9 +40,9 @@ export class RoomController {
     }
 
     shareUrl(roomName: string): void {
-        navigator.share({
+        this.navigationPort.share({
             text: `Rejoignez ma salle de partage de dépenses : ${roomName} !\n`,
-            url: window.location.href
+            url: location.href
         });
     }
 }

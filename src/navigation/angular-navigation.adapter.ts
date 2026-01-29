@@ -13,4 +13,8 @@ export class AngularNavigationAdapter implements NavigationPort {
     getParam(name: string): string {
         return this.activatedRoute.snapshot.paramMap.get(name) ?? '';
     }
+
+    share(data: ShareData): void {
+        navigator.share(data);
+    }
 }

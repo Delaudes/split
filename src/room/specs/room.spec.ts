@@ -1,4 +1,5 @@
 import { Builder } from "builder-pattern";
+import { FakeDialogAdapter } from "../../dialog/fake-dialog.adapter";
 import { FakeNavigationAdapter } from "../../navigation/fake-navigation.adapter";
 import { FakeSignalAdapter } from "../../signal/fake-signal.adapter";
 import { FakeRoomAdapter } from "../adapters/fake-room.adapter";
@@ -16,9 +17,13 @@ describe('Room', () => {
     let fakeRoomAdapter: FakeRoomAdapter;
     let roomView: RoomView;
     let fakeNavigationAdapter: FakeNavigationAdapter;
+    let fakeDialogAdapter: FakeDialogAdapter;
 
     const roomId = 'fake-room-id';
     const payerName = 'fake-payer-name';
+    const expenseDescription = 'fake-expense-description';
+    const expenseAmount = '123.459';
+    const payerId = 'fake-payer-id';
 
     beforeEach(() => {
         fakeNavigationAdapter = new FakeNavigationAdapter();
@@ -28,6 +33,7 @@ describe('Room', () => {
         roomPresenter = new RoomPresenter(roomView);
         roomService = new RoomService(roomPresenter, fakeRoomAdapter);
         roomController = new RoomController(roomService, fakeNavigationAdapter);
+        fakeDialogAdapter = new FakeDialogAdapter();
     });
 
     describe('fetch room', () => {
@@ -273,10 +279,6 @@ describe('Room', () => {
     })
 
     describe('add expense', () => {
-        const expenseDescription = 'fake-expense-description';
-        const expenseAmount = '123.459';
-        const payerId = 'fake-payer-id';
-
         it('should display loading', async () => {
             expect(roomView.roomViewModel.get().isLoadingAddExpense).toEqual(false);
 
@@ -338,9 +340,143 @@ describe('Room', () => {
                 .isLoadingDeleteExpense(false)
                 .build();
 
-            await roomController.addExpense(expenseDescription, expenseAmount, fakeRoomAdapter.payerId);
+            await roomController.addExpense(expenseDescription, expenseAmount, payerId);
 
             expect(roomView.roomViewModel.get().payers[0].expenses).toEqual([expectedExpense])
         });
     });
-})
+
+    describe('delete expense', () => {
+        let expenseId: string;
+        beforeEach(async () => {
+            await roomController.addPayer(payerName);
+            await roomController.addExpense(expenseDescription, expenseAmount, payerId);
+            expenseId = roomView.roomViewModel.get().payers[0].expenses[0].id;
+        });
+
+        it('should display loading', async () => {
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isLoadingDeleteExpense).toEqual(false);
+
+            const deleteExpensePromise = roomController.validateDeleteExpense(expenseId, fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isLoadingDeleteExpense).toEqual(true);
+
+            await deleteExpensePromise;
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0]).toBeUndefined();
+        });
+
+        it('should display loading on error', async () => {
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isLoadingDeleteExpense).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            const deleteExpensePromise = roomController.validateDeleteExpense(expenseId, fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isLoadingDeleteExpense).toEqual(true);
+
+            await deleteExpensePromise;
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isLoadingDeleteExpense).toEqual(false);
+        });
+
+        it('should close dialog', async () => {
+            expect(fakeDialogAdapter.isClose).toEqual(false);
+
+            await roomController.validateDeleteExpense(expenseId, fakeDialogAdapter);
+
+            expect(fakeDialogAdapter.isClose).toEqual(true);
+        });
+
+        it('should display error', async () => {
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isErrorDeleteExpense).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            await roomController.validateDeleteExpense(expenseId, fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isErrorDeleteExpense).toEqual(true);
+        });
+
+        it('should delete expense', async () => {
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].id).toEqual(expenseId);
+
+            await roomController.validateDeleteExpense(expenseId, fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0]).toBeUndefined();
+        });
+    });
+
+    describe('delete all expenses', () => {
+        beforeEach(async () => {
+            await roomController.fetchRoom();
+        });
+
+        it('should display loading', async () => {
+            expect(roomView.roomViewModel.get().isLoadingDeleteAllExpenses).toEqual(false);
+
+            const deleteAllExpensesPromise = roomController.validateDeleteAllExpenses(fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().isLoadingDeleteAllExpenses).toEqual(true);
+
+            await deleteAllExpensesPromise;
+
+            expect(roomView.roomViewModel.get().isLoadingDeleteAllExpenses).toEqual(false);
+        });
+
+        it('should display loading on error', async () => {
+            expect(roomView.roomViewModel.get().isLoadingDeleteAllExpenses).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            const deleteAllExpensesPromise = roomController.validateDeleteAllExpenses(fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().isLoadingDeleteAllExpenses).toEqual(true);
+
+            await deleteAllExpensesPromise;
+
+            expect(roomView.roomViewModel.get().isLoadingDeleteAllExpenses).toEqual(false);
+        });
+
+        it('should close dialog', async () => {
+            expect(fakeDialogAdapter.isClose).toEqual(false);
+
+            await roomController.validateDeleteAllExpenses(fakeDialogAdapter);
+
+            expect(fakeDialogAdapter.isClose).toEqual(true);
+        });
+
+        it('should display error', async () => {
+            expect(roomView.roomViewModel.get().isErrorDeleteAllExpenses).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            await roomController.validateDeleteAllExpenses(fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().isErrorDeleteAllExpenses).toEqual(true);
+        });
+
+        it('should delete all expenses', async () => {
+            expect(roomView.roomViewModel.get().payers.flatMap(payer => payer.expenses).length).toEqual(9);
+
+            await roomController.validateDeleteAllExpenses(fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().payers.flatMap(payer => payer.expenses).length).toEqual(0);
+        });
+    });
+
+    describe('share url', () => {
+        const roomName = 'fake-room-name';
+
+        it('should share room url', () => {
+            expect(fakeNavigationAdapter.shareData).toBeUndefined();
+
+            roomController.shareUrl(roomName);
+
+            expect(fakeNavigationAdapter.shareData).toEqual({
+                text: `Rejoignez ma salle de partage de dépenses : ${roomName} !\n`,
+                url: location.href
+            });
+        });
+    });
+});
