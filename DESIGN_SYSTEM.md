@@ -47,6 +47,16 @@ Ce document définit les standards de design HTML/CSS pour maintenir la cohéren
 
 ## 🔤 Typographie
 
+### Fonts
+
+- **Body** : [Manrope](https://fonts.google.com/specimen/Manrope) - Police arrondie moderne avec un style friendly et très lisible. Parfaite pour le contenu et les interfaces.
+- **Headings** : [Sora](https://fonts.google.com/specimen/Sora) - Police géométrique tech avec du caractère. Idéale pour les titres qui se démarquent.
+
+**Poids disponibles :**
+
+- Manrope : 300 (Light), 400 (Regular), 500 (Medium), 600 (Semi-bold), 700 (Bold)
+- Sora : 300 (Light), 400 (Regular), 500 (Medium), 600 (Semi-bold), 700 (Bold), 800 (Extra-bold)
+
 ### Hiérarchie
 
 ```html
