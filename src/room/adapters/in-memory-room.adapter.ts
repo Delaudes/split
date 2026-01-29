@@ -20,7 +20,7 @@ export class InMemoryRoomAdapter implements RoomPort {
             throw new Error()
         }
 
-        return new RoomDomainModel(roomId, 'Vacances', [
+        return new RoomDomainModel(roomId, 'Vacances de la famille', [
             new PayerDomainModel('1', 'Alice', [
                 new ExpenseDomainModel('a', 'Hotel', 50),
                 new ExpenseDomainModel('b', 'Restaurant', 30),

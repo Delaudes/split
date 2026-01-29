@@ -107,16 +107,113 @@ Ce document définit les standards de design HTML/CSS pour maintenir la cohéren
 />
 ```
 
+### Boutons - Vue d'Ensemble
+
+**Hiérarchie :**
+
+- **Primaire** : Actions principales (créer, ajouter, valider)
+- **Secondaire** : Actions alternatives ou moins prioritaires (annuler, partager, réinitialiser)
+- **Icône seul** : Actions contextuelles discrètes (supprimer un item)
+
+**Tailles :**
+
+- **Large** : `px-5 py-3 sm:px-8 sm:py-4` + `text-sm sm:text-base` (actions principales)
+- **Medium** : `px-5 py-3` + `text-sm` (boutons de dialog)
+- **Small** : `px-3 py-1.5` + `text-xs` (actions discrètes)
+- **Icône** : `p-1.5` (boutons icône seuls)
+
 ### Bouton Primaire
 
 ```html
+<!-- Large (par défaut) -->
 <button
   (click)="action()"
   class="px-5 py-3 sm:px-8 sm:py-4 bg-amber-500 text-blue-950 text-sm sm:text-base font-medium rounded-xl hover:bg-amber-400 active:scale-95 whitespace-nowrap transition-all"
 >
   Action
 </button>
+
+<!-- Medium (dialog) -->
+<button
+  (click)="action()"
+  class="px-5 py-3 bg-amber-500 text-blue-950 text-sm font-medium rounded-xl hover:bg-amber-400 active:scale-95 transition-all"
+>
+  Action
+</button>
 ```
+
+**Usage :** Actions principales, conversions, validations.
+
+### Bouton Secondaire
+
+```html
+<!-- Large avec icône -->
+<button
+  (click)="action()"
+  class="px-5 py-3 bg-amber-400/10 text-amber-200 text-sm font-medium rounded-xl hover:bg-amber-400/20 active:scale-95 transition-all flex items-center gap-2 justify-center"
+>
+  <span class="material-symbols-outlined text-amber-400/60 text-base">icon_name</span>
+  <span>Action</span>
+</button>
+
+<!-- Medium (dialog) -->
+<button
+  (click)="action()"
+  class="px-5 py-3 bg-amber-400/10 text-amber-200 text-sm font-medium rounded-xl hover:bg-amber-400/20 active:scale-95 transition-all"
+>
+  Action
+</button>
+
+<!-- Small discret avec icône -->
+<button
+  (click)="action()"
+  class="px-3 py-1.5 bg-amber-400/10 text-amber-200 text-xs font-medium rounded-xl hover:bg-amber-400/20 active:scale-95 whitespace-nowrap transition-all flex items-center gap-1.5"
+  aria-label="Description"
+>
+  <span class="material-symbols-outlined text-amber-400 text-sm">icon_name</span>
+  Texte
+</button>
+```
+
+**Usage :** Actions secondaires (annuler, partager, réinitialiser).
+
+- **Large** : Actions importantes mais secondaires
+- **Medium** : Boutons de dialog (annuler)
+- **Small** : Actions discrètes avec contexte minimal
+
+### Bouton Icône Seul
+
+```html
+<button
+  (click)="action()"
+  class="p-1.5 rounded-lg hover:bg-amber-400/10 active:scale-95 transition-all flex items-center justify-center"
+  aria-label="Description de l'action"
+>
+  <span class="material-symbols-outlined text-amber-400/60 text-base">icon_name</span>
+</button>
+```
+
+**Usage :** Actions contextuelles dans des listes ou interfaces denses (supprimer, éditer).
+**Note :** Seul type de bouton avec `rounded-lg` au lieu de `rounded-xl`.
+
+### Récapitulatif des Boutons
+
+| Type                  | Taille                      | Classes clés                                 | Usage                        |
+| --------------------- | --------------------------- | -------------------------------------------- | ---------------------------- |
+| **Primaire Large**    | `px-5 py-3 sm:px-8 sm:py-4` | `bg-amber-500 text-blue-950 font-medium`     | Créer, Ajouter (formulaires) |
+| **Primaire Medium**   | `px-5 py-3`                 | `bg-amber-500 text-blue-950 font-medium`     | Valider (dialogs)            |
+| **Secondaire Large**  | `px-5 py-3`                 | `bg-amber-400/10 text-amber-200 font-medium` | Réinitialiser (avec icône)   |
+| **Secondaire Medium** | `px-5 py-3`                 | `bg-amber-400/10 text-amber-200 font-medium` | Annuler (dialogs)            |
+| **Secondaire Small**  | `px-3 py-1.5`               | `bg-amber-400/10 text-amber-200 font-medium` | Partager (discret)           |
+| **Icône seul**        | `p-1.5`                     | `rounded-lg` (exception)                     | Supprimer dans liste         |
+
+**Conventions communes :**
+
+- Toujours `rounded-xl` (sauf icône seul : `rounded-lg`)
+- Toujours `hover:` + `active:scale-95` + `transition-all`
+- Utiliser `shrink-0` pour les boutons dans des flex avec inputs
+- Utiliser `flex-1` pour les boutons côte-à-côte dans les dialogs
+- Toujours un `aria-label` pour les boutons icône seuls
 
 ### Message d'Erreur
 
@@ -245,18 +342,6 @@ Pour mettre en évidence un élément pliable important (ex: équilibrage, réca
 </div>
 ```
 
-### Bouton d'Action Icône
-
-```html
-<button
-  (click)="action()"
-  class="p-1.5 rounded-lg hover:bg-amber-400/10 active:scale-95 transition-all flex items-center justify-center"
-  aria-label="Description de l'action"
->
-  <span class="material-symbols-outlined text-amber-400/60 text-base">icon_name</span>
-</button>
-```
-
 ### Dialog Modal (Confirmation/Alerte)
 
 ```html
@@ -345,7 +430,7 @@ class="grid md:grid-cols-3 gap-4"
 ### Bordures
 
 - Toujours `rounded-xl` pour la cohérence
-- Exception: `rounded-lg` pour boutons d'icône uniquement
+- Exception: `rounded-lg` pour boutons d'icône seuls (sans texte)
 - `border-2` pour les inputs
 - `border` simple pour les cartes et dialogs
 
