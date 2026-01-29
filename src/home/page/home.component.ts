@@ -17,9 +17,9 @@ export class HomeComponent {
 
   protected readonly features = [
     {
-      icon: 'bolt',
-      title: 'Instantané',
-      description: 'Créez une salle en un clic'
+      icon: 'lock_open',
+      title: 'Sans compte',
+      description: 'Aucune inscription requise'
     },
     {
       icon: 'group',
@@ -27,9 +27,9 @@ export class HomeComponent {
       description: 'Partagez via un simple lien'
     },
     {
-      icon: 'lock_open',
-      title: 'Sans compte',
-      description: 'Aucune inscription requise'
+      icon: 'lightbulb',
+      title: 'Minimaliste',
+      description: "Seulement l'essentiel"
     }
   ];
 

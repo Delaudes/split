@@ -67,7 +67,7 @@ For more information on using the Angular CLI, including detailed command refere
 - delete expense ok
 - calculate balance ok
 - delete all expenses ok
-- share link
+- share link ok
 
 ## V1
 
