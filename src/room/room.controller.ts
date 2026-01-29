@@ -38,4 +38,11 @@ export class RoomController {
             dialog.close();
         }
     }
+
+    shareUrl(roomName: string): void {
+        navigator.share({
+            text: `Rejoignez ma salle de partage de dépenses : ${roomName} !\n`,
+            url: window.location.href
+        });
+    }
 }

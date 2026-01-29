@@ -24,4 +24,6 @@ export class RoomComponent implements OnInit {
   ngOnInit(): void {
     this.roomController.fetchRoom();
   }
+
+
 }
