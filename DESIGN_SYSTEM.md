@@ -150,7 +150,7 @@ Ce document définit les standards de design HTML/CSS pour maintenir la cohéren
 <!-- Large avec icône -->
 <button
   (click)="action()"
-  class="px-5 py-3 bg-amber-400/10 text-amber-200 text-sm font-medium rounded-xl hover:bg-amber-400/20 active:scale-95 transition-all flex items-center gap-2 justify-center"
+  class="px-5 py-3 sm:px-8 sm:py-4 bg-amber-400/10 text-amber-200 text-sm sm:text-base font-medium rounded-xl hover:bg-amber-400/20 active:scale-95 transition-all flex items-center gap-2 justify-center"
 >
   <span class="material-symbols-outlined text-amber-400/60 text-base">icon_name</span>
   <span>Action</span>
@@ -202,7 +202,7 @@ Ce document définit les standards de design HTML/CSS pour maintenir la cohéren
 | --------------------- | --------------------------- | -------------------------------------------- | ---------------------------- |
 | **Primaire Large**    | `px-5 py-3 sm:px-8 sm:py-4` | `bg-amber-500 text-blue-950 font-medium`     | Créer, Ajouter (formulaires) |
 | **Primaire Medium**   | `px-5 py-3`                 | `bg-amber-500 text-blue-950 font-medium`     | Valider (dialogs)            |
-| **Secondaire Large**  | `px-5 py-3`                 | `bg-amber-400/10 text-amber-200 font-medium` | Réinitialiser (avec icône)   |
+| **Secondaire Large**  | `px-5 py-3 sm:px-8 sm:py-4` | `bg-amber-400/10 text-amber-200 font-medium` | Réinitialiser (avec icône)   |
 | **Secondaire Medium** | `px-5 py-3`                 | `bg-amber-400/10 text-amber-200 font-medium` | Annuler (dialogs)            |
 | **Secondaire Small**  | `px-3 py-1.5`               | `bg-amber-400/10 text-amber-200 font-medium` | Partager (discret)           |
 | **Icône seul**        | `p-1.5`                     | `rounded-lg` (exception)                     | Supprimer dans liste         |
@@ -218,7 +218,7 @@ Ce document définit les standards de design HTML/CSS pour maintenir la cohéren
 ### Message d'Erreur
 
 ```html
-@if (condition) {
+@if (viewModel.isError) {
 <div class="p-4 bg-amber-400/10 border border-amber-400/30 rounded-xl">
   <p class="text-amber-200 text-sm font-light">Message d'erreur</p>
 </div>
@@ -430,7 +430,7 @@ class="grid md:grid-cols-3 gap-4"
 ### Bordures
 
 - Toujours `rounded-xl` pour la cohérence
-- Exception: `rounded-lg` pour boutons d'icône seuls (sans texte)
+- **Exception :** `rounded-lg` uniquement pour les boutons d'icône seuls (sans texte)
 - `border-2` pour les inputs
 - `border` simple pour les cartes et dialogs
 
