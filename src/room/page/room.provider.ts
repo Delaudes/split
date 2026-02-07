@@ -1,8 +1,10 @@
 import { InjectionToken } from "@angular/core";
+import { environment } from "../../environments/environment";
 import { HTTP_TOKEN } from "../../http/http.provider";
 import { NAVIGATION_PROVIDERS, NAVIGATION_TOKEN } from "../../navigation/navigation.provider";
 import { AngularSignalWrapper } from "../../signal/angular-signal.wrapper";
 import { HttpRoomAdapter } from "../adapters/http-room.adapter";
+import { InMemoryRoomAdapter } from "../adapters/in-memory-room.adapter";
 import { RoomViewModel } from "../models/room.view.model";
 import { RoomController } from "../room.controller";
 import { RoomPort } from "../room.port";
@@ -27,7 +29,7 @@ export const ROOM_PROVIDERS = [
     },
     {
         provide: ROOM_TOKEN,
-        useClass: HttpRoomAdapter,
+        useClass: environment.useInMemoryRoomAdapter ? InMemoryRoomAdapter : HttpRoomAdapter,
         deps: [HTTP_TOKEN]
     },
     {

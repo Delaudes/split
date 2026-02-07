@@ -71,6 +71,7 @@ For more information on using the Angular CLI, including detailed command refere
 
 ## V1
 
+- phone tutorial
 - edit room name
 - edit payer name
 - delete payer
@@ -82,3 +83,5 @@ For more information on using the Angular CLI, including detailed command refere
 - fetch history
 - edit expense name/amount
 - delete room
+
+## TODO

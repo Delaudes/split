@@ -1,9 +1,11 @@
 import { InjectionToken } from "@angular/core";
+import { environment } from "../../environments/environment";
 import { HTTP_TOKEN } from "../../http/http.provider";
 import { NavigationPort } from "../../navigation/navigation.port";
 import { NAVIGATION_PROVIDERS, NAVIGATION_TOKEN } from "../../navigation/navigation.provider";
 import { AngularSignalWrapper } from "../../signal/angular-signal.wrapper";
 import { HttpHomeAdapter } from "../adapters/http-home.adapter";
+import { InMemoryHomeAdapter } from "../adapters/in-memory-home.adapter";
 import { HomeController } from "../home.controller";
 import { HomePort } from "../home.port";
 import { HomePresenter } from "../home.presenter";
@@ -29,7 +31,7 @@ export const HOME_PROVIDERS = [
     },
     {
         provide: HOME_TOKEN,
-        useClass: HttpHomeAdapter,
+        useClass: environment.useInMemoryHomeAdapter ? InMemoryHomeAdapter : HttpHomeAdapter,
         deps: [HTTP_TOKEN]
     },
     {
