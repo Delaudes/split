@@ -26,7 +26,7 @@ export class HttpRoomAdapter implements RoomPort {
     }
 
     async deleteAllExpenses(roomId: string): Promise<void> {
-        throw new Error("Method not implemented.");
+        await this.httpPort.delete(`https://split-api-ws8o.onrender.com/rooms/${roomId}/payers/expenses`);
     }
 
     private mapToRoomDomainModel(fetchRoomResponse: FetchRoomResponse): RoomDomainModel {
