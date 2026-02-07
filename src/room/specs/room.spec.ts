@@ -1,7 +1,7 @@
 import { Builder } from "builder-pattern";
 import { FakeDialogAdapter } from "../../dialog/fake-dialog.adapter";
-import { FakeNavigationAdapter } from "../../navigation/fake-navigation.adapter";
-import { FakeSignalAdapter } from "../../signal/fake-signal.adapter";
+import { FakeNavigationWrapper } from "../../navigation/fake-navigation.wrapper";
+import { FakeSignalWrapper } from "../../signal/fake-signal.wrapper";
 import { FakeRoomAdapter } from "../adapters/fake-room.adapter";
 import { NewExpenseDomainModel } from "../models/room.domain.model";
 import { ExpenseViewModel, PayerViewModel, PaymentViewModel, RoomViewModel } from "../models/room.view.model";
@@ -16,7 +16,7 @@ describe('Room', () => {
     let roomPresenter: RoomPresenter;
     let fakeRoomAdapter: FakeRoomAdapter;
     let roomView: RoomView;
-    let fakeNavigationAdapter: FakeNavigationAdapter;
+    let fakeNavigationWrapper: FakeNavigationWrapper;
     let fakeDialogAdapter: FakeDialogAdapter;
 
     const roomId = 'fake-room-id';
@@ -26,13 +26,13 @@ describe('Room', () => {
     const payerId = 'fake-payer-id';
 
     beforeEach(() => {
-        fakeNavigationAdapter = new FakeNavigationAdapter();
-        fakeNavigationAdapter.params = { roomId: roomId };
-        roomView = new RoomView(new FakeSignalAdapter<RoomViewModel>());
+        fakeNavigationWrapper = new FakeNavigationWrapper();
+        fakeNavigationWrapper.params = { roomId: roomId };
+        roomView = new RoomView(new FakeSignalWrapper<RoomViewModel>());
         fakeRoomAdapter = new FakeRoomAdapter();
         roomPresenter = new RoomPresenter(roomView);
         roomService = new RoomService(roomPresenter, fakeRoomAdapter);
-        roomController = new RoomController(roomService, fakeNavigationAdapter);
+        roomController = new RoomController(roomService, fakeNavigationWrapper);
         fakeDialogAdapter = new FakeDialogAdapter();
     });
 
@@ -469,11 +469,11 @@ describe('Room', () => {
         const roomName = 'fake-room-name';
 
         it('should share room url', () => {
-            expect(fakeNavigationAdapter.shareData).toBeUndefined();
+            expect(fakeNavigationWrapper.shareData).toBeUndefined();
 
             roomController.shareUrl(roomName);
 
-            expect(fakeNavigationAdapter.shareData).toEqual({
+            expect(fakeNavigationWrapper.shareData).toEqual({
                 text: `Rejoignez ma salle de partage de dépenses : ${roomName} !\n`,
                 url: location.href
             });

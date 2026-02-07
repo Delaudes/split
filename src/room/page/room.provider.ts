@@ -1,7 +1,8 @@
 import { InjectionToken } from "@angular/core";
+import { HTTP_TOKEN } from "../../http/http.provider";
 import { NAVIGATION_PROVIDERS, NAVIGATION_TOKEN } from "../../navigation/navigation.provider";
-import { AngularSignalAdapter } from "../../signal/angular-signal.adapter";
-import { InMemoryRoomAdapter } from "../adapters/in-memory-room.adapter";
+import { AngularSignalWrapper } from "../../signal/angular-signal.wrapper";
+import { HttpRoomAdapter } from "../adapters/http-room.adapter";
 import { RoomViewModel } from "../models/room.view.model";
 import { RoomController } from "../room.controller";
 import { RoomPort } from "../room.port";
@@ -26,11 +27,12 @@ export const ROOM_PROVIDERS = [
     },
     {
         provide: ROOM_TOKEN,
-        useClass: InMemoryRoomAdapter,
+        useClass: HttpRoomAdapter,
+        deps: [HTTP_TOKEN]
     },
     {
         provide: RoomView,
-        useFactory: () => new RoomView(new AngularSignalAdapter<RoomViewModel>()),
+        useFactory: () => new RoomView(new AngularSignalWrapper<RoomViewModel>()),
     },
     ...NAVIGATION_PROVIDERS
 ]
