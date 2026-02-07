@@ -60,14 +60,14 @@ For more information on using the Angular CLI, including detailed command refere
 
 ## MVP
 
-- create room ok
-- fetch room ok
-- add payer ok
-- add expense ok
-- delete expense ok
-- calculate balance ok
-- delete all expenses ok
-- share link ok
+- create room
+- fetch room
+- add payer
+- add expense
+- delete expense
+- calculate balance
+- delete all expenses
+- share link
 
 ## V1
 

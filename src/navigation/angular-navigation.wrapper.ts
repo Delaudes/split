@@ -2,7 +2,7 @@ import { inject } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NavigationPort } from "./navigation.port";
 
-export class AngularNavigationAdapter implements NavigationPort {
+export class AngularNavigationWrapper implements NavigationPort {
     private readonly router = inject(Router);
     private readonly activatedRoute = inject(ActivatedRoute);
 

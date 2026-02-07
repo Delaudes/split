@@ -1,6 +1,6 @@
 import { AppPath } from "../../app/app.routes";
-import { FakeNavigationAdapter } from "../../navigation/fake-navigation.adapter";
-import { FakeSignalAdapter } from "../../signal/fake-signal.adapter";
+import { FakeNavigationWrapper } from "../../navigation/fake-navigation.wrapper";
+import { FakeSignalWrapper } from "../../signal/fake-signal.wrapper";
 import { FakeHomeAdapter } from "../adapters/fake-home.adapter";
 import { HomeController } from "../home.controller";
 import { HomePresenter } from "../home.presenter";
@@ -14,11 +14,11 @@ describe('Home', () => {
     let homePresenter: HomePresenter;
     let fakeHomeAdapter: FakeHomeAdapter;
     let homeView: HomeView;
-    let fakeNavigationAdapter: FakeNavigationAdapter;
+    let fakeNavigationWrapper: FakeNavigationWrapper;
 
     beforeEach(() => {
-        fakeNavigationAdapter = new FakeNavigationAdapter();
-        homeView = new HomeView(new FakeSignalAdapter<HomeViewModel>(), fakeNavigationAdapter);
+        fakeNavigationWrapper = new FakeNavigationWrapper();
+        homeView = new HomeView(new FakeSignalWrapper<HomeViewModel>(), fakeNavigationWrapper);
         fakeHomeAdapter = new FakeHomeAdapter();
         homePresenter = new HomePresenter(homeView);
         homeService = new HomeService(homePresenter, fakeHomeAdapter);
@@ -63,11 +63,11 @@ describe('Home', () => {
         });
 
         it('should navigate to the created room', async () => {
-            expect(fakeNavigationAdapter.commands).toEqual([]);
+            expect(fakeNavigationWrapper.commands).toEqual([]);
 
             await homeController.createRoom(roomName);
 
-            expect(fakeNavigationAdapter.commands).toEqual([AppPath.Rooms, fakeHomeAdapter.roomId]);
+            expect(fakeNavigationWrapper.commands).toEqual([AppPath.Rooms, fakeHomeAdapter.roomId]);
         });
 
         it('should display error', async () => {

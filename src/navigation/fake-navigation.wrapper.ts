@@ -1,6 +1,6 @@
 import { NavigationPort } from "./navigation.port";
 
-export class FakeNavigationAdapter implements NavigationPort {
+export class FakeNavigationWrapper implements NavigationPort {
     commands: any[] = [];
     params: Record<string, string> = {};
     shareData?: ShareData

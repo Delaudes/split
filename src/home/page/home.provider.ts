@@ -1,8 +1,9 @@
 import { InjectionToken } from "@angular/core";
+import { HTTP_TOKEN } from "../../http/http.provider";
 import { NavigationPort } from "../../navigation/navigation.port";
 import { NAVIGATION_PROVIDERS, NAVIGATION_TOKEN } from "../../navigation/navigation.provider";
-import { AngularSignalAdapter } from "../../signal/angular-signal.adapter";
-import { InMemoryHomeAdapter } from "../adapters/in-memory-home.adapter";
+import { AngularSignalWrapper } from "../../signal/angular-signal.wrapper";
+import { HttpHomeAdapter } from "../adapters/http-home.adapter";
 import { HomeController } from "../home.controller";
 import { HomePort } from "../home.port";
 import { HomePresenter } from "../home.presenter";
@@ -28,11 +29,12 @@ export const HOME_PROVIDERS = [
     },
     {
         provide: HOME_TOKEN,
-        useClass: InMemoryHomeAdapter,
+        useClass: HttpHomeAdapter,
+        deps: [HTTP_TOKEN]
     },
     {
         provide: HomeView,
-        useFactory: (navigationPort: NavigationPort) => new HomeView(new AngularSignalAdapter<HomeViewModel>(), navigationPort),
+        useFactory: (navigationPort: NavigationPort) => new HomeView(new AngularSignalWrapper<HomeViewModel>(), navigationPort),
         deps: [NAVIGATION_TOKEN],
     },
     ...NAVIGATION_PROVIDERS
