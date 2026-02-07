@@ -17,8 +17,8 @@ export class HttpRoomAdapter implements RoomPort {
     }
 
     async addExpense(newExpense: NewExpenseDomainModel): Promise<string> {
-        const AddExpenseResponse = await this.httpPort.post<AddPayerResponse>(`https://split-api-ws8o.onrender.com/rooms/payers/expenses`, this.addExpenseRequest(newExpense));
-        return AddExpenseResponse.id;
+        const addExpenseResponse = await this.httpPort.post<AddPayerResponse>(`https://split-api-ws8o.onrender.com/rooms/payers/expenses`, this.addExpenseRequest(newExpense));
+        return addExpenseResponse.id;
     }
 
     async deleteExpense(expenseId: string): Promise<void> {
