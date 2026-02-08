@@ -4,6 +4,7 @@ import { HTTP_TOKEN } from "../../http/http.provider";
 import { NavigationPort } from "../../navigation/navigation.port";
 import { NAVIGATION_PROVIDERS, NAVIGATION_TOKEN } from "../../navigation/navigation.provider";
 import { AngularSignalWrapper } from "../../signal/angular-signal.wrapper";
+import { STORAGE_TOKEN } from "../../storage/storage.provider";
 import { HttpHomeAdapter } from "../adapters/http-home.adapter";
 import { InMemoryHomeAdapter } from "../adapters/in-memory-home.adapter";
 import { HomeController } from "../home.controller";
@@ -23,7 +24,7 @@ export const HOME_PROVIDERS = [
     },
     {
         provide: HomeService,
-        deps: [HomePresenter, HOME_TOKEN],
+        deps: [HomePresenter, HOME_TOKEN, STORAGE_TOKEN],
     },
     {
         provide: HomePresenter,

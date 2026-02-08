@@ -108,4 +108,16 @@ describe('Home', () => {
             expect(homeView.homeViewModel.get().visitedRooms).toEqual([]);
         });
     });
+
+    describe('select room', () => {
+        it('should navigate to the selected room', () => {
+            const roomId = 'fake-room-id';
+
+            expect(fakeNavigationWrapper.commands).toEqual([]);
+
+            homeController.selectRoom(roomId);
+
+            expect(fakeNavigationWrapper.commands).toEqual([AppPath.Rooms, roomId]);
+        });
+    });
 });

@@ -13,16 +13,23 @@ export class RoomService {
         this.roomPresenter.startLoadingFetchRoom();
         try {
             this.room = await this.roomPort.fetchRoom(roomId);
-            const visitedRooms = this.storagePort.get<VisitedRoomDomainModel[]>(SPLIT_ROOMS_KEY);
-            const visitedRoom = { id: this.room.id, name: this.room.name };
-            const newVisitedRooms = visitedRooms ? [...visitedRooms, visitedRoom] : [visitedRoom];
-            this.storagePort.set(SPLIT_ROOMS_KEY, newVisitedRooms);
+            this.addVisitedRoomToStorage();
             this.roomPresenter.presentRoom(this.room);
         } catch {
             this.roomPresenter.presentErrorFetchRoom();
         } finally {
             this.roomPresenter.stopLoadingFetchRoom();
         }
+    }
+
+    private addVisitedRoomToStorage(): void {
+        const visitedRooms = this.storagePort.get<VisitedRoomDomainModel[]>(SPLIT_ROOMS_KEY);
+        if (visitedRooms?.some(room => room.id === this.room.id)) {
+            return;
+        }
+        const visitedRoom = { id: this.room.id, name: this.room.name };
+        const newVisitedRooms = visitedRooms ? [...visitedRooms, visitedRoom] : [visitedRoom];
+        this.storagePort.set(SPLIT_ROOMS_KEY, newVisitedRooms);
     }
 
     async addPayer(roomId: string, payerName: string): Promise<void> {

@@ -232,6 +232,17 @@ describe('Room', () => {
 
             expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual([{ id: fakeRoomAdapter.room.id, name: fakeRoomAdapter.room.name }]);
         });
+
+        it('should not add room to visited rooms in storage if already exist', async () => {
+            const visitedRooms = [{ id: fakeRoomAdapter.room.id, name: fakeRoomAdapter.room.name }];
+            fakeStorageWrapper.storage.set(SPLIT_ROOMS_KEY, visitedRooms);
+
+            expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual(visitedRooms);
+
+            await roomController.fetchRoom();
+
+            expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual(visitedRooms);
+        });
     });
 
     describe('add payer', () => {

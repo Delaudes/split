@@ -23,4 +23,8 @@ export class HomeService {
         const visitedRooms = this.storagePort.get<VisitedRoomDomainModel[]>(SPLIT_ROOMS_KEY);
         this.homePresenter.presentVisitedRooms(visitedRooms ?? []);
     }
+
+    selectRoom(roomId: string): void {
+        this.homePresenter.presentRoom(roomId);
+    }
 }

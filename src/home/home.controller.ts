@@ -12,4 +12,8 @@ export class HomeController {
     async loadVisitedRooms(): Promise<void> {
         this.homeService.loadVisitedRooms();
     }
+
+    selectRoom(roomId: string): void {
+        this.homeService.selectRoom(roomId);
+    }
 }
