@@ -14,9 +14,9 @@
         @for (feature of features; track feature.icon) {
           <div class="p-3 space-y-1.5">
             <div
-              class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-amber-400/10 flex items-center justify-center mx-auto"
+              class="w-8 h-8 rounded-full bg-amber-400/10 flex items-center justify-center mx-auto"
             >
-              <span class="material-symbols-outlined text-amber-400 text-xl md:text-2xl">
+              <span class="material-symbols-outlined text-amber-400 text-xl">
                 {{ feature.icon }}
               </span>
             </div>
@@ -25,6 +25,55 @@
           </div>
         }
       </div>
+    </div>
+
+    <!-- Visited Rooms -->
+    <div class="space-y-4 pt-4">
+      <details class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10 text-left">
+        <summary class="cursor-pointer space-y-2 list-none">
+          <!-- Header -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-amber-400 text-xl">history</span>
+              <h3 class="text-amber-200 font-medium text-sm">Mes salles</h3>
+            </div>
+            <span class="material-symbols-outlined text-amber-400 text-xl">expand_more</span>
+          </div>
+
+          <!-- Stats -->
+          <div class="flex gap-3 text-xs">
+            <div class="flex items-center gap-1.5 text-amber-200/60 font-light">
+              <span class="material-symbols-outlined text-amber-400/60 text-base"
+                >meeting_room</span
+              >
+              <span class="text-amber-200 font-medium">{{ viewModel.visitedRooms.length }}</span>
+            </div>
+          </div>
+        </summary>
+
+        <!-- Contenu pliable -->
+        <div class="mt-4 pt-4 border-t border-amber-400/10 space-y-3">
+          @for (room of viewModel.visitedRooms; track room.id) {
+            <div
+              (click)="homeController.selectRoom(room.id)"
+              class="flex items-center justify-between p-3 rounded-xl bg-amber-400/5 border border-amber-400/10 cursor-pointer hover:bg-amber-400/10 hover:border-amber-400/20 transition-all"
+            >
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-amber-400/60 text-base">door_open</span>
+                <p class="text-amber-200 text-sm font-light">{{ room.name }}</p>
+              </div>
+              <span class="material-symbols-outlined text-amber-400/60 text-base"
+                >arrow_forward</span
+              >
+            </div>
+          } @empty {
+            <div class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10 text-center">
+              <span class="material-symbols-outlined text-amber-400/40 text-3xl">inbox</span>
+              <p class="text-amber-200/60 text-xs font-light mt-2">Aucune salle visitée</p>
+            </div>
+          }
+        </div>
+      </details>
     </div>
 
     <!-- Create Room Form -->

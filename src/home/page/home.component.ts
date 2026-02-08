@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { HomeController } from '../home.controller';
 import { HomeView } from '../home.view';
 import { HomeViewModel } from '../models/home.view.model';
@@ -11,7 +11,7 @@ import { HOME_PROVIDERS } from './home.provider';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [HOME_PROVIDERS],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   private readonly homeView = inject(HomeView);
   protected readonly homeController = inject(HomeController);
 
@@ -35,5 +35,9 @@ export class HomeComponent {
 
   get viewModel(): HomeViewModel {
     return this.homeView.homeViewModel.get();
+  }
+
+  ngOnInit(): void {
+    this.homeController.loadVisitedRooms();
   }
 }
