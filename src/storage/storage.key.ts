@@ -1,0 +1,1 @@
+export const SPLIT_ROOMS_KEY = 'split-rooms';

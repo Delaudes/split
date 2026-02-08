@@ -1,6 +1,8 @@
 import { AppPath } from "../../app/app.routes";
 import { FakeNavigationWrapper } from "../../navigation/fake-navigation.wrapper";
 import { FakeSignalWrapper } from "../../signal/fake-signal.wrapper";
+import { FakeStorageWrapper } from "../../storage/fake-storage.wrapper";
+import { SPLIT_ROOMS_KEY } from "../../storage/storage.key";
 import { FakeHomeAdapter } from "../adapters/fake-home.adapter";
 import { HomeController } from "../home.controller";
 import { HomePresenter } from "../home.presenter";
@@ -13,15 +15,17 @@ describe('Home', () => {
     let homeService: HomeService;
     let homePresenter: HomePresenter;
     let fakeHomeAdapter: FakeHomeAdapter;
+    let fakeStorageWrapper: FakeStorageWrapper;
     let homeView: HomeView;
     let fakeNavigationWrapper: FakeNavigationWrapper;
 
     beforeEach(() => {
         fakeNavigationWrapper = new FakeNavigationWrapper();
         homeView = new HomeView(new FakeSignalWrapper<HomeViewModel>(), fakeNavigationWrapper);
+        fakeStorageWrapper = new FakeStorageWrapper();
         fakeHomeAdapter = new FakeHomeAdapter();
         homePresenter = new HomePresenter(homeView);
-        homeService = new HomeService(homePresenter, fakeHomeAdapter);
+        homeService = new HomeService(homePresenter, fakeHomeAdapter, fakeStorageWrapper);
         homeController = new HomeController(homeService);
     });
 
@@ -80,4 +84,28 @@ describe('Home', () => {
             expect(homeView.homeViewModel.get().isCreateRoomError).toEqual(true);
         });
     })
+
+    describe('load visited rooms', () => {
+        it('should load visited rooms from storage', async () => {
+            expect(homeView.homeViewModel.get().visitedRooms).toEqual([]);
+
+            const visitedRooms = [
+                { id: 'room-1', name: 'Room 1' },
+                { id: 'room-2', name: 'Room 2' }
+            ];
+            fakeStorageWrapper.storage.set(SPLIT_ROOMS_KEY, visitedRooms);
+
+            homeController.loadVisitedRooms();
+
+            expect(homeView.homeViewModel.get().visitedRooms).toEqual(visitedRooms);
+        });
+
+        it('should load empty visited rooms if there is no visited rooms in storage', async () => {
+            expect(homeView.homeViewModel.get().visitedRooms).toEqual([]);
+
+            homeController.loadVisitedRooms();
+
+            expect(homeView.homeViewModel.get().visitedRooms).toEqual([]);
+        });
+    });
 });

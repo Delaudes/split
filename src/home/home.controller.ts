@@ -8,4 +8,8 @@ export class HomeController {
     async createRoom(roomName: string): Promise<void> {
         await this.homeService.createRoom(roomName);
     }
+
+    async loadVisitedRooms(): Promise<void> {
+        this.homeService.loadVisitedRooms();
+    }
 }

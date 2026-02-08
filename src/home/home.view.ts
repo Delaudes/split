@@ -8,6 +8,7 @@ export class HomeView {
         homeViewModel.set({
             isCreateRoomLoading: false,
             isCreateRoomError: false,
+            visitedRooms: []
         });
     }
 

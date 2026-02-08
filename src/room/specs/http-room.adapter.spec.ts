@@ -1,4 +1,4 @@
-import { FakeHttpWrapper } from "../../http/fake-http.adapter";
+import { FakeHttpWrapper } from "../../http/fake-http.wrapper";
 import { HttpRoomAdapter } from "../adapters/http-room.adapter";
 import { ExpenseDomainModel, PayerDomainModel, RoomDomainModel } from "../models/room.domain.model";
 

@@ -1,16 +1,22 @@
-import { ExpenseDomainModel, NewExpenseDomainModel, PayerDomainModel, RoomDomainModel } from "./models/room.domain.model";
+import { SPLIT_ROOMS_KEY } from "../storage/storage.key";
+import { StoragePort } from "../storage/storage.port";
+import { ExpenseDomainModel, NewExpenseDomainModel, PayerDomainModel, RoomDomainModel, VisitedRoomDomainModel } from "./models/room.domain.model";
 import { RoomPort } from "./room.port";
 import { RoomPresenter } from "./room.presenter";
 
 export class RoomService {
     private room: RoomDomainModel = new RoomDomainModel('', '', []);
 
-    constructor(private readonly roomPresenter: RoomPresenter, private readonly roomPort: RoomPort) { }
+    constructor(private readonly roomPresenter: RoomPresenter, private readonly roomPort: RoomPort, private readonly storagePort: StoragePort) { }
 
     async fetchRoom(roomId: string): Promise<void> {
         this.roomPresenter.startLoadingFetchRoom();
         try {
             this.room = await this.roomPort.fetchRoom(roomId);
+            const visitedRooms = this.storagePort.get<VisitedRoomDomainModel[]>(SPLIT_ROOMS_KEY);
+            const visitedRoom = { id: this.room.id, name: this.room.name };
+            const newVisitedRooms = visitedRooms ? [...visitedRooms, visitedRoom] : [visitedRoom];
+            this.storagePort.set(SPLIT_ROOMS_KEY, newVisitedRooms);
             this.roomPresenter.presentRoom(this.room);
         } catch {
             this.roomPresenter.presentErrorFetchRoom();

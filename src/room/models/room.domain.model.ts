@@ -130,3 +130,8 @@ export class PaymentDomainModel {
         readonly amount: number
     ) { }
 }
+
+export type VisitedRoomDomainModel = {
+    id: string;
+    name: string;
+}

@@ -1,4 +1,5 @@
 import { HomeView } from "./home.view";
+import { VisitedRoomDomainModel } from "./models/home.domain.model";
 
 export class HomePresenter {
     constructor(private readonly homeView: HomeView) { }
@@ -17,5 +18,9 @@ export class HomePresenter {
 
     presentRoom(roomId: string): void {
         this.homeView.navigateToRoom(roomId);
+    }
+
+    presentVisitedRooms(visitedRooms: VisitedRoomDomainModel[]): void {
+        this.homeView.update({ visitedRooms });
     }
 }

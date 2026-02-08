@@ -1,4 +1,4 @@
-import { FakeHttpWrapper } from "../../http/fake-http.adapter";
+import { FakeHttpWrapper } from "../../http/fake-http.wrapper";
 import { HttpHomeAdapter } from "../adapters/http-home.adapter";
 
 describe('http home adapter', () => {

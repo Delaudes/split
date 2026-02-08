@@ -2,6 +2,8 @@ import { Builder } from "builder-pattern";
 import { FakeDialogAdapter } from "../../dialog/fake-dialog.adapter";
 import { FakeNavigationWrapper } from "../../navigation/fake-navigation.wrapper";
 import { FakeSignalWrapper } from "../../signal/fake-signal.wrapper";
+import { FakeStorageWrapper } from "../../storage/fake-storage.wrapper";
+import { SPLIT_ROOMS_KEY } from "../../storage/storage.key";
 import { FakeRoomAdapter } from "../adapters/fake-room.adapter";
 import { NewExpenseDomainModel } from "../models/room.domain.model";
 import { ExpenseViewModel, PayerViewModel, PaymentViewModel, RoomViewModel } from "../models/room.view.model";
@@ -15,6 +17,7 @@ describe('Room', () => {
     let roomService: RoomService;
     let roomPresenter: RoomPresenter;
     let fakeRoomAdapter: FakeRoomAdapter;
+    let fakeStorageWrapper: FakeStorageWrapper;
     let roomView: RoomView;
     let fakeNavigationWrapper: FakeNavigationWrapper;
     let fakeDialogAdapter: FakeDialogAdapter;
@@ -29,9 +32,10 @@ describe('Room', () => {
         fakeNavigationWrapper = new FakeNavigationWrapper();
         fakeNavigationWrapper.params = { roomId: roomId };
         roomView = new RoomView(new FakeSignalWrapper<RoomViewModel>());
+        fakeStorageWrapper = new FakeStorageWrapper();
         fakeRoomAdapter = new FakeRoomAdapter();
         roomPresenter = new RoomPresenter(roomView);
-        roomService = new RoomService(roomPresenter, fakeRoomAdapter);
+        roomService = new RoomService(roomPresenter, fakeRoomAdapter, fakeStorageWrapper);
         roomController = new RoomController(roomService, fakeNavigationWrapper);
         fakeDialogAdapter = new FakeDialogAdapter();
     });
@@ -205,6 +209,28 @@ describe('Room', () => {
             expect(roomView.roomViewModel.get().expensesTotal).toEqual(expectedRoom.expensesTotal);
             expect(roomView.roomViewModel.get().expensesAverage).toEqual(expectedRoom.expensesAverage);
             expect(roomView.roomViewModel.get().payments).toEqual(expectedRoom.payments);
+        });
+
+        it('should add room to visited rooms in storage', async () => {
+            const visitedRooms = [{ id: 'other-room-id', name: 'Other Room' }, { id: 'other-room-2-id', name: 'Other Room 2' }];
+            fakeStorageWrapper.storage.set(SPLIT_ROOMS_KEY, visitedRooms);
+
+            expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual(visitedRooms);
+
+            await roomController.fetchRoom();
+
+            expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual([
+                ...visitedRooms,
+                { id: fakeRoomAdapter.room.id, name: fakeRoomAdapter.room.name }
+            ]);
+        });
+
+        it('should initialize visited rooms in storage if not exist', async () => {
+            expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toBeUndefined();
+
+            await roomController.fetchRoom();
+
+            expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual([{ id: fakeRoomAdapter.room.id, name: fakeRoomAdapter.room.name }]);
         });
     });
 

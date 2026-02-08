@@ -3,6 +3,7 @@ import { environment } from "../../environments/environment";
 import { HTTP_TOKEN } from "../../http/http.provider";
 import { NAVIGATION_PROVIDERS, NAVIGATION_TOKEN } from "../../navigation/navigation.provider";
 import { AngularSignalWrapper } from "../../signal/angular-signal.wrapper";
+import { STORAGE_TOKEN } from "../../storage/storage.provider";
 import { HttpRoomAdapter } from "../adapters/http-room.adapter";
 import { InMemoryRoomAdapter } from "../adapters/in-memory-room.adapter";
 import { RoomViewModel } from "../models/room.view.model";
@@ -21,7 +22,7 @@ export const ROOM_PROVIDERS = [
     },
     {
         provide: RoomService,
-        deps: [RoomPresenter, ROOM_TOKEN],
+        deps: [RoomPresenter, ROOM_TOKEN, STORAGE_TOKEN],
     },
     {
         provide: RoomPresenter,
