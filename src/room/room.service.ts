@@ -27,7 +27,7 @@ export class RoomService {
         if (visitedRooms?.some(room => room.id === this.room.id)) {
             return;
         }
-        const visitedRoom = { id: this.room.id, name: this.room.name };
+        const visitedRoom: VisitedRoomDomainModel = { id: this.room.id, name: this.room.name };
         const newVisitedRooms = visitedRooms ? [...visitedRooms, visitedRoom] : [visitedRoom];
         this.storagePort.set(SPLIT_ROOMS_KEY, newVisitedRooms);
     }
