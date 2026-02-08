@@ -81,6 +81,7 @@ For more information on using the Angular CLI, including detailed command refere
 - edit payer name
 - delete payer
 - delete room
+- forget room
 
 ## V3
 
