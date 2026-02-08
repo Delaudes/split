@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { RoomViewModel } from '../models/room.view.model';
 import { RoomController } from '../room.controller';
 import { RoomView } from '../room.view';
+import { AddToHomescreenComponent } from './components/add-to-homescreen.component';
 import { DeleteAllExpensesComponent } from './components/delete-all-expenses.component';
 import { DeleteExpenseComponent } from './components/delete-expense.component';
 import { ROOM_PROVIDERS } from './room.provider';
 
 @Component({
   selector: 'app-room',
-  imports: [DeleteExpenseComponent, DeleteAllExpensesComponent],
+  imports: [DeleteExpenseComponent, DeleteAllExpensesComponent, AddToHomescreenComponent],
   templateUrl: './room.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ROOM_PROVIDERS],

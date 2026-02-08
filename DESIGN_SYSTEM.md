@@ -45,7 +45,33 @@ Ce document définit les standards de design HTML/CSS pour maintenir la cohéren
 - Conteneur principal : `max-w-xl`
 - Grilles étendues : `max-w-2xl`
 
-## 🔤 Typographie
+## � Responsive & Mobile-First
+
+### Classes de Visibilité
+
+Pour afficher des éléments uniquement sur mobile ou desktop :
+
+```html
+<!-- Visible uniquement sur mobile (< 768px) -->
+<div class="md:hidden">
+  <app-mobile-only-component />
+</div>
+
+<!-- Visible uniquement sur desktop (>= 768px) -->
+<div class="hidden md:block">
+  <app-desktop-only-component />
+</div>
+```
+
+**Usage :**
+
+- Utiliser `md:hidden` pour les éléments qui ne doivent apparaître que sur mobile
+- Utiliser `hidden md:block` pour les éléments réservés au desktop
+- Appliquer ces classes sur un wrapper `<div>` autour du composant
+
+**Breakpoint :** `md:` = 768px (tablette et plus)
+
+## �🔤 Typographie
 
 ### Fonts
 

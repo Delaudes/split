@@ -69,19 +69,24 @@ For more information on using the Angular CLI, including detailed command refere
 - delete all expenses
 - share link
 
-## V1
+## V1 full frontend
 
 - phone tutorial
-- edit room name
-- edit payer name
-- delete payer
+- store room
+- fetch stored rooms
 
 ## V2
 
-- store room
-- fetch stored rooms
-- fetch history
-- edit expense name/amount
+- edit room name
+- edit payer name
+- delete payer
 - delete room
+
+## V3
+
+- fetch history
+- remove beneficiaries from expense
+- payer for group of payers
+- edit expense name/amount
 
 ## TODO
