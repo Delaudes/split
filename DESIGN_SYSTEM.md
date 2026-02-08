@@ -84,10 +84,37 @@ Ce document définit les standards de design HTML/CSS pour maintenir la cohéren
 
 ## 🎯 Composants Réutilisables
 
-### Carte de Fonctionnalité
+### Bloc de Fonctionnalité (Non-Interactif)
+
+Pour afficher des informations statiques (valeur proposition, features) qui ne doivent **pas** paraître cliquables :
 
 ```html
-<div class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10 space-y-2">
+<div class="p-3 space-y-1.5 text-center">
+  <div class="w-8 h-8 rounded-full bg-amber-400/10 flex items-center justify-center mx-auto">
+    <span class="material-symbols-outlined text-amber-400 text-xl">icon_name</span>
+  </div>
+  <h3 class="text-amber-200 font-medium text-sm">Titre</h3>
+  <p class="text-amber-200/60 text-xs font-light">Description</p>
+</div>
+```
+
+**Règles :**
+
+- **Pas de background** coloré (pas de `bg-amber-400/5`)
+- **Pas de border** (pas de `border border-amber-400/10`)
+- **Pas de rounded-xl** sur le conteneur
+- Centré (`text-center`, `mx-auto` sur l'icône)
+- Utilisé uniquement pour de l'information, **jamais** pour des actions
+- **Tailles compactes** : `p-3`, `w-8 h-8`, `text-xl` (identiques mobile et desktop pour rester minimaliste)
+
+### Carte Interactive
+
+Pour des éléments cliquables ou sélectionnables :
+
+```html
+<div
+  class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10 space-y-2 cursor-pointer hover:bg-amber-400/10 hover:border-amber-400/20 transition-all"
+>
   <div class="w-10 h-10 rounded-full bg-amber-400/10 flex items-center justify-center">
     <span class="material-symbols-outlined text-amber-400 text-2xl">icon_name</span>
   </div>
@@ -95,6 +122,12 @@ Ce document définit les standards de design HTML/CSS pour maintenir la cohéren
   <p class="text-amber-200/60 text-xs font-light">Description</p>
 </div>
 ```
+
+**Règles :**
+
+- Background et border visibles
+- **Obligatoire** : `cursor-pointer` + états `hover:`
+- Utilisé pour des actions ou des sélections
 
 ### Input Standard
 

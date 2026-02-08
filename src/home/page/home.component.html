@@ -7,14 +7,16 @@
     </div>
 
     <!-- Features -->
-    <div class="space-y-6 mt-12">
+    <div class="space-y-4 mt-8">
       <p class="text-xl text-amber-100 font-light">Le partage de dépenses simplifié</p>
 
-      <div class="grid md:grid-cols-3 gap-4 text-left max-w-2xl mx-auto">
+      <div class="grid md:grid-cols-3 gap-3 text-center max-w-2xl mx-auto">
         @for (feature of features; track feature.icon) {
-          <div class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10 space-y-2">
-            <div class="w-10 h-10 rounded-full bg-amber-400/10 flex items-center justify-center">
-              <span class="material-symbols-outlined text-amber-400 text-2xl">
+          <div class="p-3 space-y-1.5">
+            <div
+              class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-amber-400/10 flex items-center justify-center mx-auto"
+            >
+              <span class="material-symbols-outlined text-amber-400 text-xl md:text-2xl">
                 {{ feature.icon }}
               </span>
             </div>
