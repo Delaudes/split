@@ -25,7 +25,7 @@ h6 {
     sans-serif;
 }
 
-/* Material Symbols fallback */
+/* Material Symbols - hide text until font loads */
 .material-symbols-outlined {
   font-family: 'Material Symbols Outlined';
   font-weight: normal;
@@ -42,4 +42,8 @@ h6 {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: 'liga';
+  width: 1em;
+  height: 1em;
+  min-width: 1em;
+  text-align: center;
 }
