@@ -1,4 +1,5 @@
 import { Builder } from "builder-pattern";
+import { AppPath } from "../../app/app.routes";
 import { FakeDialogAdapter } from "../../dialog/fake-dialog.adapter";
 import { FakeNavigationWrapper } from "../../navigation/fake-navigation.wrapper";
 import { FakeSignalWrapper } from "../../signal/fake-signal.wrapper";
@@ -514,6 +515,16 @@ describe('Room', () => {
                 text: `Rejoignez ma salle de partage de dépenses : ${roomName} !\n`,
                 url: location.href
             });
+        });
+    });
+
+    describe('navigate to home', () => {
+        it('should navigate to home page', () => {
+            expect(fakeNavigationWrapper.commands).toEqual([]);
+
+            roomController.navigateToHome();
+
+            expect(fakeNavigationWrapper.commands).toEqual([AppPath.Home]);
         });
     });
 });

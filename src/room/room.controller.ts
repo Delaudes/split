@@ -1,4 +1,4 @@
-import { AppParam } from "../app/app.routes";
+import { AppParam, AppPath } from "../app/app.routes";
 import { DialogPort } from "../dialog/dialog.port";
 import { NavigationPort } from "../navigation/navigation.port";
 import { NewExpenseDomainModel } from "./models/room.domain.model";
@@ -44,5 +44,9 @@ export class RoomController {
             text: `Rejoignez ma salle de partage de dépenses : ${roomName} !\n`,
             url: location.href
         });
+    }
+
+    navigateToHome(): void {
+        this.navigationPort.navigate([AppPath.Home]);
     }
 }
