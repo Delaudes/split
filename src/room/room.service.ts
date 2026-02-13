@@ -91,4 +91,17 @@ export class RoomService {
             this.roomPresenter.stopLoadingDeleteAllExpenses();
         }
     }
+
+    async editRoomName(roomId: string, newRoomName: string): Promise<void> {
+        this.roomPresenter.startLoadingEditRoomName();
+        try {
+            await this.roomPort.editRoomName(roomId, newRoomName);
+            this.room.name = newRoomName;
+            this.roomPresenter.presentRoom(this.room);
+        } catch {
+            this.roomPresenter.presentErrorEditRoomName();
+        } finally {
+            this.roomPresenter.stopLoadingEditRoomName();
+        }
+    }
 }

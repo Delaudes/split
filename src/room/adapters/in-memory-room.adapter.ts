@@ -74,4 +74,12 @@ export class InMemoryRoomAdapter implements RoomPort {
             throw new Error()
         }
     }
+
+    async editRoomName(roomId: string, newRoomName: string): Promise<void> {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        if (newRoomName === 'error') {
+            throw new Error()
+        }
+    }
 }

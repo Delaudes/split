@@ -527,4 +527,60 @@ describe('Room', () => {
             expect(fakeNavigationWrapper.commands).toEqual([AppPath.Home]);
         });
     });
+
+    describe('edit room name', () => {
+        const newRoomName = 'new-fake-room-name';
+
+        it('should display loading', async () => {
+            expect(roomView.roomViewModel.get().isLoadingEditRoomName).toEqual(false);
+
+            const editRoomPromise = roomController.editRoom(newRoomName);
+
+            expect(roomView.roomViewModel.get().isLoadingEditRoomName).toEqual(true);
+
+            await editRoomPromise;
+
+            expect(roomView.roomViewModel.get().isLoadingEditRoomName).toEqual(false);
+        });
+
+        it('should display loading on error', async () => {
+            expect(roomView.roomViewModel.get().isLoadingEditRoomName).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            const editRoomPromise = roomController.editRoom(newRoomName);
+
+            expect(roomView.roomViewModel.get().isLoadingEditRoomName).toEqual(true);
+
+            await editRoomPromise;
+
+            expect(roomView.roomViewModel.get().isLoadingEditRoomName).toEqual(false);
+        });
+
+        it('should use the given name', async () => {
+            expect(fakeRoomAdapter.room.name).toEqual('fake-room-name');
+
+            await roomController.editRoom(newRoomName);
+
+            expect(fakeRoomAdapter.room.name).toEqual(newRoomName);
+        });
+
+        it('should display error', async () => {
+            expect(roomView.roomViewModel.get().isErrorEditRoomName).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            await roomController.editRoom(newRoomName);
+
+            expect(roomView.roomViewModel.get().isErrorEditRoomName).toEqual(true);
+        });
+
+        it('should display updated room name', async () => {
+            expect(roomView.roomViewModel.get().roomName).toEqual('fake-room-name');
+
+            await roomController.editRoom(newRoomName);
+
+            expect(roomView.roomViewModel.get().roomName).toEqual(newRoomName);
+        });
+    });
 });

@@ -74,15 +74,14 @@ For more information on using the Angular CLI, including detailed command refere
 - phone tutorial
 - store room
 - fetch stored rooms
-- report issue
 
 ## V2
 
+- forget stored room
 - edit room name
 - edit payer name
-- delete payer
 - delete room
-- forget stored room
+- delete payer
 
 ## V3
 

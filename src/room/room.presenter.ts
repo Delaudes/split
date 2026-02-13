@@ -117,4 +117,16 @@ export class RoomPresenter {
     presentErrorDeleteAllExpenses(): void {
         this.roomView.update({ isErrorDeleteAllExpenses: true });
     }
+
+    startLoadingEditRoomName(): void {
+        this.roomView.update({ isLoadingEditRoomName: true });
+    }
+
+    stopLoadingEditRoomName(): void {
+        this.roomView.update({ isLoadingEditRoomName: false });
+    }
+
+    presentErrorEditRoomName(): void {
+        this.roomView.update({ isErrorEditRoomName: true });
+    }
 }

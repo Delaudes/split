@@ -6,4 +6,5 @@ export interface RoomPort {
     addExpense(newExpense: NewExpenseDomainModel): Promise<string>;
     deleteExpense(expenseId: string): Promise<void>;
     deleteAllExpenses(roomId: string): Promise<void>;
+    editRoomName(roomId: string, newRoomName: string): Promise<void>;
 }

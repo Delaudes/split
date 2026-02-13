@@ -120,4 +120,34 @@ describe('Home', () => {
             expect(fakeNavigationWrapper.commands).toEqual([AppPath.Rooms, roomId]);
         });
     });
+
+    describe('forget room', () => {
+        it('should remove the room from visited rooms in storage', () => {
+            const roomId = 'room-1';
+            const visitedRooms = [
+                { id: roomId, name: 'Room 1' },
+                { id: 'room-2', name: 'Room 2' }
+            ];
+            fakeStorageWrapper.storage.set(SPLIT_ROOMS_KEY, visitedRooms);
+
+            homeController.forgetRoom(roomId);
+
+            expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual([{ id: 'room-2', name: 'Room 2' }]);
+        });
+
+        it('should update the view after forgetting the room', () => {
+            const roomId = 'room-1';
+            const visitedRooms = [
+                { id: roomId, name: 'Room 1' },
+                { id: 'room-2', name: 'Room 2' }
+            ];
+            fakeStorageWrapper.storage.set(SPLIT_ROOMS_KEY, visitedRooms);
+
+            expect(homeView.homeViewModel.get().visitedRooms).toEqual(visitedRooms);
+
+            homeController.forgetRoom(roomId);
+
+            expect(homeView.homeViewModel.get().visitedRooms).toEqual([{ id: 'room-2', name: 'Room 2' }]);
+        });
+    });
 });

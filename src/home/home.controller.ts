@@ -16,4 +16,8 @@ export class HomeController {
     selectRoom(roomId: string): void {
         this.homeService.selectRoom(roomId);
     }
+
+    forgetRoom(roomId: string): void {
+        this.homeService.forgetRoom(roomId);
+    }
 }

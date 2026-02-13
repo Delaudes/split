@@ -22,6 +22,9 @@ export class RoomView {
 
             isLoadingDeleteAllExpenses: false,
             isErrorDeleteAllExpenses: false,
+
+            isLoadingEditRoomName: false,
+            isErrorEditRoomName: false,
         });
     }
 

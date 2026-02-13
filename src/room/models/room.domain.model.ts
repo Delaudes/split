@@ -1,7 +1,7 @@
 export class RoomDomainModel {
     constructor(
         readonly id: string,
-        readonly name: string,
+        public name: string,
         readonly payers: PayerDomainModel[]
     ) { }
 

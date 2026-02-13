@@ -17,6 +17,9 @@ export type RoomViewModel = {
 
     isLoadingDeleteAllExpenses: boolean;
     isErrorDeleteAllExpenses: boolean;
+
+    isLoadingEditRoomName: boolean;
+    isErrorEditRoomName: boolean;
 }
 
 export type PayerViewModel = {

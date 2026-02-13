@@ -63,6 +63,16 @@ describe('http room adapter', () => {
         expect(fakeHttpWrapper.lastDeleteUrl).toBe(`https://split-api-ws8o.onrender.com/rooms/${roomId}/payers/expenses`);
     });
 
+    it('should edit room name with correct url and body', async () => {
+        const roomId = 'fake-room-id';
+        const newRoomName = 'new-fake-room-name';
+
+        await httpRoomAdapter.editRoomName(roomId, newRoomName);
+
+        expect(fakeHttpWrapper.lastPutUrl).toBe(`https://split-api-ws8o.onrender.com/rooms/${roomId}`);
+        expect(fakeHttpWrapper.lastPutBody).toEqual({ name: newRoomName });
+    });
+
     function createFetchRoomResponse(roomId: string) {
         return {
             id: roomId, name: 'fake-room-name', payers: [
