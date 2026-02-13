@@ -74,6 +74,7 @@ For more information on using the Angular CLI, including detailed command refere
 - phone tutorial
 - store room
 - fetch stored rooms
+- report issue
 
 ## V2
 
@@ -81,7 +82,7 @@ For more information on using the Angular CLI, including detailed command refere
 - edit payer name
 - delete payer
 - delete room
-- forget room
+- forget stored room
 
 ## V3
 
