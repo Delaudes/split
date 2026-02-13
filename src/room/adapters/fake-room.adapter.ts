@@ -3,7 +3,7 @@ import { RoomPort } from "../room.port";
 
 export class FakeRoomAdapter implements RoomPort {
 
-    room = new RoomDomainModel('fake-room-id', 'Vacances', [
+    room = new RoomDomainModel('fake-room-id', 'fake-room-name', [
         new PayerDomainModel('1', 'Alice', [
             new ExpenseDomainModel('a', 'Hotel', 50),
             new ExpenseDomainModel('b', 'Restaurant', 30),

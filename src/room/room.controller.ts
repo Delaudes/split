@@ -50,7 +50,7 @@ export class RoomController {
         this.navigationPort.navigate([AppPath.Home]);
     }
 
-    async editRoom(newRoomName: string): Promise<void> {
+    async editRoomName(newRoomName: string): Promise<void> {
         const roomId = this.navigationPort.getParam(AppParam.RoomId)
         await this.roomService.editRoomName(roomId, newRoomName);
     }

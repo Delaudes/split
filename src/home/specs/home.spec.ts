@@ -122,13 +122,19 @@ describe('Home', () => {
     });
 
     describe('forget room', () => {
-        it('should remove the room from visited rooms in storage', () => {
-            const roomId = 'room-1';
-            const visitedRooms = [
-                { id: roomId, name: 'Room 1' },
-                { id: 'room-2', name: 'Room 2' }
-            ];
+        const roomId = 'room-1';
+        const visitedRooms = [
+            { id: roomId, name: 'Room 1' },
+            { id: 'room-2', name: 'Room 2' }
+        ];
+
+        beforeEach(() => {
             fakeStorageWrapper.storage.set(SPLIT_ROOMS_KEY, visitedRooms);
+        });
+
+
+        it('should remove the room from visited rooms in storage', () => {
+            expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual(visitedRooms);
 
             homeController.forgetRoom(roomId);
 
@@ -136,12 +142,7 @@ describe('Home', () => {
         });
 
         it('should update the view after forgetting the room', () => {
-            const roomId = 'room-1';
-            const visitedRooms = [
-                { id: roomId, name: 'Room 1' },
-                { id: 'room-2', name: 'Room 2' }
-            ];
-            fakeStorageWrapper.storage.set(SPLIT_ROOMS_KEY, visitedRooms);
+            homeController.loadVisitedRooms();
 
             expect(homeView.homeViewModel.get().visitedRooms).toEqual(visitedRooms);
 

@@ -534,7 +534,7 @@ describe('Room', () => {
         it('should display loading', async () => {
             expect(roomView.roomViewModel.get().isLoadingEditRoomName).toEqual(false);
 
-            const editRoomPromise = roomController.editRoom(newRoomName);
+            const editRoomPromise = roomController.editRoomName(newRoomName);
 
             expect(roomView.roomViewModel.get().isLoadingEditRoomName).toEqual(true);
 
@@ -548,7 +548,7 @@ describe('Room', () => {
 
             fakeRoomAdapter.error = new Error();
 
-            const editRoomPromise = roomController.editRoom(newRoomName);
+            const editRoomPromise = roomController.editRoomName(newRoomName);
 
             expect(roomView.roomViewModel.get().isLoadingEditRoomName).toEqual(true);
 
@@ -560,7 +560,7 @@ describe('Room', () => {
         it('should use the given name', async () => {
             expect(fakeRoomAdapter.room.name).toEqual('fake-room-name');
 
-            await roomController.editRoom(newRoomName);
+            await roomController.editRoomName(newRoomName);
 
             expect(fakeRoomAdapter.room.name).toEqual(newRoomName);
         });
@@ -570,15 +570,15 @@ describe('Room', () => {
 
             fakeRoomAdapter.error = new Error();
 
-            await roomController.editRoom(newRoomName);
+            await roomController.editRoomName(newRoomName);
 
             expect(roomView.roomViewModel.get().isErrorEditRoomName).toEqual(true);
         });
 
         it('should display updated room name', async () => {
-            expect(roomView.roomViewModel.get().roomName).toEqual('fake-room-name');
+            expect(roomView.roomViewModel.get().roomName).toEqual('');
 
-            await roomController.editRoom(newRoomName);
+            await roomController.editRoomName(newRoomName);
 
             expect(roomView.roomViewModel.get().roomName).toEqual(newRoomName);
         });
