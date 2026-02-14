@@ -5,6 +5,7 @@ import { RoomPort } from "../room.port";
 
 export class HttpRoomAdapter implements RoomPort {
     private readonly baseUrl = 'https://split-api-ws8o.onrender.com';
+
     constructor(private readonly httpPort: HttpPort) { }
 
     async fetchRoom(roomId: string): Promise<RoomDomainModel> {
@@ -55,5 +56,17 @@ export class HttpRoomAdapter implements RoomPort {
 
     async editRoomName(roomId: string, newRoomName: string): Promise<void> {
         await this.httpPort.put(`${this.baseUrl}/rooms/${roomId}`, { name: newRoomName });
+    }
+
+    async editPayerName(payerId: string, newPayerName: string): Promise<void> {
+        await this.httpPort.put(`${this.baseUrl}/rooms/payers/${payerId}`, { name: newPayerName });
+    }
+
+    async deletePayer(payerId: string): Promise<void> {
+        await this.httpPort.delete(`${this.baseUrl}/rooms/payers/${payerId}`);
+    }
+
+    async deleteRoom(roomId: string): Promise<void> {
+        await this.httpPort.delete(`${this.baseUrl}/rooms/${roomId}`);
     }
 }

@@ -73,6 +73,32 @@ describe('http room adapter', () => {
         expect(fakeHttpWrapper.lastPutBody).toEqual({ name: newRoomName });
     });
 
+    it('should edit payer name with correct url and body', async () => {
+        const payerId = 'fake-payer-id';
+        const newPayerName = 'new-fake-payer-name';
+
+        await httpRoomAdapter.editPayerName(payerId, newPayerName);
+
+        expect(fakeHttpWrapper.lastPutUrl).toBe(`https://split-api-ws8o.onrender.com/rooms/payers/${payerId}`);
+        expect(fakeHttpWrapper.lastPutBody).toEqual({ name: newPayerName });
+    });
+
+    it('should delete payer with correct url', async () => {
+        const payerId = 'fake-payer-id';
+
+        await httpRoomAdapter.deletePayer(payerId);
+
+        expect(fakeHttpWrapper.lastDeleteUrl).toBe(`https://split-api-ws8o.onrender.com/rooms/payers/${payerId}`);
+    });
+
+    it('should delete room with correct url', async () => {
+        const roomId = 'fake-room-id';
+
+        await httpRoomAdapter.deleteRoom(roomId);
+
+        expect(fakeHttpWrapper.lastDeleteUrl).toBe(`https://split-api-ws8o.onrender.com/rooms/${roomId}`);
+    });
+
     function createFetchRoomResponse(roomId: string) {
         return {
             id: roomId, name: 'fake-room-name', payers: [
@@ -114,6 +140,4 @@ describe('http room adapter', () => {
             )]
         );
     }
-
 })
-

@@ -26,19 +26,24 @@ export class RoomPresenter {
                     description: expense.description,
                     amount: expense.amount.toFixed(2),
                     isLoadingDeleteExpense: false,
-                    isErrorDeleteExpense: false
-                }))
+                    isErrorDeleteExpense: false,
+                })),
+                isLoadingEditPayerName: false,
+                isErrorEditPayerName: false,
+                isLoadingDeletePayer: false,
+                isErrorDeletePayer: false,
             })),
-            isErrorAddPayer: false,
-            isErrorAddExpense: false,
-            isErrorDeleteAllExpenses: false,
             expensesTotal: room.expensesTotal.toFixed(2),
             expensesAverage: room.expensesAverage.toFixed(2),
             payments: room.payments.map(payment => ({
                 fromPayerName: payment.fromPayerName,
                 toPayerName: payment.toPayerName,
                 amount: payment.amount.toFixed(2)
-            }))
+            })),
+            isErrorAddPayer: false,
+            isErrorAddExpense: false,
+            isErrorDeleteAllExpenses: false,
+            isErrorEditRoomName: false,
         });
     }
 
@@ -128,5 +133,75 @@ export class RoomPresenter {
 
     presentErrorEditRoomName(): void {
         this.roomView.update({ isErrorEditRoomName: true });
+    }
+
+    startLoadingEditPayerName(payerId: string): void {
+        this.roomView.update({
+            payers: this.roomView.roomViewModel.get().payers.map(payer => ({
+                ...payer,
+                isLoadingEditPayerName: payer.id === payerId ? true : payer.isLoadingEditPayerName
+            }))
+        });
+    }
+
+    stopLoadingEditPayerName(payerId: string): void {
+        this.roomView.update({
+            payers: this.roomView.roomViewModel.get().payers.map(payer => ({
+                ...payer,
+                isLoadingEditPayerName: payer.id === payerId ? false : payer.isLoadingEditPayerName
+            }))
+        });
+    }
+
+    presentErrorEditPayerName(payerId: string): void {
+        this.roomView.update({
+            payers: this.roomView.roomViewModel.get().payers.map(payer => ({
+                ...payer,
+                isErrorEditPayerName: payer.id === payerId ? true : payer.isErrorEditPayerName
+            }))
+        });
+    }
+
+    startLoadingDeletePayer(payerId: string): void {
+        this.roomView.update({
+            payers: this.roomView.roomViewModel.get().payers.map(payer => ({
+                ...payer,
+                isLoadingDeletePayer: payer.id === payerId ? true : payer.isLoadingDeletePayer
+            }))
+        });
+    }
+
+    stopLoadingDeletePayer(payerId: string): void {
+        this.roomView.update({
+            payers: this.roomView.roomViewModel.get().payers.map(payer => ({
+                ...payer,
+                isLoadingDeletePayer: payer.id === payerId ? false : payer.isLoadingDeletePayer
+            }))
+        });
+    }
+
+    presentErrorDeletePayer(payerId: string): void {
+        this.roomView.update({
+            payers: this.roomView.roomViewModel.get().payers.map(payer => ({
+                ...payer,
+                isErrorDeletePayer: payer.id === payerId ? true : payer.isErrorDeletePayer
+            }))
+        });
+    }
+
+    startLoadingDeleteRoom(): void {
+        this.roomView.update({ isLoadingDeleteRoom: true });
+    }
+
+    stopLoadingDeleteRoom(): void {
+        this.roomView.update({ isLoadingDeleteRoom: false });
+    }
+
+    presentErrorDeleteRoom(): void {
+        this.roomView.update({ isErrorDeleteRoom: true });
+    }
+
+    presentHome(): void {
+        this.roomView.navigateToHome();
     }
 }

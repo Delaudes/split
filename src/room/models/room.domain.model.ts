@@ -62,12 +62,30 @@ export class RoomDomainModel {
         }
         return payments;
     }
+
+    editName(newRoomName: string): void {
+        this.name = newRoomName;
+    }
+
+    editPayerName(payerId: string, newPayerName: string): void {
+        const payer = this.payers.find(payer => payer.is(payerId));
+        if (payer) {
+            payer.editName(newPayerName);
+        }
+    }
+
+    deletePayer(payerId: string): void {
+        const payerIndex = this.payers.findIndex(payer => payer.is(payerId));
+        if (payerIndex !== -1) {
+            this.payers.splice(payerIndex, 1);
+        }
+    }
 }
 
 export class PayerDomainModel {
     constructor(
         readonly id: string,
-        readonly name: string,
+        public name: string,
         readonly expenses: ExpenseDomainModel[]
     ) { }
 
@@ -100,6 +118,10 @@ export class PayerDomainModel {
 
     is(payerId: string): boolean {
         return this.id === payerId;
+    }
+
+    editName(newPayerName: string): void {
+        this.name = newPayerName;
     }
 }
 

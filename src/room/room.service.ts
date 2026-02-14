@@ -92,16 +92,62 @@ export class RoomService {
         }
     }
 
-    async editRoomName(roomId: string, newRoomName: string): Promise<void> {
+    async editRoomName(roomId: string, newRoomName: string): Promise<boolean> {
         this.roomPresenter.startLoadingEditRoomName();
         try {
             await this.roomPort.editRoomName(roomId, newRoomName);
             this.room.name = newRoomName;
             this.roomPresenter.presentRoom(this.room);
+            return true
         } catch {
             this.roomPresenter.presentErrorEditRoomName();
+            return false
         } finally {
             this.roomPresenter.stopLoadingEditRoomName();
+        }
+    }
+
+    async editPayerName(payerId: string, newPayerName: string): Promise<boolean> {
+        this.roomPresenter.startLoadingEditPayerName(payerId);
+        try {
+            await this.roomPort.editPayerName(payerId, newPayerName);
+            this.room.editPayerName(payerId, newPayerName);
+            this.roomPresenter.presentRoom(this.room);
+            return true
+        } catch {
+            this.roomPresenter.presentErrorEditPayerName(payerId);
+            return false
+        } finally {
+            this.roomPresenter.stopLoadingEditPayerName(payerId);
+        }
+    }
+
+    async deletePayer(payerId: string): Promise<boolean> {
+        this.roomPresenter.startLoadingDeletePayer(payerId);
+        try {
+            await this.roomPort.deletePayer(payerId);
+            this.room.deletePayer(payerId);
+            this.roomPresenter.presentRoom(this.room);
+            return true
+        } catch {
+            this.roomPresenter.presentErrorDeletePayer(payerId);
+            return false
+        } finally {
+            this.roomPresenter.stopLoadingDeletePayer(payerId);
+        }
+    }
+
+    async deleteRoom(roomId: string): Promise<boolean> {
+        this.roomPresenter.startLoadingDeleteRoom();
+        try {
+            await this.roomPort.deleteRoom(roomId);
+            this.roomPresenter.presentHome();
+            return true
+        } catch {
+            this.roomPresenter.presentErrorDeleteRoom();
+            return false
+        } finally {
+            this.roomPresenter.stopLoadingDeleteRoom();
         }
     }
 }

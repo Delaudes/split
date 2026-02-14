@@ -66,12 +66,38 @@ export class FakeRoomAdapter implements RoomPort {
         this.roomId = roomId;
     }
 
+    newRoomName?: string;
     async editRoomName(roomId: string, newRoomName: string): Promise<void> {
         if (this.error) {
             throw this.error;
         }
         this.roomId = roomId;
-        this.room.name = newRoomName;
+        this.newRoomName = newRoomName;
+    }
+
+    newPayerName?: string;
+    async editPayerName(payerId: string, newPayerName: string): Promise<void> {
+        if (this.error) {
+            throw this.error;
+        }
+        this.payerId = payerId;
+        this.newPayerName = newPayerName;
+    }
+
+    payerIdToDelete?: string;
+    async deletePayer(payerId: string): Promise<void> {
+        if (this.error) {
+            throw this.error;
+        }
+        this.payerIdToDelete = payerId;
+    }
+
+    roomIdToDelete?: string;
+    async deleteRoom(roomId: string): Promise<void> {
+        if (this.error) {
+            throw this.error;
+        }
+        this.roomIdToDelete = roomId;
     }
 }
 

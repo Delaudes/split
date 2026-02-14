@@ -32,7 +32,7 @@ describe('Room', () => {
     beforeEach(() => {
         fakeNavigationWrapper = new FakeNavigationWrapper();
         fakeNavigationWrapper.params = { roomId: roomId };
-        roomView = new RoomView(new FakeSignalWrapper<RoomViewModel>());
+        roomView = new RoomView(new FakeSignalWrapper<RoomViewModel>(), fakeNavigationWrapper);
         fakeStorageWrapper = new FakeStorageWrapper();
         fakeRoomAdapter = new FakeRoomAdapter();
         roomPresenter = new RoomPresenter(roomView);
@@ -103,6 +103,10 @@ describe('Room', () => {
                         .name('Alice')
                         .expensesCount(3)
                         .expensesTotal('100.00')
+                        .isErrorEditPayerName(false)
+                        .isLoadingEditPayerName(false)
+                        .isErrorDeletePayer(false)
+                        .isLoadingDeletePayer(false)
                         .expenses([
                             Builder<ExpenseViewModel>()
                                 .id('a')
@@ -132,6 +136,10 @@ describe('Room', () => {
                         .name('Bob')
                         .expensesCount(3)
                         .expensesTotal('135.00')
+                        .isErrorEditPayerName(false)
+                        .isLoadingEditPayerName(false)
+                        .isErrorDeletePayer(false)
+                        .isLoadingDeletePayer(false)
                         .expenses([
                             Builder<ExpenseViewModel>()
                                 .id('d')
@@ -161,6 +169,10 @@ describe('Room', () => {
                         .name('Charlie')
                         .expensesCount(3)
                         .expensesTotal('95.00')
+                        .isErrorEditPayerName(false)
+                        .isLoadingEditPayerName(false)
+                        .isErrorDeletePayer(false)
+                        .isLoadingDeletePayer(false)
                         .expenses([
                             Builder<ExpenseViewModel>()
                                 .id('g')
@@ -308,11 +320,25 @@ describe('Room', () => {
                 .expensesCount(0)
                 .expensesTotal('0.00')
                 .expenses([])
+                .isErrorEditPayerName(false)
+                .isLoadingEditPayerName(false)
+                .isErrorDeletePayer(false)
+                .isLoadingDeletePayer(false)
                 .build();
 
             await roomController.addPayer(payerName);
 
             expect(roomView.roomViewModel.get().payers).toEqual([expectedPayer])
+        });
+
+        it('should reset error add payer on success', async () => {
+            roomPresenter.presentErrorAddPayer();
+
+            expect(roomView.roomViewModel.get().isErrorAddPayer).toEqual(true);
+
+            await roomController.addPayer(payerName);
+
+            expect(roomView.roomViewModel.get().isErrorAddPayer).toEqual(false);
         });
     })
 
@@ -382,10 +408,21 @@ describe('Room', () => {
 
             expect(roomView.roomViewModel.get().payers[0].expenses).toEqual([expectedExpense])
         });
+
+        it('should reset error add expense on success', async () => {
+            roomPresenter.presentErrorAddExpense();
+
+            expect(roomView.roomViewModel.get().isErrorAddExpense).toEqual(true);
+
+            await roomController.addExpense(expenseDescription, expenseAmount, payerId);
+
+            expect(roomView.roomViewModel.get().isErrorAddExpense).toEqual(false);
+        });
     });
 
     describe('delete expense', () => {
         let expenseId: string;
+
         beforeEach(async () => {
             await roomController.addPayer(payerName);
             await roomController.addExpense(expenseDescription, expenseAmount, payerId);
@@ -501,6 +538,16 @@ describe('Room', () => {
 
             expect(roomView.roomViewModel.get().payers.flatMap(payer => payer.expenses).length).toEqual(0);
         });
+
+        it('should reset error delete all expenses on success', async () => {
+            roomPresenter.presentErrorDeleteAllExpenses();
+
+            expect(roomView.roomViewModel.get().isErrorDeleteAllExpenses).toEqual(true);
+
+            await roomController.validateDeleteAllExpenses(fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().isErrorDeleteAllExpenses).toEqual(false);
+        });
     });
 
     describe('share url', () => {
@@ -534,7 +581,7 @@ describe('Room', () => {
         it('should display loading', async () => {
             expect(roomView.roomViewModel.get().isLoadingEditRoomName).toEqual(false);
 
-            const editRoomPromise = roomController.editRoomName(newRoomName);
+            const editRoomPromise = roomController.validateEditRoomName(newRoomName, fakeDialogAdapter);
 
             expect(roomView.roomViewModel.get().isLoadingEditRoomName).toEqual(true);
 
@@ -548,7 +595,7 @@ describe('Room', () => {
 
             fakeRoomAdapter.error = new Error();
 
-            const editRoomPromise = roomController.editRoomName(newRoomName);
+            const editRoomPromise = roomController.validateEditRoomName(newRoomName, fakeDialogAdapter);
 
             expect(roomView.roomViewModel.get().isLoadingEditRoomName).toEqual(true);
 
@@ -558,11 +605,11 @@ describe('Room', () => {
         });
 
         it('should use the given name', async () => {
-            expect(fakeRoomAdapter.room.name).toEqual('fake-room-name');
+            expect(fakeRoomAdapter.newRoomName).toBeUndefined()
 
-            await roomController.editRoomName(newRoomName);
+            await roomController.validateEditRoomName(newRoomName, fakeDialogAdapter);
 
-            expect(fakeRoomAdapter.room.name).toEqual(newRoomName);
+            expect(fakeRoomAdapter.newRoomName).toEqual(newRoomName);
         });
 
         it('should display error', async () => {
@@ -570,7 +617,7 @@ describe('Room', () => {
 
             fakeRoomAdapter.error = new Error();
 
-            await roomController.editRoomName(newRoomName);
+            await roomController.validateEditRoomName(newRoomName, fakeDialogAdapter);
 
             expect(roomView.roomViewModel.get().isErrorEditRoomName).toEqual(true);
         });
@@ -578,9 +625,205 @@ describe('Room', () => {
         it('should display updated room name', async () => {
             expect(roomView.roomViewModel.get().roomName).toEqual('');
 
-            await roomController.editRoomName(newRoomName);
+            await roomController.validateEditRoomName(newRoomName, fakeDialogAdapter);
 
             expect(roomView.roomViewModel.get().roomName).toEqual(newRoomName);
+        });
+
+        it('should reset error edit room name on success', async () => {
+            roomPresenter.presentErrorEditRoomName();
+
+            expect(roomView.roomViewModel.get().isErrorEditRoomName).toEqual(true);
+
+            await roomController.validateEditRoomName(newRoomName, fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().isErrorEditRoomName).toEqual(false);
+        });
+    });
+
+    describe('edit payer name', () => {
+        const newPayerName = 'new-fake-payer-name';
+
+        beforeEach(async () => {
+            await roomController.addPayer(payerName);
+        });
+
+        it('should display loading', async () => {
+            expect(roomView.roomViewModel.get().payers[0].isLoadingEditPayerName).toEqual(false);
+
+            const editPayerPromise = roomController.validateEditPayerName(payerId, newPayerName, fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().payers[0].isLoadingEditPayerName).toEqual(true);
+
+            await editPayerPromise;
+
+            expect(roomView.roomViewModel.get().payers[0].isLoadingEditPayerName).toEqual(false);
+        });
+
+        it('should display loading on error', async () => {
+            expect(roomView.roomViewModel.get().payers[0].isLoadingEditPayerName).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            const editPayerPromise = roomController.validateEditPayerName(payerId, newPayerName, fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().payers[0].isLoadingEditPayerName).toEqual(true);
+
+            await editPayerPromise;
+
+            expect(roomView.roomViewModel.get().payers[0].isLoadingEditPayerName).toEqual(false);
+        });
+
+        it('should use the given name', async () => {
+            expect(fakeRoomAdapter.newPayerName).toBeUndefined()
+
+            await roomController.validateEditPayerName(payerId, newPayerName, fakeDialogAdapter);
+
+            expect(fakeRoomAdapter.newPayerName).toEqual(newPayerName);
+        });
+
+        it('should display error', async () => {
+            expect(roomView.roomViewModel.get().payers[0].isErrorEditPayerName).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            await roomController.validateEditPayerName(payerId, newPayerName, fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().payers[0].isErrorEditPayerName).toEqual(true);
+        });
+
+        it('should display updated payer name', async () => {
+            expect(roomView.roomViewModel.get().payers[0].name).toEqual(payerName);
+
+            await roomController.validateEditPayerName(payerId, newPayerName, fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().payers[0].name).toEqual(newPayerName);
+        });
+
+        it('should reset error edit payer name on success', async () => {
+            roomPresenter.presentErrorEditPayerName(payerId);
+
+            expect(roomView.roomViewModel.get().payers[0].isErrorEditPayerName).toEqual(true);
+
+            await roomController.validateEditPayerName(payerId, newPayerName, fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().payers[0].isErrorEditPayerName).toEqual(false);
+        });
+    });
+
+    describe('delete payer', () => {
+        beforeEach(async () => {
+            await roomController.addPayer(payerName);
+        });
+
+        it('should display loading', async () => {
+            expect(roomView.roomViewModel.get().payers[0].isLoadingDeletePayer).toEqual(false);
+
+            const deletePayerPromise = roomController.validateDeletePayer(payerId, fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().payers[0].isLoadingDeletePayer).toEqual(true);
+
+            await deletePayerPromise;
+
+            expect(roomView.roomViewModel.get().payers[0]).toBeUndefined();
+        });
+
+        it('should display loading on error', async () => {
+            expect(roomView.roomViewModel.get().payers[0].isLoadingDeletePayer).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            const deletePayerPromise = roomController.validateDeletePayer(payerId, fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().payers[0].isLoadingDeletePayer).toEqual(true);
+
+            await deletePayerPromise;
+
+            expect(roomView.roomViewModel.get().payers[0].isLoadingDeletePayer).toEqual(false);
+        });
+
+        it('should close dialog', async () => {
+            expect(fakeDialogAdapter.isClose).toEqual(false);
+
+            await roomController.validateDeletePayer(payerId, fakeDialogAdapter);
+
+            expect(fakeDialogAdapter.isClose).toEqual(true);
+        });
+
+        it('should display error', async () => {
+            expect(roomView.roomViewModel.get().payers[0].isErrorDeletePayer).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            await roomController.validateDeletePayer(payerId, fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().payers[0].isErrorDeletePayer).toEqual(true);
+        });
+
+        it('should delete payer', async () => {
+            expect(roomView.roomViewModel.get().payers[0].id).toEqual(payerId);
+
+            await roomController.validateDeletePayer(payerId, fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().payers[0]).toBeUndefined();
+        });
+    });
+
+    describe('delete room', () => {
+        beforeEach(async () => {
+            await roomController.fetchRoom();
+        });
+
+        it('should display loading', async () => {
+            expect(roomView.roomViewModel.get().isLoadingDeleteRoom).toEqual(false);
+
+            const deleteRoomPromise = roomController.validateDeleteRoom(fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().isLoadingDeleteRoom).toEqual(true);
+
+            await deleteRoomPromise;
+
+            expect(roomView.roomViewModel.get().isLoadingDeleteRoom).toEqual(false);
+        });
+
+        it('should display loading on error', async () => {
+            expect(roomView.roomViewModel.get().isLoadingDeleteRoom).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            const deleteRoomPromise = roomController.validateDeleteRoom(fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().isLoadingDeleteRoom).toEqual(true);
+
+            await deleteRoomPromise;
+
+            expect(roomView.roomViewModel.get().isLoadingDeleteRoom).toEqual(false);
+        });
+
+        it('should close dialog', async () => {
+            expect(fakeDialogAdapter.isClose).toEqual(false);
+
+            await roomController.validateDeleteRoom(fakeDialogAdapter);
+
+            expect(fakeDialogAdapter.isClose).toEqual(true);
+        });
+
+        it('should display error', async () => {
+            expect(roomView.roomViewModel.get().isErrorDeleteRoom).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            await roomController.validateDeleteRoom(fakeDialogAdapter);
+
+            expect(roomView.roomViewModel.get().isErrorDeleteRoom).toEqual(true);
+        });
+
+        it('should navigate to home page', async () => {
+            expect(fakeNavigationWrapper.commands).toEqual([]);
+
+            await roomController.validateDeleteRoom(fakeDialogAdapter);
+
+            expect(fakeNavigationWrapper.commands).toEqual([AppPath.Home]);
         });
     });
 });

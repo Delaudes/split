@@ -20,6 +20,9 @@ export type RoomViewModel = {
 
     isLoadingEditRoomName: boolean;
     isErrorEditRoomName: boolean;
+
+    isLoadingDeleteRoom: boolean;
+    isErrorDeleteRoom: boolean;
 }
 
 export type PayerViewModel = {
@@ -28,12 +31,19 @@ export type PayerViewModel = {
     expensesCount: number;
     expensesTotal: string;
     expenses: ExpenseViewModel[];
+
+    isLoadingEditPayerName: boolean;
+    isErrorEditPayerName: boolean;
+
+    isLoadingDeletePayer: boolean;
+    isErrorDeletePayer: boolean;
 }
 
 export type ExpenseViewModel = {
     id: string;
     description: string;
     amount: string;
+
     isLoadingDeleteExpense: boolean;
     isErrorDeleteExpense: boolean;
 }

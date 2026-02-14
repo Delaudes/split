@@ -50,8 +50,33 @@ export class RoomController {
         this.navigationPort.navigate([AppPath.Home]);
     }
 
-    async editRoomName(newRoomName: string): Promise<void> {
+    async validateEditRoomName(newRoomName: string, dialog: DialogPort): Promise<void> {
         const roomId = this.navigationPort.getParam(AppParam.RoomId)
-        await this.roomService.editRoomName(roomId, newRoomName);
+        const editSuccess = await this.roomService.editRoomName(roomId, newRoomName);
+        if (editSuccess) {
+            dialog.close();
+        }
+    }
+
+    async validateEditPayerName(payerId: string, newPayerName: string, dialog: DialogPort): Promise<void> {
+        const editSuccess = await this.roomService.editPayerName(payerId, newPayerName);
+        if (editSuccess) {
+            dialog.close();
+        }
+    }
+
+    async validateDeletePayer(payerId: string, dialog: DialogPort): Promise<void> {
+        const isDeleteSuccess = await this.roomService.deletePayer(payerId);
+        if (isDeleteSuccess) {
+            dialog.close();
+        }
+    }
+
+    async validateDeleteRoom(dialog: DialogPort): Promise<void> {
+        const roomId = this.navigationPort.getParam(AppParam.RoomId)
+        const isDeleteSuccess = await this.roomService.deleteRoom(roomId);
+        if (isDeleteSuccess) {
+            dialog.close();
+        }
     }
 }

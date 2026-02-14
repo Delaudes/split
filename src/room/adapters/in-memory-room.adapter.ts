@@ -82,4 +82,28 @@ export class InMemoryRoomAdapter implements RoomPort {
             throw new Error()
         }
     }
+
+    async editPayerName(payerId: string, newPayerName: string): Promise<void> {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        if (newPayerName === 'error') {
+            throw new Error()
+        }
+    }
+
+    async deletePayer(payerId: string): Promise<void> {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        if (payerId === '1') {
+            throw new Error()
+        }
+    }
+
+    async deleteRoom(roomId: string): Promise<void> {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        if (roomId === 'error-delete-room') {
+            throw new Error()
+        }
+    }
 }

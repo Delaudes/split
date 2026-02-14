@@ -22,4 +22,3 @@ describe('http home adapter', () => {
         expect(roomId).toBe(expectedRoomId);
     });
 })
-

@@ -1,6 +1,7 @@
 import { InjectionToken } from "@angular/core";
 import { environment } from "../../environments/environment";
 import { HTTP_TOKEN } from "../../http/http.provider";
+import { NavigationPort } from "../../navigation/navigation.port";
 import { NAVIGATION_PROVIDERS, NAVIGATION_TOKEN } from "../../navigation/navigation.provider";
 import { AngularSignalWrapper } from "../../signal/angular-signal.wrapper";
 import { STORAGE_TOKEN } from "../../storage/storage.provider";
@@ -35,7 +36,8 @@ export const ROOM_PROVIDERS = [
     },
     {
         provide: RoomView,
-        useFactory: () => new RoomView(new AngularSignalWrapper<RoomViewModel>()),
+        useFactory: (navigationPort: NavigationPort) => new RoomView(new AngularSignalWrapper<RoomViewModel>(), navigationPort),
+        deps: [NAVIGATION_TOKEN],
     },
     ...NAVIGATION_PROVIDERS
 ]

@@ -74,18 +74,18 @@ For more information on using the Angular CLI, including detailed command refere
 - phone tutorial
 - store room
 - fetch stored rooms
+- forget stored room
 
 ## V2
 
-- forget stored room
 - edit room name
 - edit payer name
 - delete room
 - delete payer
+- fetch history
 
 ## V3
 
-- fetch history
 - remove beneficiaries from expense
 - payer for group of payers
 - edit expense name/amount

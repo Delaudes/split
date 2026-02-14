@@ -7,4 +7,7 @@ export interface RoomPort {
     deleteExpense(expenseId: string): Promise<void>;
     deleteAllExpenses(roomId: string): Promise<void>;
     editRoomName(roomId: string, newRoomName: string): Promise<void>;
+    editPayerName(payerId: string, newPayerName: string): Promise<void>;
+    deletePayer(payerId: string): Promise<void>;
+    deleteRoom(roomId: string): Promise<void>;
 }
