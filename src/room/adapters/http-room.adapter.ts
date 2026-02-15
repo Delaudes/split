@@ -69,4 +69,9 @@ export class HttpRoomAdapter implements RoomPort {
     async deleteRoom(roomId: string): Promise<void> {
         await this.httpPort.delete(`${this.baseUrl}/rooms/${roomId}`);
     }
+
+    async fetchRoomHistory(roomId: string): Promise<RoomDomainModel> {
+        const fetchRoomResponse = await this.httpPort.get<FetchRoomResponse>(`${this.baseUrl}/rooms/${roomId}/history`);
+        return this.mapToRoomDomainModel(fetchRoomResponse);
+    }
 }

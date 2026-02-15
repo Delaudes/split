@@ -79,4 +79,9 @@ export class RoomController {
             dialog.close();
         }
     }
+
+    async fetchRoomHistory(): Promise<void> {
+        const roomId = this.navigationPort.getParam(AppParam.RoomId)
+        await this.roomService.fetchRoomHistory(roomId);
+    }
 }

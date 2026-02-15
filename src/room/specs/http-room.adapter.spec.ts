@@ -99,6 +99,16 @@ describe('http room adapter', () => {
         expect(fakeHttpWrapper.lastDeleteUrl).toBe(`https://split-api-ws8o.onrender.com/rooms/${roomId}`);
     });
 
+    it('should fetch room history with correct url', async () => {
+        const roomId = 'fake-room-id';
+        fakeHttpWrapper.getResponse = createFetchRoomResponse(roomId);
+        const expectedRoom = createExpectedRoom(roomId);
+        const room = await httpRoomAdapter.fetchRoomHistory(roomId);
+
+        expect(fakeHttpWrapper.lastGetUrl).toBe(`https://split-api-ws8o.onrender.com/rooms/${roomId}/history`);
+        expect(room).toEqual(expectedRoom);
+    });
+
     function createFetchRoomResponse(roomId: string) {
         return {
             id: roomId, name: 'fake-room-name', payers: [

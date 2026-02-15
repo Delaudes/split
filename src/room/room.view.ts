@@ -30,6 +30,13 @@ export class RoomView {
 
             isLoadingDeleteRoom: false,
             isErrorDeleteRoom: false,
+
+            roomHistory: {
+                payers: [],
+
+                isLoadingFetchRoomHistory: false,
+                isErrorFetchRoomHistory: false,
+            }
         });
     }
 

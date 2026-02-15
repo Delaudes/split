@@ -106,4 +106,8 @@ export class InMemoryRoomAdapter implements RoomPort {
             throw new Error()
         }
     }
+
+    async fetchRoomHistory(roomId: string): Promise<RoomDomainModel> {
+        return await this.fetchRoom(roomId);
+    }
 }

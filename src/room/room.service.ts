@@ -141,6 +141,9 @@ export class RoomService {
         this.roomPresenter.startLoadingDeleteRoom();
         try {
             await this.roomPort.deleteRoom(roomId);
+            const visitedRooms = this.storagePort.get<VisitedRoomDomainModel[]>(SPLIT_ROOMS_KEY) ?? [];
+            const updatedVisitedRooms = visitedRooms.filter(room => room.id !== roomId);
+            this.storagePort.set(SPLIT_ROOMS_KEY, updatedVisitedRooms);
             this.roomPresenter.presentHome();
             return true
         } catch {
@@ -148,6 +151,18 @@ export class RoomService {
             return false
         } finally {
             this.roomPresenter.stopLoadingDeleteRoom();
+        }
+    }
+
+    async fetchRoomHistory(roomId: string): Promise<void> {
+        this.roomPresenter.startLoadingFetchRoomHistory();
+        try {
+            const roomHistory = await this.roomPort.fetchRoomHistory(roomId);
+            this.roomPresenter.presentRoomHistory(roomHistory);
+        } catch {
+            this.roomPresenter.presentErrorFetchRoomHistory();
+        } finally {
+            this.roomPresenter.stopLoadingFetchRoomHistory();
         }
     }
 }

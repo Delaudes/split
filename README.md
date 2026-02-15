@@ -80,13 +80,13 @@ For more information on using the Angular CLI, including detailed command refere
 
 - edit room name
 - edit payer name
-- delete room
+- delete room + forget stored room
 - delete payer
 - fetch history
 
 ## V3
 
-- remove beneficiaries from expense
+- delete beneficiaries from expense
 - payer for group of payers
 - edit expense name/amount
 

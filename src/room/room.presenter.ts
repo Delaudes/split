@@ -204,4 +204,42 @@ export class RoomPresenter {
     presentHome(): void {
         this.roomView.navigateToHome();
     }
+
+    startLoadingFetchRoomHistory(): void {
+        this.roomView.update({ roomHistory: { ...this.roomView.roomViewModel.get().roomHistory, isLoadingFetchRoomHistory: true } });
+    }
+
+    stopLoadingFetchRoomHistory(): void {
+        this.roomView.update({ roomHistory: { ...this.roomView.roomViewModel.get().roomHistory, isLoadingFetchRoomHistory: false } });
+    }
+
+    presentErrorFetchRoomHistory(): void {
+        this.roomView.update({ roomHistory: { ...this.roomView.roomViewModel.get().roomHistory, isErrorFetchRoomHistory: true } });
+    }
+
+    presentRoomHistory(roomHistory: RoomDomainModel): void {
+        this.roomView.update({
+            roomHistory: {
+                payers: roomHistory.payers.map(payer => ({
+                    id: payer.id,
+                    name: payer.name,
+                    expensesCount: payer.expensesCount,
+                    expensesTotal: payer.expensesTotal.toFixed(2),
+                    expenses: payer.expenses.map(expense => ({
+                        id: expense.id,
+                        description: expense.description,
+                        amount: expense.amount.toFixed(2),
+                        isLoadingDeleteExpense: false,
+                        isErrorDeleteExpense: false,
+                    })),
+                    isLoadingEditPayerName: false,
+                    isErrorEditPayerName: false,
+                    isLoadingDeletePayer: false,
+                    isErrorDeletePayer: false,
+                })),
+                isLoadingFetchRoomHistory: false,
+                isErrorFetchRoomHistory: false,
+            }
+        });
+    }
 }

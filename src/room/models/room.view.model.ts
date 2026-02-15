@@ -23,6 +23,8 @@ export type RoomViewModel = {
 
     isLoadingDeleteRoom: boolean;
     isErrorDeleteRoom: boolean;
+
+    roomHistory: RoomHistoryViewModel;
 }
 
 export type PayerViewModel = {
@@ -52,4 +54,11 @@ export type PaymentViewModel = {
     fromPayerName: string;
     toPayerName: string;
     amount: string;
+}
+
+export type RoomHistoryViewModel = {
+    payers: PayerViewModel[];
+
+    isLoadingFetchRoomHistory: boolean;
+    isErrorFetchRoomHistory: boolean;
 }

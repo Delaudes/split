@@ -99,5 +99,14 @@ export class FakeRoomAdapter implements RoomPort {
         }
         this.roomIdToDelete = roomId;
     }
+
+    roomIdHistory?: string;
+    async fetchRoomHistory(roomId: string): Promise<RoomDomainModel> {
+        if (this.error) {
+            throw this.error;
+        }
+        this.roomIdHistory = roomId;
+        return this.room;
+    }
 }
 

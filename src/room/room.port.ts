@@ -10,4 +10,5 @@ export interface RoomPort {
     editPayerName(payerId: string, newPayerName: string): Promise<void>;
     deletePayer(payerId: string): Promise<void>;
     deleteRoom(roomId: string): Promise<void>;
+    fetchRoomHistory(roomId: string): Promise<RoomDomainModel>;
 }

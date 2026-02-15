@@ -94,125 +94,7 @@ describe('Room', () => {
             expect(roomView.roomViewModel.get().expensesAverage).toEqual('');
             expect(roomView.roomViewModel.get().payments).toEqual([]);
 
-            const expectedRoom = Builder<RoomViewModel>()
-                .roomId(fakeRoomAdapter.room.id)
-                .roomName(fakeRoomAdapter.room.name)
-                .payers([
-                    Builder<PayerViewModel>()
-                        .id('1')
-                        .name('Alice')
-                        .expensesCount(3)
-                        .expensesTotal('100.00')
-                        .isErrorEditPayerName(false)
-                        .isLoadingEditPayerName(false)
-                        .isErrorDeletePayer(false)
-                        .isLoadingDeletePayer(false)
-                        .expenses([
-                            Builder<ExpenseViewModel>()
-                                .id('a')
-                                .description('Hotel')
-                                .amount('50.00')
-                                .isErrorDeleteExpense(false)
-                                .isLoadingDeleteExpense(false)
-                                .build(),
-                            Builder<ExpenseViewModel>()
-                                .id('b')
-                                .description('Restaurant')
-                                .amount('30.00')
-                                .isErrorDeleteExpense(false)
-                                .isLoadingDeleteExpense(false)
-                                .build(),
-                            Builder<ExpenseViewModel>()
-                                .id('c')
-                                .description('Museum')
-                                .amount('20.00')
-                                .isErrorDeleteExpense(false)
-                                .isLoadingDeleteExpense(false)
-                                .build()
-                        ])
-                        .build(),
-                    Builder<PayerViewModel>()
-                        .id('2')
-                        .name('Bob')
-                        .expensesCount(3)
-                        .expensesTotal('135.00')
-                        .isErrorEditPayerName(false)
-                        .isLoadingEditPayerName(false)
-                        .isErrorDeletePayer(false)
-                        .isLoadingDeletePayer(false)
-                        .expenses([
-                            Builder<ExpenseViewModel>()
-                                .id('d')
-                                .description('Flight')
-                                .amount('80.00')
-                                .isErrorDeleteExpense(false)
-                                .isLoadingDeleteExpense(false)
-                                .build(),
-                            Builder<ExpenseViewModel>()
-                                .id('e')
-                                .description('Car Rental')
-                                .amount('40.00')
-                                .isErrorDeleteExpense(false)
-                                .isLoadingDeleteExpense(false)
-                                .build(),
-                            Builder<ExpenseViewModel>()
-                                .id('f')
-                                .description('Snacks')
-                                .amount('15.00')
-                                .isErrorDeleteExpense(false)
-                                .isLoadingDeleteExpense(false)
-                                .build(),
-                        ])
-                        .build(),
-                    Builder<PayerViewModel>()
-                        .id('3')
-                        .name('Charlie')
-                        .expensesCount(3)
-                        .expensesTotal('95.00')
-                        .isErrorEditPayerName(false)
-                        .isLoadingEditPayerName(false)
-                        .isErrorDeletePayer(false)
-                        .isLoadingDeletePayer(false)
-                        .expenses([
-                            Builder<ExpenseViewModel>()
-                                .id('g')
-                                .description('Accommodation')
-                                .amount('60.00')
-                                .isErrorDeleteExpense(false)
-                                .isLoadingDeleteExpense(false)
-                                .build(),
-                            Builder<ExpenseViewModel>()
-                                .id('h')
-                                .description('Activities')
-                                .amount('20.00')
-                                .isErrorDeleteExpense(false)
-                                .isLoadingDeleteExpense(false)
-                                .build(),
-                            Builder<ExpenseViewModel>()
-                                .id('i')
-                                .description('Souvenirs')
-                                .amount('15.00')
-                                .isErrorDeleteExpense(false)
-                                .isLoadingDeleteExpense(false)
-                                .build()
-                        ])
-                        .build(),
-                ])
-                .expensesTotal('330.00')
-                .expensesAverage('110.00')
-                .payments([
-                    Builder<PaymentViewModel>()
-                        .fromPayerName('Alice')
-                        .toPayerName('Bob')
-                        .amount('10.00')
-                        .build(),
-                    Builder<PaymentViewModel>()
-                        .fromPayerName('Charlie')
-                        .toPayerName('Bob')
-                        .amount('15.00')
-                        .build(),
-                ])
-                .build();
+            const expectedRoom = createExpectedRoom(fakeRoomAdapter);
 
             await roomController.fetchRoom();
 
@@ -825,5 +707,194 @@ describe('Room', () => {
 
             expect(fakeNavigationWrapper.commands).toEqual([AppPath.Home]);
         });
+
+        it('should forget room from visited rooms in storage', async () => {
+            const visitedRooms = [{ id: 'other-room-id', name: 'Other Room' }, { id: roomId, name: 'Fake Room' }];
+            fakeStorageWrapper.storage.set(SPLIT_ROOMS_KEY, visitedRooms);
+
+            expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual(visitedRooms);
+
+            await roomController.validateDeleteRoom(fakeDialogAdapter);
+
+            expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual([{ id: 'other-room-id', name: 'Other Room' }]);
+        })
     });
+
+    describe('fetch room history', () => {
+        it('should display loading', async () => {
+            expect(roomView.roomViewModel.get().roomHistory.isLoadingFetchRoomHistory).toEqual(false);
+
+            const fetchRoomHistoryPromise = roomController.fetchRoomHistory();
+
+            expect(roomView.roomViewModel.get().roomHistory.isLoadingFetchRoomHistory).toEqual(true);
+
+            await fetchRoomHistoryPromise;
+
+            expect(roomView.roomViewModel.get().roomHistory.isLoadingFetchRoomHistory).toEqual(false);
+        });
+
+        it('should display loading on error', async () => {
+            expect(roomView.roomViewModel.get().roomHistory.isLoadingFetchRoomHistory).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            const fetchRoomHistoryPromise = roomController.fetchRoomHistory();
+
+            expect(roomView.roomViewModel.get().roomHistory.isLoadingFetchRoomHistory).toEqual(true);
+
+            await fetchRoomHistoryPromise;
+
+            expect(roomView.roomViewModel.get().roomHistory.isLoadingFetchRoomHistory).toEqual(false);
+        });
+
+        it('should use the current room id', async () => {
+            expect(fakeRoomAdapter.roomIdHistory).toBeUndefined();
+
+            await roomController.fetchRoomHistory();
+
+            expect(fakeRoomAdapter.roomIdHistory).toEqual(roomId);
+        });
+
+        it('should display error', async () => {
+            expect(roomView.roomViewModel.get().roomHistory.isErrorFetchRoomHistory).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            await roomController.fetchRoomHistory();
+
+            expect(roomView.roomViewModel.get().roomHistory.isErrorFetchRoomHistory).toEqual(true);
+        });
+
+        it('should display room history', async () => {
+            expect(roomView.roomViewModel.get().roomHistory.payers).toEqual([]);
+
+            const expectedRoomHistory = createExpectedRoom(fakeRoomAdapter);
+
+            await roomController.fetchRoomHistory();
+
+            expect(roomView.roomViewModel.get().roomHistory.payers).toEqual(expectedRoomHistory.payers);
+        });
+    });
+
+    function createExpectedRoom(fakeRoomAdapter: FakeRoomAdapter) {
+        return Builder<RoomViewModel>()
+            .roomId(fakeRoomAdapter.room.id)
+            .roomName(fakeRoomAdapter.room.name)
+            .payers([
+                Builder<PayerViewModel>()
+                    .id('1')
+                    .name('Alice')
+                    .expensesCount(3)
+                    .expensesTotal('100.00')
+                    .isErrorEditPayerName(false)
+                    .isLoadingEditPayerName(false)
+                    .isErrorDeletePayer(false)
+                    .isLoadingDeletePayer(false)
+                    .expenses([
+                        Builder<ExpenseViewModel>()
+                            .id('a')
+                            .description('Hotel')
+                            .amount('50.00')
+                            .isErrorDeleteExpense(false)
+                            .isLoadingDeleteExpense(false)
+                            .build(),
+                        Builder<ExpenseViewModel>()
+                            .id('b')
+                            .description('Restaurant')
+                            .amount('30.00')
+                            .isErrorDeleteExpense(false)
+                            .isLoadingDeleteExpense(false)
+                            .build(),
+                        Builder<ExpenseViewModel>()
+                            .id('c')
+                            .description('Museum')
+                            .amount('20.00')
+                            .isErrorDeleteExpense(false)
+                            .isLoadingDeleteExpense(false)
+                            .build()
+                    ])
+                    .build(),
+                Builder<PayerViewModel>()
+                    .id('2')
+                    .name('Bob')
+                    .expensesCount(3)
+                    .expensesTotal('135.00')
+                    .isErrorEditPayerName(false)
+                    .isLoadingEditPayerName(false)
+                    .isErrorDeletePayer(false)
+                    .isLoadingDeletePayer(false)
+                    .expenses([
+                        Builder<ExpenseViewModel>()
+                            .id('d')
+                            .description('Flight')
+                            .amount('80.00')
+                            .isErrorDeleteExpense(false)
+                            .isLoadingDeleteExpense(false)
+                            .build(),
+                        Builder<ExpenseViewModel>()
+                            .id('e')
+                            .description('Car Rental')
+                            .amount('40.00')
+                            .isErrorDeleteExpense(false)
+                            .isLoadingDeleteExpense(false)
+                            .build(),
+                        Builder<ExpenseViewModel>()
+                            .id('f')
+                            .description('Snacks')
+                            .amount('15.00')
+                            .isErrorDeleteExpense(false)
+                            .isLoadingDeleteExpense(false)
+                            .build(),
+                    ])
+                    .build(),
+                Builder<PayerViewModel>()
+                    .id('3')
+                    .name('Charlie')
+                    .expensesCount(3)
+                    .expensesTotal('95.00')
+                    .isErrorEditPayerName(false)
+                    .isLoadingEditPayerName(false)
+                    .isErrorDeletePayer(false)
+                    .isLoadingDeletePayer(false)
+                    .expenses([
+                        Builder<ExpenseViewModel>()
+                            .id('g')
+                            .description('Accommodation')
+                            .amount('60.00')
+                            .isErrorDeleteExpense(false)
+                            .isLoadingDeleteExpense(false)
+                            .build(),
+                        Builder<ExpenseViewModel>()
+                            .id('h')
+                            .description('Activities')
+                            .amount('20.00')
+                            .isErrorDeleteExpense(false)
+                            .isLoadingDeleteExpense(false)
+                            .build(),
+                        Builder<ExpenseViewModel>()
+                            .id('i')
+                            .description('Souvenirs')
+                            .amount('15.00')
+                            .isErrorDeleteExpense(false)
+                            .isLoadingDeleteExpense(false)
+                            .build()
+                    ])
+                    .build(),
+            ])
+            .expensesTotal('330.00')
+            .expensesAverage('110.00')
+            .payments([
+                Builder<PaymentViewModel>()
+                    .fromPayerName('Alice')
+                    .toPayerName('Bob')
+                    .amount('10.00')
+                    .build(),
+                Builder<PaymentViewModel>()
+                    .fromPayerName('Charlie')
+                    .toPayerName('Bob')
+                    .amount('15.00')
+                    .build(),
+            ])
+            .build();
+    }
 });

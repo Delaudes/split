@@ -133,7 +133,7 @@ describe('Home', () => {
         });
 
 
-        it('should remove the room from visited rooms in storage', () => {
+        it('should forget the room from visited rooms in storage', () => {
             expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual(visitedRooms);
 
             homeController.forgetRoom(roomId);
