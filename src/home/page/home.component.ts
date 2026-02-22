@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { HomeController } from '../home.controller';
 import { HomeView } from '../home.view';
 import { HomeViewModel } from '../models/home.view.model';
+import { ForgetRoomComponent } from "./components/forget-room.component";
 import { HOME_PROVIDERS } from './home.provider';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [ForgetRoomComponent],
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [HOME_PROVIDERS],

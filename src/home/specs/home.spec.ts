@@ -1,4 +1,5 @@
 import { AppPath } from "../../app/app.routes";
+import { FakeDialogAdapter } from "../../dialog/fake-dialog.adapter";
 import { FakeNavigationWrapper } from "../../navigation/fake-navigation.wrapper";
 import { FakeSignalWrapper } from "../../signal/fake-signal.wrapper";
 import { FakeStorageWrapper } from "../../storage/fake-storage.wrapper";
@@ -18,6 +19,7 @@ describe('Home', () => {
     let fakeStorageWrapper: FakeStorageWrapper;
     let homeView: HomeView;
     let fakeNavigationWrapper: FakeNavigationWrapper;
+    let fakeDialogAdapter: FakeDialogAdapter;
 
     beforeEach(() => {
         fakeNavigationWrapper = new FakeNavigationWrapper();
@@ -27,6 +29,7 @@ describe('Home', () => {
         homePresenter = new HomePresenter(homeView);
         homeService = new HomeService(homePresenter, fakeHomeAdapter, fakeStorageWrapper);
         homeController = new HomeController(homeService);
+        fakeDialogAdapter = new FakeDialogAdapter();
     });
 
     describe('create room', () => {
@@ -136,7 +139,7 @@ describe('Home', () => {
         it('should forget the room from visited rooms in storage', () => {
             expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual(visitedRooms);
 
-            homeController.forgetRoom(roomId);
+            homeController.forgetRoom(roomId, fakeDialogAdapter);
 
             expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual([{ id: 'room-2', name: 'Room 2' }]);
         });
@@ -146,9 +149,17 @@ describe('Home', () => {
 
             expect(homeView.homeViewModel.get().visitedRooms).toEqual(visitedRooms);
 
-            homeController.forgetRoom(roomId);
+            homeController.forgetRoom(roomId, fakeDialogAdapter);
 
             expect(homeView.homeViewModel.get().visitedRooms).toEqual([{ id: 'room-2', name: 'Room 2' }]);
         });
+
+        it('should close the dialog', () => {
+            expect(fakeDialogAdapter.isClose).toEqual(false);
+
+            homeController.forgetRoom(roomId, fakeDialogAdapter);
+
+            expect(fakeDialogAdapter.isClose).toEqual(true);
+        })
     });
 });

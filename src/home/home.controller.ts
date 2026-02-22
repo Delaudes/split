@@ -1,3 +1,4 @@
+import { DialogPort } from "../dialog/dialog.port";
 import { HomeService } from "./home.service";
 
 export class HomeController {
@@ -17,7 +18,8 @@ export class HomeController {
         this.homeService.selectRoom(roomId);
     }
 
-    forgetRoom(roomId: string): void {
+    forgetRoom(roomId: string, dialog: DialogPort): void {
         this.homeService.forgetRoom(roomId);
+        dialog.close();
     }
 }
