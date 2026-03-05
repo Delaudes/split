@@ -165,4 +165,32 @@ export class RoomService {
             this.roomPresenter.stopLoadingFetchRoomHistory();
         }
     }
+
+    async createRoom(roomName: string): Promise<void> {
+        this.roomPresenter.startLoadingCreateRoom();
+        try {
+            const roomId = await this.roomPort.createRoom(roomName);
+            this.roomPresenter.presentNavigateToRoom(roomId);
+        } catch {
+            this.roomPresenter.presentErrorCreateRoom();
+        } finally {
+            this.roomPresenter.stopLoadingCreateRoom();
+        }
+    }
+
+    loadVisitedRooms(): void {
+        const visitedRooms = this.storagePort.get<VisitedRoomDomainModel[]>(SPLIT_ROOMS_KEY);
+        this.roomPresenter.presentVisitedRooms(visitedRooms ?? []);
+    }
+
+    selectRoom(roomId: string): void {
+        this.roomPresenter.presentNavigateToRoom(roomId);
+    }
+
+    forgetRoom(roomId: string): void {
+        const visitedRooms = this.storagePort.get<VisitedRoomDomainModel[]>(SPLIT_ROOMS_KEY) ?? [];
+        const updatedVisitedRooms = visitedRooms.filter(room => room.id !== roomId);
+        this.storagePort.set(SPLIT_ROOMS_KEY, updatedVisitedRooms);
+        this.roomPresenter.presentVisitedRooms(updatedVisitedRooms);
+    }
 }

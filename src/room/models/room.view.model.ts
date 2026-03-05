@@ -25,6 +25,10 @@ export type RoomViewModel = {
     isErrorDeleteRoom: boolean;
 
     roomHistory: RoomHistoryViewModel;
+
+    isCreateRoomLoading: boolean;
+    isCreateRoomError: boolean;
+    visitedRooms: VisitedRoomViewModel[];
 }
 
 export type PayerViewModel = {
@@ -61,4 +65,9 @@ export type RoomHistoryViewModel = {
 
     isLoadingFetchRoomHistory: boolean;
     isErrorFetchRoomHistory: boolean;
+}
+
+export type VisitedRoomViewModel = {
+    id: string;
+    name: string;
 }

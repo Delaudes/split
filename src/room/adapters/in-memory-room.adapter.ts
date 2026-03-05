@@ -3,6 +3,16 @@ import { RoomPort } from "../room.port";
 
 export class InMemoryRoomAdapter implements RoomPort {
 
+    async createRoom(roomName: string): Promise<string> {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        if (roomName === 'error') {
+            throw new Error();
+        }
+
+        return crypto.randomUUID();
+    }
+
     async fetchRoom(roomId: string): Promise<RoomDomainModel> {
         await new Promise(resolve => setTimeout(resolve, 2000));
 

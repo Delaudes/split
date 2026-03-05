@@ -29,94 +29,12 @@
 
     <!-- Visited Rooms -->
     <div class="space-y-4 pt-4">
-      <details class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10 text-left">
-        <summary class="cursor-pointer space-y-2 list-none">
-          <!-- Header -->
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-amber-400 text-xl">history</span>
-              <h3 class="text-amber-200 font-medium text-sm">Mes salles</h3>
-            </div>
-            <span class="material-symbols-outlined text-amber-400 text-xl">expand_more</span>
-          </div>
-
-          <!-- Stats -->
-          <div class="flex gap-3 text-xs">
-            <div class="flex items-center gap-1.5 text-amber-200/60 font-light">
-              <span class="material-symbols-outlined text-amber-400/60 text-base"
-                >meeting_room</span
-              >
-              <span class="text-amber-200 font-medium">{{ viewModel.visitedRooms.length }}</span>
-            </div>
-          </div>
-        </summary>
-
-        <!-- Contenu pliable -->
-        <div class="mt-4 pt-4 border-t border-amber-400/10 space-y-3">
-          @for (room of viewModel.visitedRooms; track room.id) {
-            <div class="flex items-center gap-2">
-              <div
-                (click)="homeController.selectRoom(room.id)"
-                class="flex items-center justify-between p-3 rounded-xl bg-amber-400/5 border border-amber-400/10 cursor-pointer hover:bg-amber-400/10 hover:border-amber-400/20 transition-all flex-1"
-              >
-                <div class="flex items-center gap-2">
-                  <span class="material-symbols-outlined text-amber-400/60 text-base"
-                    >door_open</span
-                  >
-                  <p class="text-amber-200 text-sm font-light">{{ room.name }}</p>
-                </div>
-                <span class="material-symbols-outlined text-amber-400/60 text-base"
-                  >arrow_forward</span
-                >
-              </div>
-              <app-forget-room [visitedRoom]="room" />
-            </div>
-          } @empty {
-            <div class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10 text-center">
-              <span class="material-symbols-outlined text-amber-400/40 text-3xl"
-                >visibility_off</span
-              >
-              <p class="text-amber-200/60 text-xs font-light mt-2">Aucune salle visitée</p>
-            </div>
-          }
-        </div>
-      </details>
+      <app-visited-rooms />
     </div>
 
     <!-- Create Room Form -->
     <div class="space-y-4 pt-4">
-      <!-- Error Message -->
-      @if (viewModel.isCreateRoomError) {
-        <div class="p-4 bg-amber-400/10 border border-amber-400/30 rounded-xl text-center">
-          <p class="text-amber-200 text-sm font-light">
-            Impossible de créer la salle. Veuillez réessayer.
-          </p>
-        </div>
-      }
-
-      @if (viewModel.isCreateRoomLoading) {
-        <!-- Loading Spinner -->
-        <div class="flex justify-center py-2">
-          <div
-            class="animate-spin rounded-full h-8 w-8 border-2 border-amber-400/20 border-t-amber-400"
-          ></div>
-        </div>
-      } @else {
-        <div class="flex gap-2 sm:gap-3">
-          <input
-            #input
-            type="text"
-            placeholder="Nom de votre salle"
-            class="min-w-0 flex-1 px-4 py-3 sm:px-6 sm:py-4 bg-amber-50 border-2 border-amber-400/40 rounded-xl focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 text-blue-950 placeholder-blue-950/40 text-sm sm:text-base outline-none transition-all"
-          />
-          <button
-            (click)="homeController.createRoom(input.value)"
-            class="shrink-0 px-5 py-3 sm:px-8 sm:py-4 bg-amber-500 text-blue-950 text-sm sm:text-base font-medium rounded-xl hover:bg-amber-400 active:scale-95 whitespace-nowrap transition-all"
-          >
-            Créer
-          </button>
-        </div>
-      }
+      <app-create-room-form />
     </div>
   </div>
 </div>

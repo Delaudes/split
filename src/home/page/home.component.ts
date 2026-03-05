@@ -1,19 +1,14 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { HomeController } from '../home.controller';
-import { HomeView } from '../home.view';
-import { HomeViewModel } from '../models/home.view.model';
-import { ForgetRoomComponent } from "./components/forget-room.component";
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CreateRoomFormComponent } from '../../room/page/components/create-room-form.component';
+import { VisitedRoomsComponent } from '../../room/page/components/visited-rooms.component';
 
 @Component({
   selector: 'app-home',
-  imports: [ForgetRoomComponent],
+  imports: [VisitedRoomsComponent, CreateRoomFormComponent],
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent implements OnInit {
-  private readonly homeView = inject(HomeView);
-  protected readonly homeController = inject(HomeController);
-
+export class HomeComponent {
   protected readonly features = [
     {
       icon: 'lock_open',
@@ -31,12 +26,4 @@ export class HomeComponent implements OnInit {
       description: "Seulement l'essentiel"
     }
   ];
-
-  get viewModel(): HomeViewModel {
-    return this.homeView.homeViewModel.get();
-  }
-
-  ngOnInit(): void {
-    this.homeController.loadVisitedRooms();
-  }
 }

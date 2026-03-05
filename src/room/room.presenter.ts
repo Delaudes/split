@@ -205,6 +205,26 @@ export class RoomPresenter {
         this.roomView.navigateToHome();
     }
 
+    startLoadingCreateRoom(): void {
+        this.roomView.update({ isCreateRoomLoading: true });
+    }
+
+    stopLoadingCreateRoom(): void {
+        this.roomView.update({ isCreateRoomLoading: false });
+    }
+
+    presentErrorCreateRoom(): void {
+        this.roomView.update({ isCreateRoomError: true });
+    }
+
+    presentNavigateToRoom(roomId: string): void {
+        this.roomView.navigateToRoom(roomId);
+    }
+
+    presentVisitedRooms(visitedRooms: { id: string; name: string }[]): void {
+        this.roomView.update({ visitedRooms });
+    }
+
     startLoadingFetchRoomHistory(): void {
         this.roomView.update({ roomHistory: { ...this.roomView.roomViewModel.get().roomHistory, isLoadingFetchRoomHistory: true } });
     }

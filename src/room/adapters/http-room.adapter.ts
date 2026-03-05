@@ -1,5 +1,5 @@
 import { HttpPort } from "../../http/http.port";
-import { AddPayerResponse, FetchRoomResponse } from "../models/room.api.model";
+import { AddPayerResponse, CreateRoomResponse, FetchRoomResponse } from "../models/room.api.model";
 import { ExpenseDomainModel, NewExpenseDomainModel, PayerDomainModel, RoomDomainModel } from "../models/room.domain.model";
 import { RoomPort } from "../room.port";
 
@@ -7,6 +7,11 @@ export class HttpRoomAdapter implements RoomPort {
     private readonly baseUrl = 'https://split-api-ws8o.onrender.com';
 
     constructor(private readonly httpPort: HttpPort) { }
+
+    async createRoom(roomName: string): Promise<string> {
+        const response = await this.httpPort.post<CreateRoomResponse>(`${this.baseUrl}/rooms`, { name: roomName });
+        return response.id;
+    }
 
     async fetchRoom(roomId: string): Promise<RoomDomainModel> {
         const fetchRoomResponse = await this.httpPort.get<FetchRoomResponse>(`${this.baseUrl}/rooms/${roomId}`);

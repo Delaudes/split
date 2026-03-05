@@ -6,8 +6,26 @@ import { RoomService } from "./room.service";
 
 export class RoomController {
     constructor(
-        private readonly roomService: RoomService, private readonly navigationPort: NavigationPort
+        private readonly roomService: RoomService,
+        private readonly navigationPort: NavigationPort
     ) { }
+
+    async createRoom(roomName: string): Promise<void> {
+        await this.roomService.createRoom(roomName);
+    }
+
+    async loadVisitedRooms(): Promise<void> {
+        this.roomService.loadVisitedRooms();
+    }
+
+    selectRoom(roomId: string): void {
+        this.roomService.selectRoom(roomId);
+    }
+
+    forgetRoom(roomId: string, dialog: Dialog): void {
+        this.roomService.forgetRoom(roomId);
+        dialog.close();
+    }
 
     async fetchRoom(): Promise<void> {
         const roomId = this.navigationPort.getParam(AppParam.RoomId)

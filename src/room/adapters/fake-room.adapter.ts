@@ -3,6 +3,16 @@ import { RoomPort } from "../room.port";
 
 export class FakeRoomAdapter implements RoomPort {
 
+    createdRoomId = 'fake-created-room-id';
+    createdRoomName?: string;
+    async createRoom(roomName: string): Promise<string> {
+        if (this.error) {
+            throw this.error;
+        }
+        this.createdRoomName = roomName;
+        return this.createdRoomId;
+    }
+
     room = new RoomDomainModel('fake-room-id', 'fake-room-name', [
         new PayerDomainModel('1', 'Alice', [
             new ExpenseDomainModel('a', 'Hotel', 50),

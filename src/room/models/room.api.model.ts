@@ -1,3 +1,7 @@
+export type CreateRoomResponse = {
+    id: string;
+}
+
 export type AddExpenseResponse = {
     id: string
 }

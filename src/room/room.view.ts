@@ -36,7 +36,11 @@ export class RoomView {
 
                 isLoadingFetchRoomHistory: false,
                 isErrorFetchRoomHistory: false,
-            }
+            },
+
+            isCreateRoomLoading: false,
+            isCreateRoomError: false,
+            visitedRooms: [],
         });
     }
 
@@ -47,5 +51,9 @@ export class RoomView {
 
     navigateToHome(): void {
         this.navigationPort.navigate([AppPath.Home]);
+    }
+
+    navigateToRoom(roomId: string): void {
+        this.navigationPort.navigate([AppPath.Rooms, roomId]);
     }
 }

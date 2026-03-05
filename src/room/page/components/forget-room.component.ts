@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { HomeController } from '../../home.controller';
-import { VisitedRoomViewModel } from '../../models/home.view.model';
+import { VisitedRoomViewModel } from '../../models/room.view.model';
+import { RoomController } from '../../room.controller';
 
 @Component({
     selector: 'app-forget-room',
@@ -10,5 +10,5 @@ import { VisitedRoomViewModel } from '../../models/home.view.model';
 })
 export class ForgetRoomComponent {
     visitedRoom = input.required<VisitedRoomViewModel>();
-    protected readonly homeController = inject(HomeController);
+    protected readonly roomController = inject(RoomController);
 }

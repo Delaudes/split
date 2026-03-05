@@ -1,6 +1,7 @@
 import { NewExpenseDomainModel, RoomDomainModel } from "./models/room.domain.model";
 
 export interface RoomPort {
+    createRoom(roomName: string): Promise<string>;
     fetchRoom(roomId: string): Promise<RoomDomainModel>;
     addPayer(roomId: string, payerName: string): Promise<string>;
     addExpense(newExpense: NewExpenseDomainModel): Promise<string>;

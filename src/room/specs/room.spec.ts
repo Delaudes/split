@@ -887,4 +887,134 @@ describe('Room', () => {
             ])
             .build();
     }
+
+    describe('create room', () => {
+        const roomName = 'fake-room-name';
+
+        it('should display loading', async () => {
+            expect(roomView.roomViewModel.get().isCreateRoomLoading).toEqual(false);
+
+            const createRoomPromise = roomController.createRoom(roomName);
+
+            expect(roomView.roomViewModel.get().isCreateRoomLoading).toEqual(true);
+
+            await createRoomPromise;
+
+            expect(roomView.roomViewModel.get().isCreateRoomLoading).toEqual(false);
+        });
+
+        it('should display loading on error', async () => {
+            expect(roomView.roomViewModel.get().isCreateRoomLoading).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            const createRoomPromise = roomController.createRoom(roomName);
+
+            expect(roomView.roomViewModel.get().isCreateRoomLoading).toEqual(true);
+
+            await createRoomPromise;
+
+            expect(roomView.roomViewModel.get().isCreateRoomLoading).toEqual(false);
+        });
+
+        it('should use the given name', async () => {
+            expect(fakeRoomAdapter.createdRoomName).toBeUndefined();
+
+            await roomController.createRoom(roomName);
+
+            expect(fakeRoomAdapter.createdRoomName).toEqual(roomName);
+        });
+
+        it('should navigate to the created room', async () => {
+            expect(fakeNavigationWrapper.commands).toEqual([]);
+
+            await roomController.createRoom(roomName);
+
+            expect(fakeNavigationWrapper.commands).toEqual([AppPath.Rooms, fakeRoomAdapter.createdRoomId]);
+        });
+
+        it('should display error', async () => {
+            expect(roomView.roomViewModel.get().isCreateRoomError).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            await roomController.createRoom(roomName);
+
+            expect(roomView.roomViewModel.get().isCreateRoomError).toEqual(true);
+        });
+    });
+
+    describe('load visited rooms', () => {
+        it('should load visited rooms from storage', () => {
+            expect(roomView.roomViewModel.get().visitedRooms).toEqual([]);
+
+            const visitedRooms = [
+                { id: 'room-1', name: 'Room 1' },
+                { id: 'room-2', name: 'Room 2' }
+            ];
+            fakeStorageWrapper.storage.set(SPLIT_ROOMS_KEY, visitedRooms);
+
+            roomController.loadVisitedRooms();
+
+            expect(roomView.roomViewModel.get().visitedRooms).toEqual(visitedRooms);
+        });
+
+        it('should load empty visited rooms if there is no visited rooms in storage', () => {
+            expect(roomView.roomViewModel.get().visitedRooms).toEqual([]);
+
+            roomController.loadVisitedRooms();
+
+            expect(roomView.roomViewModel.get().visitedRooms).toEqual([]);
+        });
+    });
+
+    describe('select room', () => {
+        it('should navigate to the selected room', () => {
+            const selectedRoomId = 'fake-room-id';
+
+            expect(fakeNavigationWrapper.commands).toEqual([]);
+
+            roomController.selectRoom(selectedRoomId);
+
+            expect(fakeNavigationWrapper.commands).toEqual([AppPath.Rooms, selectedRoomId]);
+        });
+    });
+
+    describe('forget room', () => {
+        const forgetRoomId = 'room-1';
+        const visitedRooms = [
+            { id: forgetRoomId, name: 'Room 1' },
+            { id: 'room-2', name: 'Room 2' }
+        ];
+
+        beforeEach(() => {
+            fakeStorageWrapper.storage.set(SPLIT_ROOMS_KEY, visitedRooms);
+        });
+
+        it('should forget the room from visited rooms in storage', () => {
+            expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual(visitedRooms);
+
+            roomController.forgetRoom(forgetRoomId, fakeDialog);
+
+            expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual([{ id: 'room-2', name: 'Room 2' }]);
+        });
+
+        it('should update the view after forgetting the room', () => {
+            roomController.loadVisitedRooms();
+
+            expect(roomView.roomViewModel.get().visitedRooms).toEqual(visitedRooms);
+
+            roomController.forgetRoom(forgetRoomId, fakeDialog);
+
+            expect(roomView.roomViewModel.get().visitedRooms).toEqual([{ id: 'room-2', name: 'Room 2' }]);
+        });
+
+        it('should close the dialog', () => {
+            expect(fakeDialog.isClose).toEqual(false);
+
+            roomController.forgetRoom(forgetRoomId, fakeDialog);
+
+            expect(fakeDialog.isClose).toEqual(true);
+        });
+    });
 });

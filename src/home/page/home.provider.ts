@@ -1,43 +1,9 @@
-import { InjectionToken } from "@angular/core";
-import { environment } from "../../environments/environment";
-import { HTTP_TOKEN } from "../../http/http.provider";
-import { NavigationPort } from "../../navigation/navigation.port";
 import { NAVIGATION_PROVIDERS, NAVIGATION_TOKEN } from "../../navigation/navigation.provider";
-import { AngularSignalWrapper } from "../../signal/angular-signal.wrapper";
-import { STORAGE_TOKEN } from "../../storage/storage.provider";
-import { HttpHomeAdapter } from "../adapters/http-home.adapter";
-import { InMemoryHomeAdapter } from "../adapters/in-memory-home.adapter";
 import { HomeController } from "../home.controller";
-import { HomePort } from "../home.port";
-import { HomePresenter } from "../home.presenter";
-import { HomeService } from "../home.service";
-import { HomeView } from "../home.view";
-import { HomeViewModel } from "../models/home.view.model";
-
-
-export const HOME_TOKEN = new InjectionToken<HomePort>('HOME_TOKEN');
 
 export const HOME_PROVIDERS = [
     {
         provide: HomeController,
-        deps: [HomeService, NAVIGATION_TOKEN],
-    },
-    {
-        provide: HomeService,
-        deps: [HomePresenter, HOME_TOKEN, STORAGE_TOKEN],
-    },
-    {
-        provide: HomePresenter,
-        deps: [HomeView],
-    },
-    {
-        provide: HOME_TOKEN,
-        useClass: environment.useInMemoryHomeAdapter ? InMemoryHomeAdapter : HttpHomeAdapter,
-        deps: [HTTP_TOKEN]
-    },
-    {
-        provide: HomeView,
-        useFactory: (navigationPort: NavigationPort) => new HomeView(new AngularSignalWrapper<HomeViewModel>(), navigationPort),
         deps: [NAVIGATION_TOKEN],
     },
     ...NAVIGATION_PROVIDERS
