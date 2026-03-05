@@ -20,7 +20,7 @@ export const HOME_TOKEN = new InjectionToken<HomePort>('HOME_TOKEN');
 export const HOME_PROVIDERS = [
     {
         provide: HomeController,
-        deps: [HomeService],
+        deps: [HomeService, NAVIGATION_TOKEN],
     },
     {
         provide: HomeService,

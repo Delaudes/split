@@ -1,5 +1,5 @@
 import { AppPath } from "../../app/app.routes";
-import { FakeDialogAdapter } from "../../dialog/fake-dialog.adapter";
+import { FakeDialog } from "../../dialog/fake-dialog.adapter";
 import { FakeNavigationWrapper } from "../../navigation/fake-navigation.wrapper";
 import { FakeSignalWrapper } from "../../signal/fake-signal.wrapper";
 import { FakeStorageWrapper } from "../../storage/fake-storage.wrapper";
@@ -19,7 +19,7 @@ describe('Home', () => {
     let fakeStorageWrapper: FakeStorageWrapper;
     let homeView: HomeView;
     let fakeNavigationWrapper: FakeNavigationWrapper;
-    let fakeDialogAdapter: FakeDialogAdapter;
+    let fakeDialog: FakeDialog;
 
     beforeEach(() => {
         fakeNavigationWrapper = new FakeNavigationWrapper();
@@ -28,8 +28,8 @@ describe('Home', () => {
         fakeHomeAdapter = new FakeHomeAdapter();
         homePresenter = new HomePresenter(homeView);
         homeService = new HomeService(homePresenter, fakeHomeAdapter, fakeStorageWrapper);
-        homeController = new HomeController(homeService);
-        fakeDialogAdapter = new FakeDialogAdapter();
+        homeController = new HomeController(homeService, fakeNavigationWrapper);
+        fakeDialog = new FakeDialog();
     });
 
     describe('create room', () => {
@@ -139,7 +139,7 @@ describe('Home', () => {
         it('should forget the room from visited rooms in storage', () => {
             expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual(visitedRooms);
 
-            homeController.forgetRoom(roomId, fakeDialogAdapter);
+            homeController.forgetRoom(roomId, fakeDialog);
 
             expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual([{ id: 'room-2', name: 'Room 2' }]);
         });
@@ -149,17 +149,27 @@ describe('Home', () => {
 
             expect(homeView.homeViewModel.get().visitedRooms).toEqual(visitedRooms);
 
-            homeController.forgetRoom(roomId, fakeDialogAdapter);
+            homeController.forgetRoom(roomId, fakeDialog);
 
             expect(homeView.homeViewModel.get().visitedRooms).toEqual([{ id: 'room-2', name: 'Room 2' }]);
         });
 
         it('should close the dialog', () => {
-            expect(fakeDialogAdapter.isClose).toEqual(false);
+            expect(fakeDialog.isClose).toEqual(false);
 
-            homeController.forgetRoom(roomId, fakeDialogAdapter);
+            homeController.forgetRoom(roomId, fakeDialog);
 
-            expect(fakeDialogAdapter.isClose).toEqual(true);
+            expect(fakeDialog.isClose).toEqual(true);
         })
+    });
+
+    describe('navigate to home', () => {
+        it('should navigate to home page', () => {
+            expect(fakeNavigationWrapper.commands).toEqual([]);
+
+            homeController.navigateToHome();
+
+            expect(fakeNavigationWrapper.commands).toEqual([AppPath.Home]);
+        });
     });
 });

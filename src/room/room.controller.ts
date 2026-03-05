@@ -1,5 +1,5 @@
-import { AppParam, AppPath } from "../app/app.routes";
-import { DialogPort } from "../dialog/dialog.port";
+import { AppParam } from "../app/app.routes";
+import { Dialog } from "../dialog/dialog";
 import { NavigationPort } from "../navigation/navigation.port";
 import { NewExpenseDomainModel } from "./models/room.domain.model";
 import { RoomService } from "./room.service";
@@ -24,14 +24,14 @@ export class RoomController {
         await this.roomService.addExpense(newExpense);
     }
 
-    async validateDeleteExpense(expenseId: string, dialog: DialogPort): Promise<void> {
+    async validateDeleteExpense(expenseId: string, dialog: Dialog): Promise<void> {
         const isDeleteSuccess = await this.roomService.deleteExpense(expenseId);
         if (isDeleteSuccess) {
             dialog.close();
         }
     }
 
-    async validateDeleteAllExpenses(dialog: DialogPort): Promise<void> {
+    async validateDeleteAllExpenses(dialog: Dialog): Promise<void> {
         const roomId = this.navigationPort.getParam(AppParam.RoomId)
         const isDeleteSuccess = await this.roomService.deleteAllExpenses(roomId);
         if (isDeleteSuccess) {
@@ -46,11 +46,7 @@ export class RoomController {
         });
     }
 
-    navigateToHome(): void {
-        this.navigationPort.navigate([AppPath.Home]);
-    }
-
-    async validateEditRoomName(newRoomName: string, dialog: DialogPort): Promise<void> {
+    async validateEditRoomName(newRoomName: string, dialog: Dialog): Promise<void> {
         const roomId = this.navigationPort.getParam(AppParam.RoomId)
         const editSuccess = await this.roomService.editRoomName(roomId, newRoomName);
         if (editSuccess) {
@@ -58,21 +54,21 @@ export class RoomController {
         }
     }
 
-    async validateEditPayerName(payerId: string, newPayerName: string, dialog: DialogPort): Promise<void> {
+    async validateEditPayerName(payerId: string, newPayerName: string, dialog: Dialog): Promise<void> {
         const editSuccess = await this.roomService.editPayerName(payerId, newPayerName);
         if (editSuccess) {
             dialog.close();
         }
     }
 
-    async validateDeletePayer(payerId: string, dialog: DialogPort): Promise<void> {
+    async validateDeletePayer(payerId: string, dialog: Dialog): Promise<void> {
         const isDeleteSuccess = await this.roomService.deletePayer(payerId);
         if (isDeleteSuccess) {
             dialog.close();
         }
     }
 
-    async validateDeleteRoom(dialog: DialogPort): Promise<void> {
+    async validateDeleteRoom(dialog: Dialog): Promise<void> {
         const roomId = this.navigationPort.getParam(AppParam.RoomId)
         const isDeleteSuccess = await this.roomService.deleteRoom(roomId);
         if (isDeleteSuccess) {

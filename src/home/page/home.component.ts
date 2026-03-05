@@ -3,14 +3,12 @@ import { HomeController } from '../home.controller';
 import { HomeView } from '../home.view';
 import { HomeViewModel } from '../models/home.view.model';
 import { ForgetRoomComponent } from "./components/forget-room.component";
-import { HOME_PROVIDERS } from './home.provider';
 
 @Component({
   selector: 'app-home',
   imports: [ForgetRoomComponent],
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [HOME_PROVIDERS],
 })
 export class HomeComponent implements OnInit {
   private readonly homeView = inject(HomeView);
