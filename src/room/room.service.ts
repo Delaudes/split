@@ -97,6 +97,9 @@ export class RoomService {
         try {
             await this.roomPort.editRoomName(roomId, newRoomName);
             this.room.name = newRoomName;
+            const visitedRooms = this.storagePort.get<VisitedRoomDomainModel[]>(SPLIT_ROOMS_KEY) ?? [];
+            const updatedVisitedRooms = visitedRooms.map(room => room.id === roomId ? { ...room, name: newRoomName } : room);
+            this.storagePort.set(SPLIT_ROOMS_KEY, updatedVisitedRooms);
             this.roomPresenter.presentRoom(this.room);
             return true
         } catch {

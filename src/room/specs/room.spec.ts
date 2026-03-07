@@ -511,6 +511,19 @@ describe('Room', () => {
 
             expect(roomView.roomViewModel.get().isErrorEditRoomName).toEqual(false);
         });
+
+        it('should update room name in visited rooms in storage', async () => {
+            const visitedRooms = [{ id: roomId, name: 'Old Room Name' }];
+            fakeStorageWrapper.storage.set(SPLIT_ROOMS_KEY, visitedRooms);
+
+            expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual(visitedRooms);
+
+            await roomController.validateEditRoomName(newRoomName, fakeDialog);
+
+            expect(fakeStorageWrapper.storage.get(SPLIT_ROOMS_KEY)).toEqual([
+                { id: roomId, name: newRoomName },
+            ]);
+        });
     });
 
     describe('edit payer name', () => {

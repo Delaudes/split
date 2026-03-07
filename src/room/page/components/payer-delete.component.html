@@ -1,0 +1,61 @@
+<!-- Delete Payer Button -->
+<button
+  (click)="deleteDialog.showModal()"
+  class="w-full px-5 py-3 bg-amber-400/10 text-amber-200 text-sm font-medium rounded-xl hover:bg-amber-400/20 active:scale-95 whitespace-nowrap transition-all"
+>
+  Supprimer
+</button>
+
+<!-- Delete Payer Confirmation Dialog -->
+<dialog
+  #deleteDialog
+  class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 bg-blue-950 border border-amber-400/20 rounded-xl p-6 max-w-md w-[calc(100%-2rem)] space-y-6 backdrop:bg-blue-950/95"
+>
+  <!-- Header -->
+  <div class="space-y-3 text-center">
+    <div class="w-16 h-16 rounded-full bg-amber-400/10 flex items-center justify-center mx-auto">
+      <span class="material-symbols-outlined text-amber-400 text-3xl">warning</span>
+    </div>
+    <h2 class="text-amber-200 font-medium text-lg">Attention</h2>
+    <p class="text-amber-200/60 text-sm font-light">
+      Êtes-vous sûr de vouloir supprimer le participant "<strong class="text-amber-200">{{
+        payer().name
+      }}</strong
+      >" ?<br />
+      <span class="text-amber-400 font-medium">Cette action est irréversible.</span>
+    </p>
+  </div>
+
+  <!-- Error Message -->
+  @if (payer().isErrorDeletePayer) {
+    <div class="p-4 bg-amber-400/10 border border-amber-400/30 rounded-xl">
+      <p class="text-amber-200 text-sm font-light">
+        Impossible de supprimer le participant. Veuillez réessayer.
+      </p>
+    </div>
+  }
+
+  <!-- Actions -->
+  @if (payer().isLoadingDeletePayer) {
+    <div class="flex justify-center py-2">
+      <div
+        class="animate-spin rounded-full h-8 w-8 border-2 border-amber-400/20 border-t-amber-400"
+      ></div>
+    </div>
+  } @else {
+    <div class="flex gap-3">
+      <button
+        (click)="deleteDialog.close()"
+        class="flex-1 px-5 py-3 bg-amber-400/10 text-amber-200 text-sm font-medium rounded-xl hover:bg-amber-400/20 active:scale-95 whitespace-nowrap transition-all"
+      >
+        Annuler
+      </button>
+      <button
+        (click)="roomController.validateDeletePayer(payer().id, deleteDialog)"
+        class="flex-1 px-5 py-3 bg-amber-500 text-blue-950 text-sm font-medium rounded-xl hover:bg-amber-400 active:scale-95 whitespace-nowrap transition-all"
+      >
+        Confirmer
+      </button>
+    </div>
+  }
+</dialog>
