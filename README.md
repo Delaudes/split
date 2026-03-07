@@ -78,7 +78,7 @@ For more information on using the Angular CLI, including detailed command refere
 
 ## V2
 
-- edit room name
+- edit room name + update stored room name
 - edit payer name
 - delete room + forget stored room
 - delete payer
