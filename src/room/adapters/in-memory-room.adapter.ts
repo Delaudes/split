@@ -118,6 +118,20 @@ export class InMemoryRoomAdapter implements RoomPort {
     }
 
     async fetchRoomHistory(roomId: string): Promise<RoomDomainModel> {
+        if (roomId === 'history-no-payer') {
+            return new RoomDomainModel(roomId, roomId, [])
+        }
+
+        if (roomId === 'history-no-expense') {
+            return new RoomDomainModel(roomId, roomId, [
+                new PayerDomainModel('1', 'Alice', []),
+            ]);
+        }
+
+        if (roomId === 'history-error') {
+            throw new Error()
+        }
+
         return await this.fetchRoom(roomId);
     }
 }
