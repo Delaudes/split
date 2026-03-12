@@ -26,10 +26,7 @@
           (click)="roomController.selectRoom(room.id)"
           class="flex items-center justify-between p-3 rounded-xl bg-amber-400/5 border border-amber-400/10 cursor-pointer hover:bg-amber-400/10 hover:border-amber-400/20 transition-all flex-1"
         >
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-amber-400/60 text-base">door_open</span>
-            <p class="text-amber-200 text-sm font-light">{{ room.name }}</p>
-          </div>
+          <p class="text-amber-200 text-sm font-light">{{ room.name }}</p>
           <span class="material-symbols-outlined text-amber-400/60 text-base">arrow_forward</span>
         </div>
         <app-forget-room [visitedRoom]="room" />
