@@ -53,6 +53,7 @@ export class RoomService {
                 expenseId,
                 newExpense.description,
                 newExpense.amount,
+                []
             ), newExpense.payerId);
             this.roomPresenter.presentRoom(this.room);
         } catch {
@@ -195,5 +196,20 @@ export class RoomService {
         const updatedVisitedRooms = visitedRooms.filter(room => room.id !== roomId);
         this.storagePort.set(SPLIT_ROOMS_KEY, updatedVisitedRooms);
         this.roomPresenter.presentVisitedRooms(updatedVisitedRooms);
+    }
+
+    async excludeExpensePayers(expenseId: string, payersId: string[]): Promise<boolean> {
+        this.roomPresenter.startLoadingExcludeExpensePayers(expenseId);
+        try {
+            await this.roomPort.excludeExpensePayers(expenseId, payersId);
+            this.room.excludeExpensePayers(expenseId, payersId);
+            this.roomPresenter.presentRoom(this.room);
+            return true
+        } catch {
+            this.roomPresenter.presentErrorExcludeExpensePayers(expenseId);
+            return false
+        } finally {
+            this.roomPresenter.stopLoadingExcludeExpensePayers(expenseId);
+        }
     }
 }

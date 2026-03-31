@@ -41,7 +41,7 @@
     </div>
   } @else {
     <div class="space-y-3">
-      @for (payer of viewModel.roomHistory.payers; track payer.id) {
+      @for (payer of viewModel.roomHistory.payers; track payer.name) {
         <details class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10 text-left">
           <summary class="cursor-pointer space-y-2 list-none">
             <div class="flex items-center justify-between">
@@ -64,7 +64,7 @@
           </summary>
 
           <div class="mt-4 pt-4 border-t border-amber-400/10 space-y-3">
-            @for (expense of payer.expenses; track expense.id) {
+            @for (expense of payer.expenses; track expense.description) {
               <div class="flex items-center justify-between p-3 rounded-xl bg-amber-400/5">
                 <div class="flex items-center gap-2">
                   <span class="material-symbols-outlined text-amber-400/60 text-base">receipt</span>

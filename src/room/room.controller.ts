@@ -98,4 +98,11 @@ export class RoomController {
         const roomId = this.navigationPort.getParam(AppParam.RoomId)
         await this.roomService.fetchRoomHistory(roomId);
     }
+
+    async excludeExpensePayers(expenseId: string, payersId: string[], dialog: Dialog): Promise<void> {
+        const isExcludeSuccess = await this.roomService.excludeExpensePayers(expenseId, payersId);
+        if (isExcludeSuccess) {
+            dialog.close();
+        }
+    }
 }

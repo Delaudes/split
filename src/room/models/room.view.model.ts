@@ -7,7 +7,6 @@ export type RoomViewModel = {
 
     isLoadingAddPayer: boolean;
     isErrorAddPayer: boolean;
-
     isLoadingAddExpense: boolean;
     isErrorAddExpense: boolean;
 
@@ -17,10 +16,8 @@ export type RoomViewModel = {
 
     isLoadingDeleteAllExpenses: boolean;
     isErrorDeleteAllExpenses: boolean;
-
     isLoadingEditRoomName: boolean;
     isErrorEditRoomName: boolean;
-
     isLoadingDeleteRoom: boolean;
     isErrorDeleteRoom: boolean;
 
@@ -40,7 +37,6 @@ export type PayerViewModel = {
 
     isLoadingEditPayerName: boolean;
     isErrorEditPayerName: boolean;
-
     isLoadingDeletePayer: boolean;
     isErrorDeletePayer: boolean;
 }
@@ -52,6 +48,15 @@ export type ExpenseViewModel = {
 
     isLoadingDeleteExpense: boolean;
     isErrorDeleteExpense: boolean;
+    isLoadingExcludeExpensePayers: boolean;
+    isErrorExcludeExpensePayers: boolean;
+    expensePayers: ExpensePayerViewModel[];
+}
+
+export type ExpensePayerViewModel = {
+    id: string;
+    name: string;
+    isExcluded: boolean;
 }
 
 export type PaymentViewModel = {

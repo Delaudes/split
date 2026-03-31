@@ -32,19 +32,19 @@ export class InMemoryRoomAdapter implements RoomPort {
 
         return new RoomDomainModel(roomId, 'Vacances de la famille', [
             new PayerDomainModel('1', 'Alice', [
-                new ExpenseDomainModel('a', 'Hotel', 50),
-                new ExpenseDomainModel('b', 'Restaurant', 30),
-                new ExpenseDomainModel('c', 'Museum', 20),
+                new ExpenseDomainModel('a', 'Hotel', 50, ['1']),
+                new ExpenseDomainModel('b', 'Restaurant', 30, []),
+                new ExpenseDomainModel('c', 'Museum', 20, ['2']),
             ]),
             new PayerDomainModel('2', 'Bob', [
-                new ExpenseDomainModel('d', 'Flight', 80),
-                new ExpenseDomainModel('e', 'Car Rental', 40),
-                new ExpenseDomainModel('f', 'Snacks', 15),
+                new ExpenseDomainModel('d', 'Flight', 80, ['1']),
+                new ExpenseDomainModel('e', 'Car Rental', 40, ['3']),
+                new ExpenseDomainModel('f', 'Snacks', 15, []),
             ]),
             new PayerDomainModel('3', 'Charlie', [
-                new ExpenseDomainModel('g', 'Accommodation', 60),
-                new ExpenseDomainModel('h', 'Activities', 20),
-                new ExpenseDomainModel('i', 'Souvenirs', 15),
+                new ExpenseDomainModel('g', 'Accommodation', 60, []),
+                new ExpenseDomainModel('h', 'Activities', 20, ['2']),
+                new ExpenseDomainModel('i', 'Souvenirs', 15, []),
             ]),
         ]);
     }
@@ -133,5 +133,15 @@ export class InMemoryRoomAdapter implements RoomPort {
         }
 
         return await this.fetchRoom(roomId);
+    }
+
+    async excludeExpensePayers(expenseId: string, payersId: string[]): Promise<void> {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        if (payersId.includes('1')) {
+            throw new Error()
+        }
+
+        return;
     }
 }

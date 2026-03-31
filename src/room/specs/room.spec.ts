@@ -7,7 +7,7 @@ import { FakeStorageWrapper } from "../../storage/fake-storage.wrapper";
 import { SPLIT_ROOMS_KEY } from "../../storage/storage.key";
 import { FakeRoomAdapter } from "../adapters/fake-room.adapter";
 import { NewExpenseDomainModel } from "../models/room.domain.model";
-import { ExpenseViewModel, PayerViewModel, PaymentViewModel, RoomViewModel } from "../models/room.view.model";
+import { ExpensePayerViewModel, ExpenseViewModel, PayerViewModel, PaymentViewModel, RoomViewModel } from "../models/room.view.model";
 import { RoomController } from "../room.controller";
 import { RoomPresenter } from "../room.presenter";
 import { RoomService } from "../room.service";
@@ -284,6 +284,15 @@ describe('Room', () => {
                 .amount('123.46')
                 .isErrorDeleteExpense(false)
                 .isLoadingDeleteExpense(false)
+                .isErrorExcludeExpensePayers(false)
+                .isLoadingExcludeExpensePayers(false)
+                .expensePayers([
+                    Builder<ExpensePayerViewModel>()
+                        .id(fakeRoomAdapter.payerId)
+                        .name(payerName)
+                        .isExcluded(false)
+                        .build(),
+                ])
                 .build();
 
             await roomController.addExpense(expenseDescription, expenseAmount, payerId);
@@ -335,6 +344,14 @@ describe('Room', () => {
             await deleteExpensePromise;
 
             expect(roomView.roomViewModel.get().payers[0].expenses[0].isLoadingDeleteExpense).toEqual(false);
+        });
+
+        it('should use the current expense id', async () => {
+            expect(fakeRoomAdapter.expenseIdToDelete).toBeUndefined();
+
+            await roomController.validateDeleteExpense(expenseId, fakeDialog);
+
+            expect(fakeRoomAdapter.expenseIdToDelete).toEqual(expenseId);
         });
 
         it('should close dialog', async () => {
@@ -393,6 +410,14 @@ describe('Room', () => {
             await deleteAllExpensesPromise;
 
             expect(roomView.roomViewModel.get().isLoadingDeleteAllExpenses).toEqual(false);
+        });
+
+        it('should use the current room id', async () => {
+            expect(fakeRoomAdapter.roomIdDeleteAllExpenses).toBeUndefined();
+
+            await roomController.validateDeleteAllExpenses(fakeDialog);
+
+            expect(fakeRoomAdapter.roomIdDeleteAllExpenses).toEqual(roomId);
         });
 
         it('should close dialog', async () => {
@@ -474,6 +499,14 @@ describe('Room', () => {
             await editRoomPromise;
 
             expect(roomView.roomViewModel.get().isLoadingEditRoomName).toEqual(false);
+        });
+
+        it('should use the current room id', async () => {
+            expect(fakeRoomAdapter.roomId).toBeUndefined();
+
+            await roomController.validateEditRoomName(newRoomName, fakeDialog);
+
+            expect(fakeRoomAdapter.roomId).toEqual(roomId);
         });
 
         it('should use the given name', async () => {
@@ -559,6 +592,14 @@ describe('Room', () => {
             expect(roomView.roomViewModel.get().payers[0].isLoadingEditPayerName).toEqual(false);
         });
 
+        it('should use the current payer id', async () => {
+            expect(fakeRoomAdapter.payerIdToEdit).toBeUndefined();
+
+            await roomController.validateEditPayerName(payerId, newPayerName, fakeDialog);
+
+            expect(fakeRoomAdapter.payerIdToEdit).toEqual(payerId);
+        });
+
         it('should use the given name', async () => {
             expect(fakeRoomAdapter.newPayerName).toBeUndefined()
 
@@ -627,6 +668,14 @@ describe('Room', () => {
             expect(roomView.roomViewModel.get().payers[0].isLoadingDeletePayer).toEqual(false);
         });
 
+        it('should use the current payer id', async () => {
+            expect(fakeRoomAdapter.payerIdToDelete).toBeUndefined();
+
+            await roomController.validateDeletePayer(payerId, fakeDialog);
+
+            expect(fakeRoomAdapter.payerIdToDelete).toEqual(payerId);
+        });
+
         it('should close dialog', async () => {
             expect(fakeDialog.isClose).toEqual(false);
 
@@ -683,6 +732,14 @@ describe('Room', () => {
             await deleteRoomPromise;
 
             expect(roomView.roomViewModel.get().isLoadingDeleteRoom).toEqual(false);
+        });
+
+        it('should use the current room id', async () => {
+            expect(fakeRoomAdapter.roomIdToDelete).toBeUndefined();
+
+            await roomController.validateDeleteRoom(fakeDialog);
+
+            expect(fakeRoomAdapter.roomIdToDelete).toEqual(roomId);
         });
 
         it('should close dialog', async () => {
@@ -800,6 +857,25 @@ describe('Room', () => {
                             .amount('50.00')
                             .isErrorDeleteExpense(false)
                             .isLoadingDeleteExpense(false)
+                            .isErrorExcludeExpensePayers(false)
+                            .isLoadingExcludeExpensePayers(false)
+                            .expensePayers([
+                                Builder<ExpensePayerViewModel>()
+                                    .id('1')
+                                    .name('Alice')
+                                    .isExcluded(true)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('2')
+                                    .name('Bob')
+                                    .isExcluded(false)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('3')
+                                    .name('Charlie')
+                                    .isExcluded(false)
+                                    .build(),
+                            ])
                             .build(),
                         Builder<ExpenseViewModel>()
                             .id('b')
@@ -807,6 +883,25 @@ describe('Room', () => {
                             .amount('30.00')
                             .isErrorDeleteExpense(false)
                             .isLoadingDeleteExpense(false)
+                            .isErrorExcludeExpensePayers(false)
+                            .isLoadingExcludeExpensePayers(false)
+                            .expensePayers([
+                                Builder<ExpensePayerViewModel>()
+                                    .id('1')
+                                    .name('Alice')
+                                    .isExcluded(false)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('2')
+                                    .name('Bob')
+                                    .isExcluded(false)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('3')
+                                    .name('Charlie')
+                                    .isExcluded(false)
+                                    .build(),
+                            ])
                             .build(),
                         Builder<ExpenseViewModel>()
                             .id('c')
@@ -814,6 +909,25 @@ describe('Room', () => {
                             .amount('20.00')
                             .isErrorDeleteExpense(false)
                             .isLoadingDeleteExpense(false)
+                            .isErrorExcludeExpensePayers(false)
+                            .isLoadingExcludeExpensePayers(false)
+                            .expensePayers([
+                                Builder<ExpensePayerViewModel>()
+                                    .id('1')
+                                    .name('Alice')
+                                    .isExcluded(false)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('2')
+                                    .name('Bob')
+                                    .isExcluded(true)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('3')
+                                    .name('Charlie')
+                                    .isExcluded(false)
+                                    .build(),
+                            ])
                             .build()
                     ])
                     .build(),
@@ -833,6 +947,25 @@ describe('Room', () => {
                             .amount('80.00')
                             .isErrorDeleteExpense(false)
                             .isLoadingDeleteExpense(false)
+                            .isErrorExcludeExpensePayers(false)
+                            .isLoadingExcludeExpensePayers(false)
+                            .expensePayers([
+                                Builder<ExpensePayerViewModel>()
+                                    .id('1')
+                                    .name('Alice')
+                                    .isExcluded(true)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('2')
+                                    .name('Bob')
+                                    .isExcluded(false)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('3')
+                                    .name('Charlie')
+                                    .isExcluded(false)
+                                    .build(),
+                            ])
                             .build(),
                         Builder<ExpenseViewModel>()
                             .id('e')
@@ -840,6 +973,25 @@ describe('Room', () => {
                             .amount('40.00')
                             .isErrorDeleteExpense(false)
                             .isLoadingDeleteExpense(false)
+                            .isErrorExcludeExpensePayers(false)
+                            .isLoadingExcludeExpensePayers(false)
+                            .expensePayers([
+                                Builder<ExpensePayerViewModel>()
+                                    .id('1')
+                                    .name('Alice')
+                                    .isExcluded(false)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('2')
+                                    .name('Bob')
+                                    .isExcluded(false)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('3')
+                                    .name('Charlie')
+                                    .isExcluded(true)
+                                    .build(),
+                            ])
                             .build(),
                         Builder<ExpenseViewModel>()
                             .id('f')
@@ -847,6 +999,25 @@ describe('Room', () => {
                             .amount('15.00')
                             .isErrorDeleteExpense(false)
                             .isLoadingDeleteExpense(false)
+                            .isErrorExcludeExpensePayers(false)
+                            .isLoadingExcludeExpensePayers(false)
+                            .expensePayers([
+                                Builder<ExpensePayerViewModel>()
+                                    .id('1')
+                                    .name('Alice')
+                                    .isExcluded(false)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('2')
+                                    .name('Bob')
+                                    .isExcluded(false)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('3')
+                                    .name('Charlie')
+                                    .isExcluded(false)
+                                    .build(),
+                            ])
                             .build(),
                     ])
                     .build(),
@@ -866,6 +1037,25 @@ describe('Room', () => {
                             .amount('60.00')
                             .isErrorDeleteExpense(false)
                             .isLoadingDeleteExpense(false)
+                            .isErrorExcludeExpensePayers(false)
+                            .isLoadingExcludeExpensePayers(false)
+                            .expensePayers([
+                                Builder<ExpensePayerViewModel>()
+                                    .id('1')
+                                    .name('Alice')
+                                    .isExcluded(false)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('2')
+                                    .name('Bob')
+                                    .isExcluded(false)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('3')
+                                    .name('Charlie')
+                                    .isExcluded(false)
+                                    .build(),
+                            ])
                             .build(),
                         Builder<ExpenseViewModel>()
                             .id('h')
@@ -873,6 +1063,25 @@ describe('Room', () => {
                             .amount('20.00')
                             .isErrorDeleteExpense(false)
                             .isLoadingDeleteExpense(false)
+                            .isErrorExcludeExpensePayers(false)
+                            .isLoadingExcludeExpensePayers(false)
+                            .expensePayers([
+                                Builder<ExpensePayerViewModel>()
+                                    .id('1')
+                                    .name('Alice')
+                                    .isExcluded(false)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('2')
+                                    .name('Bob')
+                                    .isExcluded(true)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('3')
+                                    .name('Charlie')
+                                    .isExcluded(false)
+                                    .build(),
+                            ])
                             .build(),
                         Builder<ExpenseViewModel>()
                             .id('i')
@@ -880,6 +1089,25 @@ describe('Room', () => {
                             .amount('15.00')
                             .isErrorDeleteExpense(false)
                             .isLoadingDeleteExpense(false)
+                            .isErrorExcludeExpensePayers(false)
+                            .isLoadingExcludeExpensePayers(false)
+                            .expensePayers([
+                                Builder<ExpensePayerViewModel>()
+                                    .id('1')
+                                    .name('Alice')
+                                    .isExcluded(false)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('2')
+                                    .name('Bob')
+                                    .isExcluded(false)
+                                    .build(),
+                                Builder<ExpensePayerViewModel>()
+                                    .id('3')
+                                    .name('Charlie')
+                                    .isExcluded(false)
+                                    .build(),
+                            ])
                             .build()
                     ])
                     .build(),
@@ -888,14 +1116,14 @@ describe('Room', () => {
             .expensesAverage('110.00')
             .payments([
                 Builder<PaymentViewModel>()
-                    .fromPayerName('Alice')
-                    .toPayerName('Bob')
-                    .amount('10.00')
+                    .fromPayerName('Charlie')
+                    .toPayerName('Alice')
+                    .amount('20.00')
                     .build(),
                 Builder<PaymentViewModel>()
                     .fromPayerName('Charlie')
                     .toPayerName('Bob')
-                    .amount('15.00')
+                    .amount('10.00')
                     .build(),
             ])
             .build();
@@ -1028,6 +1256,96 @@ describe('Room', () => {
             roomController.forgetRoom(forgetRoomId, fakeDialog);
 
             expect(fakeDialog.isClose).toEqual(true);
+        });
+    });
+
+    describe('exclude expense payers', () => {
+        let expenseId: string;
+        let payersIdToExclude: string[];
+
+        beforeEach(async () => {
+            await roomController.addPayer(payerName);
+            await roomController.addExpense(expenseDescription, expenseAmount, payerId);
+            expenseId = roomView.roomViewModel.get().payers[0].expenses[0].id;
+            payersIdToExclude = [roomView.roomViewModel.get().payers[0].id];
+        });
+
+        it('should display loading', async () => {
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isLoadingExcludeExpensePayers).toEqual(false);
+
+            const excludeExpensePayersPromise = roomController.excludeExpensePayers(expenseId, payersIdToExclude, fakeDialog);
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isLoadingExcludeExpensePayers).toEqual(true);
+
+            await excludeExpensePayersPromise;
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isLoadingExcludeExpensePayers).toEqual(false);
+        });
+
+        it('should display loading on error', async () => {
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isLoadingExcludeExpensePayers).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            const excludeExpensePayersPromise = roomController.excludeExpensePayers(expenseId, payersIdToExclude, fakeDialog);
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isLoadingExcludeExpensePayers).toEqual(true);
+
+            await excludeExpensePayersPromise;
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isLoadingExcludeExpensePayers).toEqual(false);
+        });
+
+        it('should use the current expense id', async () => {
+            expect(fakeRoomAdapter.expenseIdToExcludePayers).toBeUndefined();
+
+            await roomController.excludeExpensePayers(expenseId, payersIdToExclude, fakeDialog);
+
+            expect(fakeRoomAdapter.expenseIdToExcludePayers).toEqual(expenseId);
+        });
+
+        it('should use the given payers id', async () => {
+            expect(fakeRoomAdapter.payersIdToExcludeFromExpense).toBeUndefined();
+
+            await roomController.excludeExpensePayers(expenseId, payersIdToExclude, fakeDialog);
+
+            expect(fakeRoomAdapter.payersIdToExcludeFromExpense).toEqual(payersIdToExclude);
+        });
+
+        it('should close dialog', async () => {
+            expect(fakeDialog.isClose).toEqual(false);
+
+            await roomController.excludeExpensePayers(expenseId, payersIdToExclude, fakeDialog);
+
+            expect(fakeDialog.isClose).toEqual(true);
+        });
+
+        it('should display error', async () => {
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isErrorExcludeExpensePayers).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            await roomController.excludeExpensePayers(expenseId, payersIdToExclude, fakeDialog);
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isErrorExcludeExpensePayers).toEqual(true);
+        });
+
+        it('should exclude payers from expense', async () => {
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].expensePayers[0].isExcluded).toEqual(false);
+
+            await roomController.excludeExpensePayers(expenseId, payersIdToExclude, fakeDialog);
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].expensePayers[0].isExcluded).toEqual(true);
+        });
+
+        it('should reset error exclude expense payers on success', async () => {
+            roomPresenter.presentErrorExcludeExpensePayers(expenseId);
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isErrorExcludeExpensePayers).toEqual(true);
+
+            await roomController.excludeExpensePayers(expenseId, payersIdToExclude, fakeDialog);
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isErrorExcludeExpensePayers).toEqual(false);
         });
     });
 });

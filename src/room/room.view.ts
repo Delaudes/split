@@ -33,7 +33,6 @@ export class RoomView {
 
             roomHistory: {
                 payers: [],
-
                 isLoadingFetchRoomHistory: false,
                 isErrorFetchRoomHistory: false,
             },

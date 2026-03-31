@@ -15,19 +15,19 @@ export class FakeRoomAdapter implements RoomPort {
 
     room = new RoomDomainModel('fake-room-id', 'fake-room-name', [
         new PayerDomainModel('1', 'Alice', [
-            new ExpenseDomainModel('a', 'Hotel', 50),
-            new ExpenseDomainModel('b', 'Restaurant', 30),
-            new ExpenseDomainModel('c', 'Museum', 20),
+            new ExpenseDomainModel('a', 'Hotel', 50, ['1']),
+            new ExpenseDomainModel('b', 'Restaurant', 30, []),
+            new ExpenseDomainModel('c', 'Museum', 20, ['2']),
         ]),
         new PayerDomainModel('2', 'Bob', [
-            new ExpenseDomainModel('d', 'Flight', 80),
-            new ExpenseDomainModel('e', 'Car Rental', 40),
-            new ExpenseDomainModel('f', 'Snacks', 15),
+            new ExpenseDomainModel('d', 'Flight', 80, ['1']),
+            new ExpenseDomainModel('e', 'Car Rental', 40, ['3']),
+            new ExpenseDomainModel('f', 'Snacks', 15, []),
         ]),
         new PayerDomainModel('3', 'Charlie', [
-            new ExpenseDomainModel('g', 'Accommodation', 60),
-            new ExpenseDomainModel('h', 'Activities', 20),
-            new ExpenseDomainModel('i', 'Souvenirs', 15),
+            new ExpenseDomainModel('g', 'Accommodation', 60, []),
+            new ExpenseDomainModel('h', 'Activities', 20, ['2']),
+            new ExpenseDomainModel('i', 'Souvenirs', 15, []),
         ]),
     ]);
     roomId?: string;
@@ -69,11 +69,12 @@ export class FakeRoomAdapter implements RoomPort {
         this.expenseIdToDelete = expenseId;
     }
 
+    roomIdDeleteAllExpenses?: string;
     async deleteAllExpenses(roomId: string): Promise<void> {
         if (this.error) {
             throw this.error;
         }
-        this.roomId = roomId;
+        this.roomIdDeleteAllExpenses = roomId;
     }
 
     newRoomName?: string;
@@ -86,11 +87,12 @@ export class FakeRoomAdapter implements RoomPort {
     }
 
     newPayerName?: string;
+    payerIdToEdit?: string;
     async editPayerName(payerId: string, newPayerName: string): Promise<void> {
         if (this.error) {
             throw this.error;
         }
-        this.payerId = payerId;
+        this.payerIdToEdit = payerId;
         this.newPayerName = newPayerName;
     }
 
@@ -117,6 +119,16 @@ export class FakeRoomAdapter implements RoomPort {
         }
         this.roomIdHistory = roomId;
         return this.room;
+    }
+
+    expenseIdToExcludePayers?: string;
+    payersIdToExcludeFromExpense?: string[]
+    async excludeExpensePayers(expenseId: string, payersId: string[]): Promise<void> {
+        if (this.error) {
+            throw this.error;
+        }
+        this.expenseIdToExcludePayers = expenseId;
+        this.payersIdToExcludeFromExpense = payersId;
     }
 }
 

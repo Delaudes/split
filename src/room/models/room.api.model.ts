@@ -20,6 +20,7 @@ export type FetchRoomResponse = {
             id: string;
             description: string;
             amount: number;
+            excludedPayersId: string[];
         }[]
     }[]
 }

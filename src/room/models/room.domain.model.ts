@@ -38,7 +38,7 @@ export class RoomDomainModel {
     get payments(): PaymentDomainModel[] {
         const balances = this.payers.map(payer => ({
             name: payer.name,
-            balance: payer.getBalance(this.expensesAverage)
+            balance: payer.getBalance(this.payers)
         }));
         const creditors = balances.filter(balance => balance.balance > 0);
         const debtors = balances.filter(balance => balance.balance < 0).map(b => ({ name: b.name, balance: -b.balance }));
@@ -80,6 +80,12 @@ export class RoomDomainModel {
             this.payers.splice(payerIndex, 1);
         }
     }
+
+    excludeExpensePayers(expenseId: string, excludedPayersId: string[]): void {
+        this.payers.forEach(payer => {
+            payer.excludeExpensePayers(expenseId, excludedPayersId);
+        });
+    }
 }
 
 export class PayerDomainModel {
@@ -89,16 +95,12 @@ export class PayerDomainModel {
         readonly expenses: ExpenseDomainModel[]
     ) { }
 
-    get expensesCount(): number {
+    get expensesLength(): number {
         return this.expenses.length;
     }
 
     get expensesTotal(): number {
         return this.expenses.reduce((sum, expense) => sum + expense.amount, 0);
-    }
-
-    getBalance(expensesAverage: number): number {
-        return this.expensesTotal - expensesAverage;
     }
 
     addExpense(expense: ExpenseDomainModel): void {
@@ -112,6 +114,19 @@ export class PayerDomainModel {
         }
     }
 
+    getBalance(roomPayers: PayerDomainModel[]): number {
+        const roomExpenses = roomPayers.flatMap(payer => payer.expenses);
+        const totalToPay = roomExpenses
+            .reduce((sum, roomExpense) => {
+                if (roomExpense.isIncludedPayers(this.id)) {
+                    return sum + roomExpense.getAmountPerPayer(roomPayers.length);
+                }
+                return sum;
+            }, 0);
+
+        return this.expensesTotal - totalToPay;
+    }
+
     deleteExpenses(): void {
         this.expenses.splice(0, this.expenses.length);
     }
@@ -123,17 +138,37 @@ export class PayerDomainModel {
     editName(newPayerName: string): void {
         this.name = newPayerName;
     }
+
+    excludeExpensePayers(expenseId: string, excludedPayersId: string[]): void {
+        const expense = this.expenses.find(expense => expense.is(expenseId));
+        if (expense) {
+            expense.editExcludedPayersId(excludedPayersId);
+        }
+    }
 }
 
 export class ExpenseDomainModel {
     constructor(
         readonly id: string,
         readonly description: string,
-        readonly amount: number
+        readonly amount: number,
+        public excludedPayersId: string[]
     ) { }
 
     is(expenseId: string): boolean {
         return this.id === expenseId;
+    }
+
+    editExcludedPayersId(excludedPayersId: string[]): void {
+        this.excludedPayersId = excludedPayersId;
+    }
+
+    isIncludedPayers(payerId: string): boolean {
+        return !this.excludedPayersId.includes(payerId);
+    }
+
+    getAmountPerPayer(roomPayersLength: number): number {
+        return this.amount / (roomPayersLength - this.excludedPayersId.length);
     }
 }
 

@@ -126,14 +126,14 @@ describe('http room adapter', () => {
             id: roomId, name: 'fake-room-name', payers: [
                 {
                     id: 'fake-payer-id', name: 'fake-payer-name', expenses: [
-                        { id: 'fake-expense-id', description: 'fake-expense-description', amount: 100 },
-                        { id: 'fake-expense-id-1', description: 'fake-expense-description-1', amount: 20 }
+                        { id: 'fake-expense-id', description: 'fake-expense-description', amount: 100, excludedPayersId: ['fake-payer-id'] },
+                        { id: 'fake-expense-id-1', description: 'fake-expense-description-1', amount: 20, excludedPayersId: [] }
                     ]
                 },
                 {
                     id: 'fake-payer-id-2', name: 'fake-payer-name-2', expenses: [
-                        { id: 'fake-expense-id-2', description: 'fake-expense-description-2', amount: 50 },
-                        { id: 'fake-expense-id-3', description: 'fake-expense-description-3', amount: 30 }
+                        { id: 'fake-expense-id-2', description: 'fake-expense-description-2', amount: 50, excludedPayersId: ['fake-payer-id'] },
+                        { id: 'fake-expense-id-3', description: 'fake-expense-description-3', amount: 30, excludedPayersId: [] }
                     ]
                 }
             ]
@@ -148,16 +148,16 @@ describe('http room adapter', () => {
                 'fake-payer-id',
                 'fake-payer-name',
                 [
-                    new ExpenseDomainModel('fake-expense-id', 'fake-expense-description', 100),
-                    new ExpenseDomainModel('fake-expense-id-1', 'fake-expense-description-1', 20)
+                    new ExpenseDomainModel('fake-expense-id', 'fake-expense-description', 100, ['fake-payer-id']),
+                    new ExpenseDomainModel('fake-expense-id-1', 'fake-expense-description-1', 20, [])
                 ]
             ),
             new PayerDomainModel(
                 'fake-payer-id-2',
                 'fake-payer-name-2',
                 [
-                    new ExpenseDomainModel('fake-expense-id-2', 'fake-expense-description-2', 50),
-                    new ExpenseDomainModel('fake-expense-id-3', 'fake-expense-description-3', 30)
+                    new ExpenseDomainModel('fake-expense-id-2', 'fake-expense-description-2', 50, ['fake-payer-id']),
+                    new ExpenseDomainModel('fake-expense-id-3', 'fake-expense-description-3', 30, [])
                 ]
             )]
         );

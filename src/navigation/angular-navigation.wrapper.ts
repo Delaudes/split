@@ -18,7 +18,4 @@ export class AngularNavigationWrapper implements NavigationPort {
         navigator.share(data);
     }
 
-    openExternal(url: string): void {
-        window.open(url, '_blank');
-    }
 }

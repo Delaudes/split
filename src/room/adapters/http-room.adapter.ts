@@ -53,7 +53,8 @@ export class HttpRoomAdapter implements RoomPort {
                 payer.expenses.map(expense => new ExpenseDomainModel(
                     expense.id,
                     expense.description,
-                    expense.amount
+                    expense.amount,
+                    expense.excludedPayersId
                 ))
             ))
         );
@@ -78,5 +79,9 @@ export class HttpRoomAdapter implements RoomPort {
     async fetchRoomHistory(roomId: string): Promise<RoomDomainModel> {
         const fetchRoomResponse = await this.httpPort.get<FetchRoomResponse>(`${this.baseUrl}/rooms/${roomId}/history`);
         return this.mapToRoomDomainModel(fetchRoomResponse);
+    }
+
+    async excludeExpensePayers(expenseId: string, payersId: string[]): Promise<void> {
+        await this.httpPort.put(`${this.baseUrl}/rooms/payers/expenses/${expenseId}`, { excludedPayersId: payersId });
     }
 }
