@@ -121,6 +121,16 @@ describe('http room adapter', () => {
         expect(room).toEqual(expectedRoom);
     });
 
+    it('should exclude expense payers with correct url and body', async () => {
+        const expenseId = 'fake-expense-id';
+        const payersId = ['fake-payer-id-1', 'fake-payer-id-2'];
+
+        await httpRoomAdapter.excludeExpensePayers(expenseId, payersId);
+
+        expect(fakeHttpWrapper.lastPutUrl).toBe(`https://split-api-ws8o.onrender.com/rooms/payers/expenses/${expenseId}`);
+        expect(fakeHttpWrapper.lastPutBody).toEqual({ excludedPayersId: payersId });
+    });
+
     function createFetchRoomResponse(roomId: string) {
         return {
             id: roomId, name: 'fake-room-name', payers: [
