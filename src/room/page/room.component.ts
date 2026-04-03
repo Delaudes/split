@@ -6,13 +6,14 @@ import { RoomView } from '../room.view';
 import { AddToHomescreenComponent } from './components/add-to-homescreen.component';
 import { DeleteAllExpensesComponent } from './components/delete-all-expenses.component';
 import { DeleteExpenseComponent } from './components/delete-expense.component';
+import { ExcludeExpensePayersComponent } from './components/exclude-expense-payers.component';
 import { RoomHistoryComponent } from './components/room-history.component';
 import { RoomSettingsComponent } from './components/room-settings.component';
 import { ROOM_PROVIDERS } from './room.provider';
 
 @Component({
   selector: 'app-room',
-  imports: [DeleteExpenseComponent, DeleteAllExpensesComponent, RoomHistoryComponent, AddToHomescreenComponent, NavigateToHomeComponent, RoomSettingsComponent],
+  imports: [DeleteExpenseComponent, ExcludeExpensePayersComponent, DeleteAllExpensesComponent, RoomHistoryComponent, AddToHomescreenComponent, NavigateToHomeComponent, RoomSettingsComponent],
   templateUrl: './room.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ROOM_PROVIDERS],

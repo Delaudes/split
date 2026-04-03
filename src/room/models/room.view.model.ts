@@ -48,8 +48,7 @@ export type ExpenseViewModel = {
 
     isLoadingDeleteExpense: boolean;
     isErrorDeleteExpense: boolean;
-    isLoadingExcludeExpensePayers: boolean;
-    isErrorExcludeExpensePayers: boolean;
+    isErrorToggleExpensePayer: boolean;
     expensePayers: ExpensePayerViewModel[];
 }
 
@@ -57,6 +56,7 @@ export type ExpensePayerViewModel = {
     id: string;
     name: string;
     isExcluded: boolean;
+    isLoading: boolean;
 }
 
 export type PaymentViewModel = {

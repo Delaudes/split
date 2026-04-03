@@ -27,12 +27,12 @@ export class RoomPresenter {
                     amount: expense.amount.toFixed(2),
                     isLoadingDeleteExpense: false,
                     isErrorDeleteExpense: false,
-                    isLoadingExcludeExpensePayers: false,
-                    isErrorExcludeExpensePayers: false,
+                    isErrorToggleExpensePayer: false,
                     expensePayers: room.payers.map(payer => ({
                         id: payer.id,
                         name: payer.name,
-                        isExcluded: expense.excludedPayersId.includes(payer.id)
+                        isExcluded: expense.excludedPayersId.includes(payer.id),
+                        isLoading: false
                     }))
                 })),
                 isLoadingEditPayerName: false,
@@ -258,12 +258,12 @@ export class RoomPresenter {
                         amount: expense.amount.toFixed(2),
                         isLoadingDeleteExpense: false,
                         isErrorDeleteExpense: false,
-                        isLoadingExcludeExpensePayers: false,
-                        isErrorExcludeExpensePayers: false,
+                        isErrorToggleExpensePayer: false,
                         expensePayers: roomHistory.payers.map(payer => ({
                             id: payer.id,
                             name: payer.name,
-                            isExcluded: expense.excludedPayersId.includes(payer.id)
+                            isExcluded: expense.excludedPayersId.includes(payer.id),
+                            isLoading: false
                         }))
                     })),
                     isLoadingEditPayerName: false,
@@ -277,39 +277,46 @@ export class RoomPresenter {
         });
     }
 
-    startLoadingExcludeExpensePayers(expenseId: string): void {
+    startLoadingToggleExpensePayer(expenseId: string, payerId: string): void {
         this.roomView.update({
             payers: this.roomView.roomViewModel.get().payers.map(payer => ({
                 ...payer,
                 expenses: payer.expenses.map(expense => ({
                     ...expense,
-                    isLoadingExcludeExpensePayers: expense.id === expenseId ? true : expense.isLoadingExcludeExpensePayers
+                    expensePayers: expense.expensePayers.map(expensePayer => ({
+                        ...expensePayer,
+                        isLoading: expense.id === expenseId && expensePayer.id === payerId ? true : expensePayer.isLoading
+                    }))
                 }))
             }))
         });
     }
 
-    stopLoadingExcludeExpensePayers(expenseId: string): void {
+    stopLoadingToggleExpensePayer(expenseId: string, payerId: string): void {
         this.roomView.update({
             payers: this.roomView.roomViewModel.get().payers.map(payer => ({
                 ...payer,
                 expenses: payer.expenses.map(expense => ({
                     ...expense,
-                    isLoadingExcludeExpensePayers: expense.id === expenseId ? false : expense.isLoadingExcludeExpensePayers
+                    expensePayers: expense.expensePayers.map(expensePayer => ({
+                        ...expensePayer,
+                        isLoading: expense.id === expenseId && expensePayer.id === payerId ? false : expensePayer.isLoading
+                    }))
                 }))
             }))
         });
     }
 
-    presentErrorExcludeExpensePayers(expenseId: string): void {
+    presentErrorToggleExpensePayer(expenseId: string): void {
         this.roomView.update({
             payers: this.roomView.roomViewModel.get().payers.map(payer => ({
                 ...payer,
                 expenses: payer.expenses.map(expense => ({
                     ...expense,
-                    isErrorExcludeExpensePayers: expense.id === expenseId ? true : expense.isErrorExcludeExpensePayers
+                    isErrorToggleExpensePayer: expense.id === expenseId ? true : expense.isErrorToggleExpensePayer
                 }))
             }))
         });
     }
+
 }

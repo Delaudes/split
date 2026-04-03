@@ -81,7 +81,11 @@ export class HttpRoomAdapter implements RoomPort {
         return this.mapToRoomDomainModel(fetchRoomResponse);
     }
 
-    async excludeExpensePayers(expenseId: string, payersId: string[]): Promise<void> {
-        await this.httpPort.put(`${this.baseUrl}/rooms/payers/expenses/${expenseId}`, { excludedPayersId: payersId });
+    async addExpensePayer(expenseId: string, payerId: string): Promise<void> {
+        await this.httpPort.post(`${this.baseUrl}/rooms/payers/expenses/${expenseId}/payers`, { payerId });
+    }
+
+    async deleteExpensePayer(expenseId: string, payerId: string): Promise<void> {
+        await this.httpPort.delete(`${this.baseUrl}/rooms/payers/expenses/${expenseId}/payers/${payerId}`);
     }
 }

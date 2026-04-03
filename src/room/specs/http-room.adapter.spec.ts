@@ -121,14 +121,23 @@ describe('http room adapter', () => {
         expect(room).toEqual(expectedRoom);
     });
 
-    it('should exclude expense payers with correct url and body', async () => {
+    it('should add expense payer with correct url and body', async () => {
         const expenseId = 'fake-expense-id';
-        const payersId = ['fake-payer-id-1', 'fake-payer-id-2'];
+        const payerId = 'fake-payer-id';
 
-        await httpRoomAdapter.excludeExpensePayers(expenseId, payersId);
+        await httpRoomAdapter.addExpensePayer(expenseId, payerId);
 
-        expect(fakeHttpWrapper.lastPutUrl).toBe(`https://split-api-ws8o.onrender.com/rooms/payers/expenses/${expenseId}`);
-        expect(fakeHttpWrapper.lastPutBody).toEqual({ excludedPayersId: payersId });
+        expect(fakeHttpWrapper.lastPostUrl).toBe(`https://split-api-ws8o.onrender.com/rooms/payers/expenses/${expenseId}/payers`);
+        expect(fakeHttpWrapper.lastPostBody).toEqual({ payerId });
+    });
+
+    it('should delete expense payer with correct url', async () => {
+        const expenseId = 'fake-expense-id';
+        const payerId = 'fake-payer-id';
+
+        await httpRoomAdapter.deleteExpensePayer(expenseId, payerId);
+
+        expect(fakeHttpWrapper.lastDeleteUrl).toBe(`https://split-api-ws8o.onrender.com/rooms/payers/expenses/${expenseId}/payers/${payerId}`);
     });
 
     function createFetchRoomResponse(roomId: string) {

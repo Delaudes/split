@@ -198,18 +198,22 @@ export class RoomService {
         this.roomPresenter.presentVisitedRooms(updatedVisitedRooms);
     }
 
-    async excludeExpensePayers(expenseId: string, payersId: string[]): Promise<boolean> {
-        this.roomPresenter.startLoadingExcludeExpensePayers(expenseId);
+    async toggleExpensePayer(expenseId: string, payerId: string, isExcluded: boolean): Promise<void> {
+        this.roomPresenter.startLoadingToggleExpensePayer(expenseId, payerId);
         try {
-            await this.roomPort.excludeExpensePayers(expenseId, payersId);
-            this.room.excludeExpensePayers(expenseId, payersId);
+            if (isExcluded) {
+                await this.roomPort.deleteExpensePayer(expenseId, payerId);
+                this.room.deleteExpensePayer(expenseId, payerId);
+                this.roomPresenter.presentRoom(this.room);
+                return;
+            }
+            await this.roomPort.addExpensePayer(expenseId, payerId);
+            this.room.addExpensePayer(expenseId, payerId);
             this.roomPresenter.presentRoom(this.room);
-            return true
         } catch {
-            this.roomPresenter.presentErrorExcludeExpensePayers(expenseId);
-            return false
+            this.roomPresenter.presentErrorToggleExpensePayer(expenseId);
         } finally {
-            this.roomPresenter.stopLoadingExcludeExpensePayers(expenseId);
+            this.roomPresenter.stopLoadingToggleExpensePayer(expenseId, payerId);
         }
     }
 }
