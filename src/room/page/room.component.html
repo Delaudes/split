@@ -116,9 +116,11 @@
             <!-- Expenses List -->
             <div class="mt-4 pt-4 border-t border-amber-400/10 space-y-3">
               @for (expense of payer.expenses; track expense.id) {
-                <div class="flex items-center justify-between p-3 rounded-xl bg-amber-400/5">
-                  <p class="text-amber-200 text-sm font-light">{{ expense.description }}</p>
-                  <div class="flex items-center gap-2">
+                <div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-amber-400/5">
+                  <p class="text-amber-200 text-sm font-light truncate">
+                    {{ expense.description }}
+                  </p>
+                  <div class="flex items-center gap-1 shrink-0">
                     <p class="text-amber-400 text-sm font-medium">{{ expense.amount }}</p>
                     <app-exclude-expense-payers [expense]="expense" />
                     <app-delete-expense [expense]="expense" />
