@@ -1277,4 +1277,96 @@ describe('Room', () => {
         });
     });
 
+    describe('toggle expense payer', () => {
+        let expenseId: string;
+        let expensePayerId: string;
+
+        beforeEach(async () => {
+            await roomController.addPayer(payerName);
+            await roomController.addExpense(expenseDescription, expenseAmount, payerId);
+            expenseId = roomView.roomViewModel.get().payers[0].expenses[0].id;
+            expensePayerId = roomView.roomViewModel.get().payers[0].expenses[0].expensePayers[0].id;
+        });
+
+        it('should display loading', async () => {
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].expensePayers[0].isLoading).toEqual(false);
+
+            const promise = roomController.toggleExpensePayer(expenseId, expensePayerId, false);
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].expensePayers[0].isLoading).toEqual(true);
+
+            await promise;
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].expensePayers[0].isLoading).toEqual(false);
+        });
+
+        it('should display loading on error', async () => {
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].expensePayers[0].isLoading).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            const promise = roomController.toggleExpensePayer(expenseId, expensePayerId, false);
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].expensePayers[0].isLoading).toEqual(true);
+
+            await promise;
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].expensePayers[0].isLoading).toEqual(false);
+        });
+
+        it('should use the current expense id', async () => {
+            expect(fakeRoomAdapter.addedExpensePayerExpenseId).toBeUndefined();
+
+            await roomController.toggleExpensePayer(expenseId, expensePayerId, false);
+
+            expect(fakeRoomAdapter.addedExpensePayerExpenseId).toEqual(expenseId);
+        });
+
+        it('should use the current expense payer id', async () => {
+            expect(fakeRoomAdapter.addedExpensePayerPayerId).toBeUndefined();
+
+            await roomController.toggleExpensePayer(expenseId, expensePayerId, false);
+
+            expect(fakeRoomAdapter.addedExpensePayerPayerId).toEqual(expensePayerId);
+        });
+
+        it('should use the current expense id to delete expense payer if is excluded', async () => {
+            expect(fakeRoomAdapter.deletedExpensePayerExpenseId).toBeUndefined();
+
+            await roomController.toggleExpensePayer(expenseId, expensePayerId, true);
+
+            expect(fakeRoomAdapter.deletedExpensePayerExpenseId).toEqual(expenseId);
+        });
+
+        it('should use the current expense payer id to delete expense payer if is excluded', async () => {
+            expect(fakeRoomAdapter.deletedExpensePayerPayerId).toBeUndefined();
+
+            await roomController.toggleExpensePayer(expenseId, expensePayerId, true);
+
+            expect(fakeRoomAdapter.deletedExpensePayerPayerId).toEqual(expensePayerId);
+        });
+
+        it('should toggle expense payer exclusion', async () => {
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].expensePayers[0].isExcluded).toEqual(false);
+
+            await roomController.toggleExpensePayer(expenseId, expensePayerId, false);
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].expensePayers[0].isExcluded).toEqual(true);
+
+            await roomController.toggleExpensePayer(expenseId, expensePayerId, true);
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].expensePayers[0].isExcluded).toEqual(false);
+        });
+
+        it('should display error', async () => {
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isErrorToggleExpensePayer).toEqual(false);
+
+            fakeRoomAdapter.error = new Error();
+
+            await roomController.toggleExpensePayer(expenseId, expensePayerId, false);
+
+            expect(roomView.roomViewModel.get().payers[0].expenses[0].isErrorToggleExpensePayer).toEqual(true);
+        });
+    });
 });
+
