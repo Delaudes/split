@@ -127,8 +127,8 @@ describe('http room adapter', () => {
 
         await httpRoomAdapter.addExpensePayer(expenseId, payerId);
 
-        expect(fakeHttpWrapper.lastPostUrl).toBe(`https://split-api-ws8o.onrender.com/rooms/payers/expenses/${expenseId}/payers`);
-        expect(fakeHttpWrapper.lastPostBody).toEqual({ payerId });
+        expect(fakeHttpWrapper.lastPostUrl).toBe(`https://split-api-ws8o.onrender.com/rooms/payers/expenses/payers`);
+        expect(fakeHttpWrapper.lastPostBody).toEqual({ expenseId, payerId });
     });
 
     it('should delete expense payer with correct url', async () => {

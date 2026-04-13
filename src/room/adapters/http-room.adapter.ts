@@ -82,7 +82,7 @@ export class HttpRoomAdapter implements RoomPort {
     }
 
     async addExpensePayer(expenseId: string, payerId: string): Promise<void> {
-        await this.httpPort.post(`${this.baseUrl}/rooms/payers/expenses/${expenseId}/payers`, { payerId });
+        await this.httpPort.post(`${this.baseUrl}/rooms/payers/expenses/payers`, { expenseId, payerId });
     }
 
     async deleteExpensePayer(expenseId: string, payerId: string): Promise<void> {
