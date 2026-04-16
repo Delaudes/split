@@ -125,7 +125,7 @@ describe('http room adapter', () => {
         const expenseId = 'fake-expense-id';
         const payerId = 'fake-payer-id';
 
-        await httpRoomAdapter.addExpensePayer(expenseId, payerId);
+        await httpRoomAdapter.excludeExpensePayer(expenseId, payerId);
 
         expect(fakeHttpWrapper.lastPostUrl).toBe(`https://split-api-ws8o.onrender.com/rooms/payers/expenses/payers`);
         expect(fakeHttpWrapper.lastPostBody).toEqual({ expenseId, payerId });
@@ -135,7 +135,7 @@ describe('http room adapter', () => {
         const expenseId = 'fake-expense-id';
         const payerId = 'fake-payer-id';
 
-        await httpRoomAdapter.deleteExpensePayer(expenseId, payerId);
+        await httpRoomAdapter.includeExpensePayer(expenseId, payerId);
 
         expect(fakeHttpWrapper.lastDeleteUrl).toBe(`https://split-api-ws8o.onrender.com/rooms/payers/expenses/${expenseId}/payers/${payerId}`);
     });

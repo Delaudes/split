@@ -135,7 +135,7 @@ export class InMemoryRoomAdapter implements RoomPort {
         return await this.fetchRoom(roomId);
     }
 
-    async addExpensePayer(expenseId: string, payerId: string): Promise<void> {
+    async excludeExpensePayer(expenseId: string, payerId: string): Promise<void> {
         await new Promise(resolve => setTimeout(resolve, 2000));
 
         if (payerId === '1') {
@@ -143,7 +143,7 @@ export class InMemoryRoomAdapter implements RoomPort {
         }
     }
 
-    async deleteExpensePayer(expenseId: string, payerId: string): Promise<void> {
+    async includeExpensePayer(expenseId: string, payerId: string): Promise<void> {
         await new Promise(resolve => setTimeout(resolve, 2000));
 
         if (payerId === '1') {

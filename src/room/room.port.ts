@@ -12,6 +12,6 @@ export interface RoomPort {
     deletePayer(payerId: string): Promise<void>;
     deleteRoom(roomId: string): Promise<void>;
     fetchRoomHistory(roomId: string): Promise<RoomDomainModel>;
-    addExpensePayer(expenseId: string, payerId: string): Promise<void>;
-    deleteExpensePayer(expenseId: string, payerId: string): Promise<void>;
+    excludeExpensePayer(expenseId: string, payerId: string): Promise<void>;
+    includeExpensePayer(expenseId: string, payerId: string): Promise<void>;
 }

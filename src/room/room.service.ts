@@ -202,13 +202,13 @@ export class RoomService {
         this.roomPresenter.startLoadingToggleExpensePayer(expenseId, payerId);
         try {
             if (isExcluded) {
-                await this.roomPort.deleteExpensePayer(expenseId, payerId);
-                this.room.deleteExpensePayer(expenseId, payerId);
+                await this.roomPort.includeExpensePayer(expenseId, payerId);
+                this.room.includeExpensePayer(expenseId, payerId);
                 this.roomPresenter.presentRoom(this.room);
                 return;
             }
-            await this.roomPort.addExpensePayer(expenseId, payerId);
-            this.room.addExpensePayer(expenseId, payerId);
+            await this.roomPort.excludeExpensePayer(expenseId, payerId);
+            this.room.excludeExpensePayer(expenseId, payerId);
             this.roomPresenter.presentRoom(this.room);
         } catch {
             this.roomPresenter.presentErrorToggleExpensePayer(expenseId);

@@ -123,7 +123,7 @@ export class FakeRoomAdapter implements RoomPort {
 
     addedExpensePayerExpenseId?: string;
     addedExpensePayerPayerId?: string;
-    async addExpensePayer(expenseId: string, payerId: string): Promise<void> {
+    async excludeExpensePayer(expenseId: string, payerId: string): Promise<void> {
         if (this.error) throw this.error;
         this.addedExpensePayerExpenseId = expenseId;
         this.addedExpensePayerPayerId = payerId;
@@ -131,7 +131,7 @@ export class FakeRoomAdapter implements RoomPort {
 
     deletedExpensePayerExpenseId?: string;
     deletedExpensePayerPayerId?: string;
-    async deleteExpensePayer(expenseId: string, payerId: string): Promise<void> {
+    async includeExpensePayer(expenseId: string, payerId: string): Promise<void> {
         if (this.error) throw this.error;
         this.deletedExpensePayerExpenseId = expenseId;
         this.deletedExpensePayerPayerId = payerId;

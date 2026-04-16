@@ -81,12 +81,12 @@ export class RoomDomainModel {
         }
     }
 
-    addExpensePayer(expenseId: string, payerId: string): void {
-        this.payers.forEach(payer => payer.addExpensePayer(expenseId, payerId));
+    excludeExpensePayer(expenseId: string, payerId: string): void {
+        this.payers.forEach(payer => payer.excludeExpensePayer(expenseId, payerId));
     }
 
-    deleteExpensePayer(expenseId: string, payerId: string): void {
-        this.payers.forEach(payer => payer.deleteExpensePayer(expenseId, payerId));
+    includeExpensePayer(expenseId: string, payerId: string): void {
+        this.payers.forEach(payer => payer.includeExpensePayer(expenseId, payerId));
     }
 }
 
@@ -141,14 +141,14 @@ export class PayerDomainModel {
         this.name = newPayerName;
     }
 
-    addExpensePayer(expenseId: string, payerId: string): void {
+    excludeExpensePayer(expenseId: string, payerId: string): void {
         const expense = this.expenses.find(e => e.is(expenseId));
-        expense?.addPayer(payerId);
+        expense?.addExcludedPayer(payerId);
     }
 
-    deleteExpensePayer(expenseId: string, payerId: string): void {
+    includeExpensePayer(expenseId: string, payerId: string): void {
         const expense = this.expenses.find(e => e.is(expenseId));
-        expense?.deletePayer(payerId);
+        expense?.deleteExcludedPayer(payerId);
     }
 }
 
@@ -164,12 +164,12 @@ export class ExpenseDomainModel {
         return this.id === expenseId;
     }
 
-    deletePayer(payerId: string): void {
+    deleteExcludedPayer(payerId: string): void {
         const index = this.excludedPayersId.indexOf(payerId);
         if (index !== -1) this.excludedPayersId.splice(index, 1);
     }
 
-    addPayer(payerId: string): void {
+    addExcludedPayer(payerId: string): void {
         this.excludedPayersId.push(payerId);
     }
 
