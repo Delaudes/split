@@ -37,9 +37,12 @@ export class RoomController {
         await this.roomService.addPayer(roomId, payerName);
     }
 
-    async addExpense(expenseDescription: string, amount: string, payerId: string): Promise<void> {
+    async addExpense(expenseDescription: string, amount: string, payerId: string, dialog: Dialog): Promise<void> {
         const newExpense = new NewExpenseDomainModel(expenseDescription, Number(Number(amount).toFixed(2)), payerId);
-        await this.roomService.addExpense(newExpense);
+        const isAddingSuccess = await this.roomService.addExpense(newExpense);
+        if (isAddingSuccess) {
+            dialog.close();
+        }
     }
 
     async validateDeleteExpense(expenseId: string, dialog: Dialog): Promise<void> {
@@ -73,8 +76,8 @@ export class RoomController {
     }
 
     async validateEditPayerName(payerId: string, newPayerName: string, dialog: Dialog): Promise<void> {
-        const editSuccess = await this.roomService.editPayerName(payerId, newPayerName);
-        if (editSuccess) {
+        const isEditSuccess = await this.roomService.editPayerName(payerId, newPayerName);
+        if (isEditSuccess) {
             dialog.close();
         }
     }

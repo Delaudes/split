@@ -1,16 +1,14 @@
 <div class="min-h-screen bg-blue-950 flex items-center justify-center px-6 py-12">
   <div class="max-w-xl w-full space-y-8 text-center">
     @if (viewModel.isLoadingFetchRoom) {
-      <!-- Loading Spinner -->
-      <div class="flex justify-center py-2">
+      <div class="flex justify-center py-8">
         <div
           class="animate-spin rounded-full h-8 w-8 border-2 border-amber-400/20 border-t-amber-400"
         ></div>
       </div>
     } @else if (viewModel.isErrorFetchRoom) {
-      <!-- Error Message -->
-      <div class="p-4 bg-amber-400/10 border border-amber-400/30 rounded-xl text-center">
-        <p class="text-amber-200 text-sm font-light">
+      <div class="p-4 bg-rose-500/10 border border-rose-500/30 rounded-xl text-center">
+        <p class="text-rose-300 text-sm font-light">
           Impossible de charger la salle. Veuillez réessayer.
         </p>
       </div>
@@ -18,16 +16,14 @@
       <!-- Title -->
       <div class="space-y-3">
         <h1 class="text-5xl md:text-6xl font-light text-amber-400">{{ viewModel.roomName }}</h1>
-        <div class="h-0.5 w-20 bg-amber-400 opacity-50 mx-auto"></div>
-        <div class="flex justify-center gap-2">
+        <div class="flex justify-center items-center gap-2">
           <app-navigate-to-home />
           <button
             (click)="roomController.shareUrl(viewModel.roomName)"
-            class="px-3 py-1.5 bg-amber-400/10 text-amber-200 text-xs font-medium rounded-xl hover:bg-amber-400/20 active:scale-95 whitespace-nowrap transition-all flex items-center gap-1.5"
+            class="p-1.5 rounded-lg hover:bg-amber-400/10 active:scale-95 transition-all flex items-center justify-center"
             aria-label="Partager la salle"
           >
-            <span class="material-symbols-outlined text-amber-400 text-sm">share</span>
-            Partager
+            <span class="material-symbols-outlined text-amber-400/60 text-base">share</span>
           </button>
           <div class="md:hidden">
             <app-add-to-homescreen />
@@ -37,216 +33,153 @@
       </div>
 
       <!-- Balancing Section -->
-      <details class="p-4 rounded-xl bg-amber-400/10 border border-amber-400/20 text-left">
-        <summary class="cursor-pointer space-y-2 list-none">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-amber-400 text-xl">balance</span>
-              <h3 class="text-amber-200 font-medium text-sm">Équilibrage</h3>
-            </div>
-            <span class="material-symbols-outlined text-amber-400 text-xl">expand_more</span>
-          </div>
-          <div class="flex gap-3 text-xs">
-            <div class="flex items-center gap-1.5 text-amber-200/60 font-light">
-              <span class="material-symbols-outlined text-amber-400/60 text-base">functions</span>
-              <span class="text-amber-200 font-medium">{{ viewModel.expensesAverage }}</span>
-            </div>
-            <div class="flex items-center gap-1.5 text-amber-200/60 font-light">
-              <span class="material-symbols-outlined text-amber-400/60 text-base">savings</span>
-              <span class="text-amber-200 font-medium">{{ viewModel.expensesTotal }}</span>
-            </div>
-          </div>
-        </summary>
-
-        <!-- Payments List -->
-        <div class="mt-4 pt-4 border-t border-amber-400/10 space-y-3">
-          @for (payment of viewModel.payments; track $index) {
-            <div class="flex items-center justify-between p-3 rounded-xl bg-amber-400/5">
-              <div class="flex items-center gap-2">
-                <p class="text-amber-200 text-sm font-light">
-                  {{ payment.fromPayerName }}
-                  <span class="text-amber-200/60">→</span>
-                  {{ payment.toPayerName }}
+      <div class="text-left">
+        <details>
+          <summary class="cursor-pointer list-none">
+            <div class="flex items-center justify-between py-1">
+              <div class="flex items-center gap-3">
+                <p class="text-amber-200/30 text-xs font-light tracking-wider uppercase">
+                  Remboursements
                 </p>
+                <span class="text-amber-200/60 text-xs font-light">{{
+                  viewModel.expensesTotal
+                }}</span>
               </div>
-              <p class="text-amber-400 text-sm font-medium">{{ payment.amount }}</p>
+              <span class="material-symbols-outlined text-amber-400/40 text-base details-chevron"
+                >expand_more</span
+              >
             </div>
-          } @empty {
-            <!-- No Payments Message -->
-            <div class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10 text-center">
-              <span class="material-symbols-outlined text-amber-400/40 text-3xl">check_circle</span>
-              <p class="text-amber-200/60 text-xs font-light mt-2">Équilibre parfait !</p>
-            </div>
-          }
+          </summary>
 
-          <!-- History & Reset Buttons -->
-          <div class="pt-2 flex gap-3 justify-center">
-            <app-room-history />
-            <app-delete-all-expenses />
+          <div class="mt-2">
+            @if (viewModel.payments.length > 0) {
+              <div class="divide-y divide-amber-400/10">
+                @for (payment of viewModel.payments; track $index) {
+                  <div class="flex items-center justify-between py-3">
+                    <p class="text-amber-200 text-sm font-light">
+                      {{ payment.fromPayerName }}
+                      <span class="text-amber-200/30 mx-1">→</span>
+                      {{ payment.toPayerName }}
+                    </p>
+                    <p class="text-amber-400 text-sm font-medium shrink-0">{{ payment.amount }}</p>
+                  </div>
+                }
+              </div>
+            } @else {
+              <p class="text-amber-200/30 text-xs font-light py-3">Équilibre parfait</p>
+            }
+
+            <div class="flex gap-3 pt-3 border-t border-amber-400/10 mt-2 justify-center">
+              <app-room-history />
+              <app-delete-all-expenses />
+            </div>
           </div>
-        </div>
-      </details>
+        </details>
+      </div>
+
+      <!-- Divider -->
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-amber-400/10"></div>
+        <span class="text-amber-200/20 text-xs font-light uppercase tracking-wider"
+          >Participants</span
+        >
+        <div class="flex-1 h-px bg-amber-400/10"></div>
+      </div>
 
       <!-- Payers List -->
-      <div class="space-y-4 pt-4">
-        @for (payer of viewModel.payers; track payer.id) {
-          <details class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10 text-left">
-            <summary class="cursor-pointer space-y-2 list-none">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="material-symbols-outlined text-amber-400 text-xl">person</span>
-                  <h3 class="text-amber-200 font-medium text-sm">{{ payer.name }}</h3>
-                </div>
-                <span class="material-symbols-outlined text-amber-400 text-xl">expand_more</span>
-              </div>
-              <div class="flex gap-3 text-xs">
-                <div class="flex items-center gap-1.5 text-amber-200/60 font-light">
-                  <span class="material-symbols-outlined text-amber-400/60 text-base">receipt</span>
-                  <span class="text-amber-200 font-medium">{{ payer.expensesCount }}</span>
-                </div>
-                <div class="flex items-center gap-1.5 text-amber-200/60 font-light">
-                  <span class="material-symbols-outlined text-amber-400/60 text-base"
-                    >payments</span
-                  >
-                  <span class="text-amber-200 font-medium">{{ payer.expensesTotal }}</span>
-                </div>
-              </div>
-            </summary>
-
-            <!-- Expenses List -->
-            <div class="mt-4 pt-4 border-t border-amber-400/10 space-y-3">
-              @for (expense of payer.expenses; track expense.id) {
-                <div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-amber-400/5">
-                  <p class="text-amber-200 text-sm font-light truncate">
-                    {{ expense.description }}
-                  </p>
-                  <div class="flex items-center gap-1 shrink-0">
-                    <p class="text-amber-400 text-sm font-medium">{{ expense.amount }}</p>
-                    <app-exclude-expense-payers [expense]="expense" />
-                    <app-delete-expense [expense]="expense" />
-                  </div>
-                </div>
-              } @empty {
-                <!-- No Expenses Message -->
-                <div class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10 text-center">
-                  <span class="material-symbols-outlined text-amber-400/40 text-3xl"
-                    >receipt_long</span
-                  >
-                  <p class="text-amber-200/60 text-xs font-light mt-2">
-                    Aucune dépense pour le moment
-                  </p>
-                </div>
-              }
-
-              <!-- Add Expense Form -->
-              <details class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10">
-                <summary class="cursor-pointer space-y-2 list-none">
-                  <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-amber-400/60 text-base"
-                      >add_circle</span
+      <div class="text-left">
+        @if (viewModel.payers.length > 0) {
+          <div class="divide-y divide-amber-400/10">
+            @for (payer of viewModel.payers; track payer.id) {
+              <details class="py-1">
+                <summary class="cursor-pointer list-none">
+                  <div class="flex items-center justify-between py-2">
+                    <div class="flex items-center gap-3">
+                      <p class="text-amber-200 text-sm font-medium">{{ payer.name }}</p>
+                      <span class="text-amber-200/40 text-xs font-light">{{
+                        payer.expensesTotal
+                      }}</span>
+                    </div>
+                    <span
+                      class="material-symbols-outlined text-amber-400/40 text-base details-chevron"
+                      >expand_more</span
                     >
-                    <p class="text-amber-200/60 text-xs font-light">Ajouter une dépense</p>
                   </div>
                 </summary>
 
-                <div class="mt-3 pt-3 border-t border-amber-400/10 space-y-3">
-                  <!-- Error Message -->
-                  @if (viewModel.isErrorAddExpense) {
-                    <div
-                      class="p-4 bg-amber-400/10 border border-amber-400/30 rounded-xl text-center"
-                    >
-                      <p class="text-amber-200 text-sm font-light">
-                        Impossible d'ajouter la dépense. Veuillez réessayer.
-                      </p>
-                    </div>
-                  }
-
-                  @if (viewModel.isLoadingAddExpense) {
-                    <!-- Loading Spinner -->
-                    <div class="flex justify-center py-2">
-                      <div
-                        class="animate-spin rounded-full h-8 w-8 border-2 border-amber-400/20 border-t-amber-400"
-                      ></div>
+                <!-- Expenses List -->
+                <div class="pb-3">
+                  @if (payer.expenses.length > 0) {
+                    <div class="divide-y divide-amber-400/5 mb-3">
+                      @for (expense of payer.expenses; track expense.id) {
+                        <div class="flex items-center justify-between gap-2 py-2.5">
+                          <p class="text-amber-200/70 text-sm font-light truncate">
+                            {{ expense.description }}
+                          </p>
+                          <div class="flex items-center gap-1 shrink-0">
+                            <p class="text-amber-400 text-sm font-medium">{{ expense.amount }}</p>
+                            <app-exclude-expense-payers [expense]="expense" />
+                            <app-delete-expense [expense]="expense" />
+                          </div>
+                        </div>
+                      }
                     </div>
                   } @else {
-                    <div class="space-y-2">
-                      <!-- Description Input -->
-                      <input
-                        #descriptionInput
-                        type="text"
-                        placeholder="Description de la dépense"
-                        class="w-full px-4 py-3 sm:px-6 sm:py-4 bg-amber-50 border-2 border-amber-400/40 rounded-xl focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 text-blue-950 placeholder-blue-950/40 text-sm sm:text-base outline-none transition-all"
-                      />
-                      <!-- Amount + Button -->
-                      <div class="flex gap-2 sm:gap-3">
-                        <input
-                          #amountInput
-                          type="number"
-                          placeholder="Montant"
-                          class="min-w-0 flex-1 px-4 py-3 sm:px-6 sm:py-4 bg-amber-50 border-2 border-amber-400/40 rounded-xl focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 text-blue-950 placeholder-blue-950/40 text-sm sm:text-base outline-none transition-all"
-                        />
-                        <button
-                          (click)="
-                            roomController.addExpense(
-                              descriptionInput.value,
-                              amountInput.value,
-                              payer.id
-                            )
-                          "
-                          class="shrink-0 px-5 py-3 sm:px-8 sm:py-4 bg-amber-500 text-blue-950 text-sm sm:text-base font-medium rounded-xl hover:bg-amber-400 active:scale-95 whitespace-nowrap transition-all"
-                        >
-                          Ajouter
-                        </button>
-                      </div>
-                    </div>
+                    <p class="text-amber-200/20 text-xs font-light py-2 mb-3">Aucune dépense</p>
                   }
+
+                  <!-- Add Expense -->
+                  <app-add-expense [payer]="payer" />
                 </div>
               </details>
-            </div>
-          </details>
-        } @empty {
-          <!-- No Payers Message -->
-          <div class="p-4 rounded-xl bg-amber-400/5 border border-amber-400/10 text-center">
-            <span class="material-symbols-outlined text-amber-400/40 text-3xl">group</span>
-            <p class="text-amber-200/60 text-xs font-light mt-2">
-              Aucun participant dans cette salle
-            </p>
+            }
           </div>
+        } @else {
+          <p class="text-amber-200/30 text-xs font-light text-center py-4">
+            Aucun participant dans cette salle
+          </p>
         }
       </div>
 
-      <!-- Add Payer Form -->
-      <div class="space-y-4 pt-4">
-        <!-- Error Message -->
-        @if (viewModel.isErrorAddPayer) {
-          <div class="p-4 bg-amber-400/10 border border-amber-400/30 rounded-xl text-center">
-            <p class="text-amber-200 text-sm font-light">
-              Impossible d'ajouter le participant. Veuillez réessayer.
-            </p>
-          </div>
-        }
+      <!-- Divider -->
+      <div class="flex items-center gap-4">
+        <div class="flex-1 h-px bg-amber-400/10"></div>
+        <span class="text-amber-200/20 text-xs font-light uppercase tracking-wider"
+          >Nouveau participant</span
+        >
+        <div class="flex-1 h-px bg-amber-400/10"></div>
+      </div>
 
+      <!-- Add Payer Form -->
+      <div>
         @if (viewModel.isLoadingAddPayer) {
-          <!-- Loading Spinner -->
           <div class="flex justify-center py-2">
             <div
-              class="animate-spin rounded-full h-8 w-8 border-2 border-amber-400/20 border-t-amber-400"
+              class="animate-spin rounded-full h-6 w-6 border-2 border-amber-400/20 border-t-amber-400"
             ></div>
           </div>
         } @else {
-          <div class="flex gap-2 sm:gap-3">
-            <input
-              #input
-              type="text"
-              placeholder="Nom du participant"
-              class="min-w-0 flex-1 px-4 py-3 sm:px-6 sm:py-4 bg-amber-50 border-2 border-amber-400/40 rounded-xl focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 text-blue-950 placeholder-blue-950/40 text-sm sm:text-base outline-none transition-all"
-            />
-            <button
-              (click)="roomController.addPayer(input.value)"
-              class="shrink-0 px-5 py-3 sm:px-8 sm:py-4 bg-amber-500 text-blue-950 text-sm sm:text-base font-medium rounded-xl hover:bg-amber-400 active:scale-95 whitespace-nowrap transition-all"
-            >
-              Ajouter
-            </button>
+          <div class="space-y-2">
+            <div class="flex gap-2 sm:gap-3">
+              <input
+                #input
+                type="text"
+                placeholder="Nom du participant"
+                class="min-w-0 flex-1 px-4 py-3 sm:px-6 sm:py-4 bg-amber-50 border-2 border-amber-400/40 rounded-xl focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 text-blue-950 placeholder-blue-950/40 text-sm sm:text-base outline-none transition-all"
+                [class.border-rose-400]="viewModel.isErrorAddPayer"
+              />
+              <button
+                (click)="roomController.addPayer(input.value)"
+                class="shrink-0 px-5 py-3 sm:px-8 sm:py-4 bg-amber-500 text-blue-950 text-sm sm:text-base font-medium rounded-xl hover:bg-amber-400 active:scale-95 whitespace-nowrap transition-all"
+              >
+                Ajouter
+              </button>
+            </div>
+            @if (viewModel.isErrorAddPayer) {
+              <p class="text-rose-400/70 text-xs font-light text-left px-1">
+                Impossible d'ajouter le participant. Veuillez réessayer.
+              </p>
+            }
           </div>
         }
       </div>

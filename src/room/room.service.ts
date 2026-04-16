@@ -45,7 +45,7 @@ export class RoomService {
         }
     }
 
-    async addExpense(newExpense: NewExpenseDomainModel): Promise<void> {
+    async addExpense(newExpense: NewExpenseDomainModel): Promise<boolean> {
         this.roomPresenter.startLoadingAddExpense();
         try {
             const expenseId = await this.roomPort.addExpense(newExpense);
@@ -56,8 +56,10 @@ export class RoomService {
                 []
             ), newExpense.payerId);
             this.roomPresenter.presentRoom(this.room);
+            return true;
         } catch {
             this.roomPresenter.presentErrorAddExpense();
+            return false;
         } finally {
             this.roomPresenter.stopLoadingAddExpense();
         }

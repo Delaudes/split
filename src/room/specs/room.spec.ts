@@ -228,7 +228,7 @@ describe('Room', () => {
         it('should display loading', async () => {
             expect(roomView.roomViewModel.get().isLoadingAddExpense).toEqual(false);
 
-            const addExpensePromise = roomController.addExpense(expenseDescription, expenseAmount, payerId);
+            const addExpensePromise = roomController.addExpense(expenseDescription, expenseAmount, payerId, fakeDialog);
 
             expect(roomView.roomViewModel.get().isLoadingAddExpense).toEqual(true);
 
@@ -242,7 +242,7 @@ describe('Room', () => {
 
             fakeRoomAdapter.error = new Error();
 
-            const addExpensePromise = roomController.addExpense(expenseDescription, expenseAmount, payerId);
+            const addExpensePromise = roomController.addExpense(expenseDescription, expenseAmount, payerId, fakeDialog);
 
             expect(roomView.roomViewModel.get().isLoadingAddExpense).toEqual(true);
 
@@ -254,7 +254,7 @@ describe('Room', () => {
         it('should use the given expense data', async () => {
             expect(fakeRoomAdapter.newExpense).toBeUndefined();
 
-            await roomController.addExpense(expenseDescription, expenseAmount, payerId);
+            await roomController.addExpense(expenseDescription, expenseAmount, payerId, fakeDialog);
 
             expect(fakeRoomAdapter.newExpense).toEqual(new NewExpenseDomainModel(
                 expenseDescription,
@@ -263,12 +263,20 @@ describe('Room', () => {
             ));
         });
 
+        it('should close dialog', async () => {
+            expect(fakeDialog.isClose).toEqual(false);
+
+            await roomController.addExpense(expenseDescription, expenseAmount, payerId, fakeDialog);
+
+            expect(fakeDialog.isClose).toEqual(true);
+        });
+
         it('should display error', async () => {
             expect(roomView.roomViewModel.get().isErrorAddExpense).toEqual(false);
 
             fakeRoomAdapter.error = new Error();
 
-            await roomController.addExpense(expenseDescription, expenseAmount, payerId);
+            await roomController.addExpense(expenseDescription, expenseAmount, payerId, fakeDialog);
 
             expect(roomView.roomViewModel.get().isErrorAddExpense).toEqual(true);
         });
@@ -295,7 +303,7 @@ describe('Room', () => {
                 ])
                 .build();
 
-            await roomController.addExpense(expenseDescription, expenseAmount, payerId);
+            await roomController.addExpense(expenseDescription, expenseAmount, payerId, fakeDialog);
 
             expect(roomView.roomViewModel.get().payers[0].expenses).toEqual([expectedExpense])
         });
@@ -305,7 +313,7 @@ describe('Room', () => {
 
             expect(roomView.roomViewModel.get().isErrorAddExpense).toEqual(true);
 
-            await roomController.addExpense(expenseDescription, expenseAmount, payerId);
+            await roomController.addExpense(expenseDescription, expenseAmount, payerId, fakeDialog);
 
             expect(roomView.roomViewModel.get().isErrorAddExpense).toEqual(false);
         });
@@ -316,7 +324,7 @@ describe('Room', () => {
 
         beforeEach(async () => {
             await roomController.addPayer(payerName);
-            await roomController.addExpense(expenseDescription, expenseAmount, payerId);
+            await roomController.addExpense(expenseDescription, expenseAmount, payerId, fakeDialog);
             expenseId = roomView.roomViewModel.get().payers[0].expenses[0].id;
         });
 
@@ -355,7 +363,7 @@ describe('Room', () => {
         });
 
         it('should close dialog', async () => {
-            expect(fakeDialog.isClose).toEqual(false);
+            fakeDialog.isClose = false
 
             await roomController.validateDeleteExpense(expenseId, fakeDialog);
 
@@ -1283,7 +1291,7 @@ describe('Room', () => {
 
         beforeEach(async () => {
             await roomController.addPayer(payerName);
-            await roomController.addExpense(expenseDescription, expenseAmount, payerId);
+            await roomController.addExpense(expenseDescription, expenseAmount, payerId, fakeDialog);
             expenseId = roomView.roomViewModel.get().payers[0].expenses[0].id;
             expensePayerId = roomView.roomViewModel.get().payers[0].expenses[0].expensePayers[0].id;
         });

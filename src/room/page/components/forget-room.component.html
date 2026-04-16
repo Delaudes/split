@@ -1,30 +1,33 @@
-<!-- Delete Button -->
+<!-- Forget Room Button -->
 <button
   (click)="dialog.showModal()"
   class="p-1.5 rounded-lg hover:bg-amber-400/10 active:scale-95 transition-all flex items-center justify-center"
-  aria-label="Supprimer la dépense"
+  aria-label="Retirer de la liste"
 >
-  <span class="material-symbols-outlined text-amber-400/60 text-base">delete</span>
+  <span class="material-symbols-outlined text-amber-400/40 text-base">close</span>
 </button>
 
-<!-- Delete Confirmation Dialog -->
+<!-- Forget Room Dialog -->
 <dialog
   #dialog
-  class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 bg-blue-950 border border-amber-400/20 rounded-xl p-6 max-w-md w-[calc(100%-2rem)] space-y-6 backdrop:bg-blue-950/95"
+  class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 bg-blue-950 border border-amber-400/20 rounded-2xl p-6 max-w-md w-[calc(100%-2rem)] space-y-5 backdrop:bg-blue-950/95 text-left"
 >
   <!-- Header -->
-  <div class="space-y-3 text-center">
-    <div class="w-16 h-16 rounded-full bg-amber-400/10 flex items-center justify-center mx-auto">
-      <span class="material-symbols-outlined text-amber-400 text-3xl">warning</span>
+  <div class="flex items-center gap-3 pb-4 border-b border-amber-400/10">
+    <div class="w-9 h-9 rounded-xl bg-amber-400/10 flex items-center justify-center shrink-0">
+      <span class="material-symbols-outlined text-amber-400 text-xl">visibility_off</span>
     </div>
-    <h2 class="text-amber-200 font-medium text-lg">Attention</h2>
-    <p class="text-amber-200/60 text-sm font-light">
-      Êtes-vous sûr de vouloir oublier "<strong class="text-amber-200">{{
-        visitedRoom().name
-      }}</strong
-      >" ?
-    </p>
+    <div class="text-left">
+      <h2 class="text-amber-200 font-medium">Retirer de la liste</h2>
+      <p class="text-amber-200/40 text-xs font-light">La salle ne sera pas supprimée</p>
+    </div>
   </div>
+
+  <!-- Description -->
+  <p class="text-amber-200/60 text-sm font-light">
+    Retirer "<strong class="text-amber-200">{{ visitedRoom().name }}</strong
+    >" de votre historique local ?
+  </p>
 
   <div class="flex gap-3">
     <button
@@ -37,7 +40,7 @@
       (click)="roomController.forgetRoom(visitedRoom().id, dialog)"
       class="flex-1 px-5 py-3 bg-amber-500 text-blue-950 text-sm font-medium rounded-xl hover:bg-amber-400 active:scale-95 whitespace-nowrap transition-all"
     >
-      Confirmer
+      Retirer
     </button>
   </div>
 </dialog>
