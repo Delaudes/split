@@ -1,38 +1,38 @@
 <!-- Settings Button -->
 <button
   (click)="settingsDialog.showModal()"
-  class="p-1.5 rounded-lg hover:bg-amber-400/10 active:scale-95 transition-all flex items-center justify-center"
+  class="p-1.5 rounded-lg hover:bg-zinc-100 active:scale-95 transition-all flex items-center justify-center"
   aria-label="Paramètres de la salle"
 >
-  <span class="material-symbols-outlined text-amber-400/60 text-base">settings</span>
+  <span class="material-symbols-outlined text-zinc-500 text-base">settings</span>
 </button>
 
 <!-- Settings Dialog -->
 <dialog
   #settingsDialog
-  class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 bg-blue-950 border border-amber-400/20 rounded-2xl p-6 max-w-md w-[calc(100%-2rem)] space-y-5 backdrop:bg-blue-950/95 text-left"
+  class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 bg-white border border-zinc-200 rounded-2xl p-6 max-w-md w-[calc(100%-2rem)] space-y-5 shadow-2xl backdrop:bg-zinc-900/60 text-left"
 >
   <!-- Header -->
-  <div class="flex items-center gap-3 pb-4 border-b border-amber-400/10">
-    <div class="w-9 h-9 rounded-xl bg-amber-400/10 flex items-center justify-center shrink-0">
-      <span class="material-symbols-outlined text-amber-400 text-xl">settings</span>
+  <div class="flex items-center gap-3 pb-4 border-b border-zinc-100">
+    <div class="w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center shrink-0">
+      <span class="material-symbols-outlined text-violet-600 text-xl">settings</span>
     </div>
     <div>
-      <h2 class="text-amber-200 font-medium">Paramètres</h2>
-      <p class="text-amber-200/40 text-xs font-light">Nom de la salle et participants</p>
+      <h2 class="text-zinc-900 font-medium">Paramètres</h2>
+      <p class="text-zinc-500 text-xs font-light">Nom de la salle et participants</p>
     </div>
   </div>
 
   <!-- Room Name Section -->
   <div class="space-y-3">
     <div class="flex items-center gap-2">
-      <span class="material-symbols-outlined text-amber-400 text-xl">meeting_room</span>
-      <h3 class="text-amber-200 font-medium text-sm">Salle</h3>
+      <span class="material-symbols-outlined text-violet-600 text-xl">meeting_room</span>
+      <h3 class="text-zinc-800 font-medium text-sm">Salle</h3>
     </div>
     @if (viewModel.isLoadingEditRoomName) {
       <div class="flex justify-center py-2">
         <div
-          class="animate-spin rounded-full h-8 w-8 border-2 border-amber-400/20 border-t-amber-400"
+          class="animate-spin rounded-full h-8 w-8 border-2 border-zinc-200 border-t-violet-600"
         ></div>
       </div>
     } @else {
@@ -40,21 +40,21 @@
         #roomNameInput
         type="text"
         [value]="viewModel.roomName"
-        class="w-full px-4 py-3 bg-amber-50 border-2 border-amber-400/40 rounded-xl focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 text-blue-950 placeholder-blue-950/40 text-sm outline-none transition-all"
-        [class.border-rose-400]="viewModel.isErrorEditRoomName"
+        class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:border-violet-500 focus:ring-2 focus:ring-violet-500/10 text-zinc-900 placeholder-zinc-400 text-sm outline-none transition-all"
+        [class.border-red-400]="viewModel.isErrorEditRoomName"
       />
       <div class="grid grid-cols-2 gap-3">
         <app-room-delete />
         <button
           (click)="roomController.validateEditRoomName(roomNameInput.value, settingsDialog)"
-          class="px-5 py-3 bg-amber-500 text-blue-950 text-sm font-medium rounded-xl hover:bg-amber-400 active:scale-95 whitespace-nowrap transition-all"
+          class="px-5 py-3 bg-violet-600 text-white text-sm font-medium rounded-xl hover:bg-violet-700 active:scale-95 whitespace-nowrap transition-all"
         >
           Renommer
         </button>
       </div>
       @if (viewModel.isErrorEditRoomName) {
-        <div class="p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl">
-          <p class="text-rose-300 text-sm font-light">
+        <div class="p-3 bg-red-50 border border-red-200 rounded-xl">
+          <p class="text-red-600 text-sm font-light">
             Impossible de modifier le nom. Veuillez réessayer.
           </p>
         </div>
@@ -64,21 +64,21 @@
 
   <!-- Payers Section -->
   @if (viewModel.payers.length > 0) {
-    <div class="space-y-3 pt-6 border-t border-amber-400/10">
+    <div class="space-y-3 pt-6 border-t border-zinc-100">
       <!-- Header -->
       <div class="flex items-center gap-2">
-        <span class="material-symbols-outlined text-amber-400 text-xl">group</span>
-        <h3 class="text-amber-200 font-medium text-sm">Participants</h3>
+        <span class="material-symbols-outlined text-violet-600 text-xl">group</span>
+        <h3 class="text-zinc-800 font-medium text-sm">Participants</h3>
       </div>
 
       <!-- Payers list -->
-      <div class="divide-y divide-amber-400/10">
+      <div class="divide-y divide-zinc-100">
         @for (payer of viewModel.payers; track payer.id) {
           <div class="py-3 space-y-3">
             @if (payer.isLoadingEditPayerName) {
               <div class="flex justify-center py-2">
                 <div
-                  class="animate-spin rounded-full h-8 w-8 border-2 border-amber-400/20 border-t-amber-400"
+                  class="animate-spin rounded-full h-8 w-8 border-2 border-zinc-200 border-t-violet-600"
                 ></div>
               </div>
             } @else {
@@ -86,8 +86,8 @@
                 #payerNameInput
                 type="text"
                 [value]="payer.name"
-                class="w-full px-4 py-3 bg-amber-50 border-2 border-amber-400/40 rounded-xl focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 text-blue-950 placeholder-blue-950/40 text-sm outline-none transition-all"
-                [class.border-rose-400]="payer.isErrorEditPayerName"
+                class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:border-violet-500 focus:ring-2 focus:ring-violet-500/10 text-zinc-900 placeholder-zinc-400 text-sm outline-none transition-all"
+                [class.border-red-400]="payer.isErrorEditPayerName"
               />
               <div class="grid grid-cols-2 gap-3">
                 <app-payer-delete [payer]="payer" />
@@ -99,14 +99,14 @@
                       settingsDialog
                     )
                   "
-                  class="px-5 py-3 bg-amber-500 text-blue-950 text-sm font-medium rounded-xl hover:bg-amber-400 active:scale-95 whitespace-nowrap transition-all"
+                  class="px-5 py-3 bg-violet-600 text-white text-sm font-medium rounded-xl hover:bg-violet-700 active:scale-95 whitespace-nowrap transition-all"
                 >
                   Renommer
                 </button>
               </div>
               @if (payer.isErrorEditPayerName) {
-                <div class="p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl">
-                  <p class="text-rose-300 text-sm font-light">
+                <div class="p-3 bg-red-50 border border-red-200 rounded-xl">
+                  <p class="text-red-600 text-sm font-light">
                     Impossible de modifier le nom. Veuillez réessayer.
                   </p>
                 </div>
@@ -121,7 +121,7 @@
   <!-- Close Button -->
   <button
     (click)="settingsDialog.close()"
-    class="w-full px-5 py-3 bg-amber-400/10 text-amber-200 text-sm font-medium rounded-xl hover:bg-amber-400/20 active:scale-95 whitespace-nowrap transition-all"
+    class="w-full px-5 py-3 bg-zinc-100 text-zinc-700 text-sm font-medium rounded-xl hover:bg-zinc-200 active:scale-95 whitespace-nowrap transition-all"
   >
     Fermer
   </button>

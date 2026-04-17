@@ -2,10 +2,10 @@
 <div class="flex justify-center">
   <button
     (click)="dialog.showModal()"
-    class="px-3 py-1.5 bg-rose-500/10 text-rose-300 text-xs font-medium rounded-xl hover:bg-rose-500/20 active:scale-95 whitespace-nowrap transition-all flex items-center gap-1.5"
+    class="px-3 py-1.5 bg-red-50 text-red-600 text-xs font-medium rounded-xl hover:bg-red-100 active:scale-95 whitespace-nowrap transition-all flex items-center gap-1.5"
     aria-label="Réinitialiser les dépenses"
   >
-    <span class="material-symbols-outlined text-rose-400/60 text-sm">restart_alt</span>
+    <span class="material-symbols-outlined text-red-400 text-sm">restart_alt</span>
     Réinitialiser
   </button>
 </div>
@@ -13,29 +13,29 @@
 <!-- Delete All Expenses Confirmation Dialog -->
 <dialog
   #dialog
-  class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 bg-blue-950 border border-amber-400/20 rounded-2xl p-6 max-w-md w-[calc(100%-2rem)] space-y-5 backdrop:bg-blue-950/95 text-left"
+  class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0 bg-white border border-zinc-200 rounded-2xl p-6 max-w-md w-[calc(100%-2rem)] space-y-5 shadow-2xl backdrop:bg-zinc-900/60 text-left"
 >
   <!-- Header -->
-  <div class="flex items-center gap-3 pb-4 border-b border-rose-500/20">
-    <div class="w-9 h-9 rounded-xl bg-rose-500/10 flex items-center justify-center shrink-0">
-      <span class="material-symbols-outlined text-rose-400 text-xl">restart_alt</span>
+  <div class="flex items-center gap-3 pb-4 border-b border-red-100">
+    <div class="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center shrink-0">
+      <span class="material-symbols-outlined text-red-600 text-xl">restart_alt</span>
     </div>
     <div class="text-left">
-      <h2 class="text-amber-200 font-medium">Réinitialiser les dépenses</h2>
-      <p class="text-rose-400/70 text-xs font-light">Action irréversible</p>
+      <h2 class="text-zinc-900 font-medium">Réinitialiser les dépenses</h2>
+      <p class="text-red-500 text-xs font-light">Action irréversible</p>
     </div>
   </div>
 
   <!-- Description -->
-  <p class="text-amber-200/60 text-sm font-light">
+  <p class="text-zinc-600 text-sm font-light">
     À utiliser une fois que chaque participant a réglé sa part. Les dépenses actuelles seront
     archivées et les compteurs remis à zéro.
   </p>
 
   <!-- Error Message -->
   @if (viewModel.isErrorDeleteAllExpenses) {
-    <div class="p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl">
-      <p class="text-rose-300 text-sm font-light">
+    <div class="p-3 bg-red-50 border border-red-200 rounded-xl">
+      <p class="text-red-600 text-sm font-light">
         Impossible de réinitialiser les dépenses. Veuillez réessayer.
       </p>
     </div>
@@ -45,20 +45,20 @@
   @if (viewModel.isLoadingDeleteAllExpenses) {
     <div class="flex justify-center py-2">
       <div
-        class="animate-spin rounded-full h-8 w-8 border-2 border-amber-400/20 border-t-amber-400"
+        class="animate-spin rounded-full h-8 w-8 border-2 border-zinc-200 border-t-violet-600"
       ></div>
     </div>
   } @else {
     <div class="flex gap-3">
       <button
         (click)="dialog.close()"
-        class="flex-1 px-5 py-3 bg-amber-400/10 text-amber-200 text-sm font-medium rounded-xl hover:bg-amber-400/20 active:scale-95 whitespace-nowrap transition-all"
+        class="flex-1 px-5 py-3 bg-zinc-100 text-zinc-700 text-sm font-medium rounded-xl hover:bg-zinc-200 active:scale-95 whitespace-nowrap transition-all"
       >
         Annuler
       </button>
       <button
         (click)="roomController.validateDeleteAllExpenses(dialog)"
-        class="flex-1 px-5 py-3 bg-rose-500 text-white text-sm font-medium rounded-xl hover:bg-rose-400 active:scale-95 whitespace-nowrap transition-all"
+        class="flex-1 px-5 py-3 bg-red-600 text-white text-sm font-medium rounded-xl hover:bg-red-700 active:scale-95 whitespace-nowrap transition-all"
       >
         Tout supprimer
       </button>

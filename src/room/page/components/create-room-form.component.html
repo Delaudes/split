@@ -1,7 +1,7 @@
 @if (viewModel.isCreateRoomLoading) {
   <div class="flex justify-center py-2">
     <div
-      class="animate-spin rounded-full h-8 w-8 border-2 border-amber-400/20 border-t-amber-400"
+      class="animate-spin rounded-full h-8 w-8 border-2 border-zinc-200 border-t-violet-600"
     ></div>
   </div>
 } @else {
@@ -11,18 +11,18 @@
         #input
         type="text"
         placeholder="Nom de votre salle"
-        class="min-w-0 flex-1 px-4 py-3 sm:px-6 sm:py-4 bg-amber-50 border-2 border-amber-400/40 rounded-xl focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 text-blue-950 placeholder-blue-950/40 text-sm sm:text-base outline-none transition-all"
-        [class.border-rose-400]="viewModel.isCreateRoomError"
+        class="min-w-0 flex-1 px-4 py-3 sm:px-6 sm:py-4 bg-zinc-50 border border-zinc-200 rounded-xl focus:border-violet-500 focus:ring-2 focus:ring-violet-500/10 text-zinc-900 placeholder-zinc-400 text-sm sm:text-base outline-none transition-all"
+        [class.border-red-400]="viewModel.isCreateRoomError"
       />
       <button
         (click)="roomController.createRoom(input.value)"
-        class="shrink-0 px-5 py-3 sm:px-8 sm:py-4 bg-amber-500 text-blue-950 text-sm sm:text-base font-medium rounded-xl hover:bg-amber-400 active:scale-95 whitespace-nowrap transition-all"
+        class="shrink-0 px-5 py-3 sm:px-8 sm:py-4 bg-violet-600 text-white text-sm sm:text-base font-medium rounded-xl hover:bg-violet-700 active:scale-95 whitespace-nowrap transition-all"
       >
         Créer
       </button>
     </div>
     @if (viewModel.isCreateRoomError) {
-      <p class="text-rose-400/70 text-xs font-light text-left px-1">
+      <p class="text-red-500 text-xs font-light text-left px-1">
         Impossible de créer la salle. Veuillez réessayer.
       </p>
     }
