@@ -1,0 +1,65 @@
+{
+  "configVersion": 1,
+  "timestamp": 1776518847538,
+  "index": "https://delaudes.github.io/split/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "https://delaudes.github.io/split/favicon.ico",
+        "https://delaudes.github.io/split/index.html",
+        "https://delaudes.github.io/split/main-PZIGPD4W.js",
+        "https://delaudes.github.io/split/manifest.webmanifest",
+        "https://delaudes.github.io/split/styles-BYAUN6G5.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "https://delaudes.github.io/split/icons/icon-192x192.png",
+        "https://delaudes.github.io/split/icons/icon-512x512.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "https://delaudes.github.io/split/favicon.ico": "e8cdcc6a16c2186b4816b6776b52352313184acc",
+    "https://delaudes.github.io/split/icons/icon-192x192.png": "49157351bbc6b1d307daff1b50ffe6930d5bdb0b",
+    "https://delaudes.github.io/split/icons/icon-512x512.png": "8d25612d2fd0fd20aaf9f674e883f3e18834999d",
+    "https://delaudes.github.io/split/index.html": "24734bcee90de680e6f47c3db3983d33d31c8ad0",
+    "https://delaudes.github.io/split/main-PZIGPD4W.js": "c2400d99af67877cc03ef6a5cb6749bc2278dcda",
+    "https://delaudes.github.io/split/manifest.webmanifest": "de799f423e547e2741dbe44f201f83b0ee28a08c",
+    "https://delaudes.github.io/split/styles-BYAUN6G5.css": "53ddba0c1b7e9f207204d23109000338052d5f9d"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
