@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1776518847538,
+  "timestamp": 1776519291958,
   "index": "https://delaudes.github.io/split/index.html",
   "assetGroups": [
     {
@@ -40,7 +40,7 @@
     "https://delaudes.github.io/split/icons/icon-512x512.png": "8d25612d2fd0fd20aaf9f674e883f3e18834999d",
     "https://delaudes.github.io/split/index.html": "24734bcee90de680e6f47c3db3983d33d31c8ad0",
     "https://delaudes.github.io/split/main-PZIGPD4W.js": "c2400d99af67877cc03ef6a5cb6749bc2278dcda",
-    "https://delaudes.github.io/split/manifest.webmanifest": "de799f423e547e2741dbe44f201f83b0ee28a08c",
+    "https://delaudes.github.io/split/manifest.webmanifest": "f4fbbf840fe2dd03831e9c72a6c264cced8001b2",
     "https://delaudes.github.io/split/styles-BYAUN6G5.css": "53ddba0c1b7e9f207204d23109000338052d5f9d"
   },
   "navigationUrls": [

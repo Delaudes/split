@@ -5,8 +5,8 @@
   "theme_color": "#172554",
   "background_color": "#172554",
   "display": "standalone",
-  "scope": "/",
-  "start_url": "/",
+  "scope": "/split/",
+  "start_url": "/split/",
   "icons": [
     {
       "src": "icons/icon-192x192.png",
