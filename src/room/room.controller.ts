@@ -38,7 +38,8 @@ export class RoomController {
     }
 
     async addExpense(expenseDescription: string, amount: string, payerId: string, dialog: Dialog): Promise<void> {
-        const newExpense = new NewExpenseDomainModel(expenseDescription, Number(Number(amount).toFixed(2)), payerId);
+        const amountNumber = Number(Number(amount.replace(",", ".")).toFixed(2));
+        const newExpense = new NewExpenseDomainModel(expenseDescription, amountNumber, payerId);
         const isAddingSuccess = await this.roomService.addExpense(newExpense);
         if (isAddingSuccess) {
             dialog.close();
