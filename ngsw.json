@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1776520021822,
+  "timestamp": 1777812086670,
   "index": "https://delaudes.github.io/split/index.html",
   "assetGroups": [
     {
@@ -13,9 +13,9 @@
       "urls": [
         "https://delaudes.github.io/split/favicon.ico",
         "https://delaudes.github.io/split/index.html",
-        "https://delaudes.github.io/split/main-PZIGPD4W.js",
+        "https://delaudes.github.io/split/main-LGJC4FYU.js",
         "https://delaudes.github.io/split/manifest.webmanifest",
-        "https://delaudes.github.io/split/styles-BYAUN6G5.css"
+        "https://delaudes.github.io/split/styles-A4P4ZFLV.css"
       ],
       "patterns": []
     },
@@ -38,10 +38,10 @@
     "https://delaudes.github.io/split/favicon.ico": "e8cdcc6a16c2186b4816b6776b52352313184acc",
     "https://delaudes.github.io/split/icons/icon-192x192.png": "49157351bbc6b1d307daff1b50ffe6930d5bdb0b",
     "https://delaudes.github.io/split/icons/icon-512x512.png": "8d25612d2fd0fd20aaf9f674e883f3e18834999d",
-    "https://delaudes.github.io/split/index.html": "24734bcee90de680e6f47c3db3983d33d31c8ad0",
-    "https://delaudes.github.io/split/main-PZIGPD4W.js": "c2400d99af67877cc03ef6a5cb6749bc2278dcda",
+    "https://delaudes.github.io/split/index.html": "c4fa3b0b859974f06f419a2cc979213c01a56756",
+    "https://delaudes.github.io/split/main-LGJC4FYU.js": "f2227648057ab7fa9b4c0f09acdedff6550fc8fc",
     "https://delaudes.github.io/split/manifest.webmanifest": "f4fbbf840fe2dd03831e9c72a6c264cced8001b2",
-    "https://delaudes.github.io/split/styles-BYAUN6G5.css": "53ddba0c1b7e9f207204d23109000338052d5f9d"
+    "https://delaudes.github.io/split/styles-A4P4ZFLV.css": "0f32995bb40dc44f9997414dfff04c2bf9cb6eda"
   },
   "navigationUrls": [
     {
