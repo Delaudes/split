@@ -26,7 +26,7 @@ describe('Room', () => {
     const roomId = 'fake-room-id';
     const payerName = 'fake-payer-name';
     const expenseDescription = 'fake-expense-description';
-    const expenseAmount = '123.459';
+    const expenseAmount = '123,459';
     const payerId = 'fake-payer-id';
 
     beforeEach(() => {
