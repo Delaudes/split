@@ -130,7 +130,6 @@
                   }
 
                   <!-- Add Expense -->
-                  <app-add-expense [payer]="payer" />
                 </div>
               </details>
             }
@@ -141,6 +140,12 @@
           </p>
         }
       </div>
+
+      @if (viewModel.payers.length > 0) {
+        <div class="flex justify-center">
+          <app-add-expense />
+        </div>
+      }
 
       <!-- Divider -->
       <div class="flex items-center gap-4">
